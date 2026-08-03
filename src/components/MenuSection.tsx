@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { CATEGORIES, MENU_ITEMS } from '../data/menuData';
+import { useMenuData } from '../hooks/useMenuData';
 import { ProductCard } from './ProductCard';
 import { MenuItem, MenuItemOption } from '../types';
 import { LayoutGrid, List, Search, Coffee, Cake, GlassWater, Egg, UtensilsCrossed, Beef, Flame, Pizza, Sandwich, Drumstick, Soup, Utensils } from 'lucide-react';
@@ -22,6 +22,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
   onAddToCart,
   onToggleWishlist,
 }) => {
+  const { categories, menuItems, loading: dataLoading } = useMenuData();
   const [viewMode, setViewMode] = useState<'grid' | 'ticket'>('grid');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -54,7 +55,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
 
   // Filter items by search query and category
   const filteredItems = useMemo(() => {
-    return MENU_ITEMS.filter((item) => {
+    return menuItems.filter((item) => {
       const matchesSearch =
         searchQuery === '' ||
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -65,7 +66,9 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
 
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, menuItems]);
+
+  const showLoading = isLoading || dataLoading;
 
   return (
     <section id="full-menu" className="py-8 px-4 max-w-7xl mx-auto scroll-mt-20">
@@ -93,10 +96,10 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
           }`}
         >
           <Utensils className="w-3.5 h-3.5" />
-          <span>All Items ({MENU_ITEMS.length})</span>
+          <span>All Items ({menuItems.length})</span>
         </button>
 
-        {CATEGORIES.map((cat) => {
+        {categories.map((cat) => {
           const isSelected = selectedCategory === cat.id;
           return (
             <button
@@ -120,7 +123,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
         <div className="text-xs font-semibold text-[#000000]">
           Showing <span className="text-[#000000] font-bold">{filteredItems.length}</span> items
           {selectedCategory !== 'all' && (
-            <span> in <strong className="text-[#000000]">{CATEGORIES.find(c => c.id === selectedCategory)?.name}</strong></span>
+            <span> in <strong className="text-[#000000]">{categories.find(c => c.id === selectedCategory)?.name}</strong></span>
           )}
         </div>
 
@@ -154,7 +157,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
       </div>
 
       {/* Main Content Area */}
-      {isLoading ? (
+      {showLoading ? (
         viewMode === 'grid' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
