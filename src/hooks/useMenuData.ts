@@ -26,7 +26,7 @@ export function useMenuData() {
       setMenuItems(
         (itemData || []).map((item: any) => ({
           ...item,
-          image: item.image_url,
+          image: item.image,
         }))
       );
 
