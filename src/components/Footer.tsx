@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { MapPin, Phone, Clock, MessageSquare, Instagram, Facebook } from 'lucide-react';
+import { MapPin, Phone, Clock, MessageSquare, Instagram, Facebook, Youtube, Music2 } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -29,7 +30,7 @@ export const Footer: React.FC = () => {
             </p>
 
             {/* Social Media */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <a
                 href="https://www.instagram.com/bakemartcoffeehouse/"
                 target="_blank"
@@ -47,6 +48,24 @@ export const Footer: React.FC = () => {
               >
                 <Facebook className="w-3.5 h-3.5" />
                 <span>Facebook</span>
+              </a>
+              <a
+                href="https://www.tiktok.com/@bakemartcoffeehou?_r=1&_t=ZS-98ZwDygY7dZ"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded-lg text-xs text-orange-400 hover:text-orange-300 transition-colors"
+              >
+                <Music2 className="w-3.5 h-3.5" />
+                <span>TikTok</span>
+              </a>
+              <a
+                href="https://youtube.com/@bakemartcoffeehouse6638?si=7xNnnCC7len5cIyc"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 bg-neutral-900 border border-neutral-700 px-3 py-1.5 rounded-lg text-xs text-orange-400 hover:text-orange-300 transition-colors"
+              >
+                <Youtube className="w-3.5 h-3.5" />
+                <span>YouTube</span>
               </a>
             </div>
           </div>
@@ -118,4 +137,3 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
-
