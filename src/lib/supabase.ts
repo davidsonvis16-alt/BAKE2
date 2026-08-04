@@ -79,17 +79,17 @@ CREATE POLICY "Public Read/Write Reservations" ON public.reservations FOR ALL US
 
 export const SUPABASE_STORAGE_SETUP = `-- Supabase Storage setup for menu item images
 -- Run this in the Supabase SQL Editor after creating the storage bucket manually via the UI,
--- or use the Supabase CLI: supabase storage create-bucket menu-images --public
+-- or use the Supabase CLI: supabase storage create-bucket PRODUCT-IMAGES --public
 
 -- Create the storage bucket (run via Supabase UI or CLI)
--- Bucket name: menu-images
+-- Bucket name: PRODUCT-IMAGES
 -- Public: true
 
 -- Storage policies (run after bucket exists)
-CREATE POLICY "Public Read Access" ON storage.objects FOR SELECT USING (bucket_id = 'menu-images');
-CREATE POLICY "Public Insert Access" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'menu-images');
-CREATE POLICY "Public Update Access" ON storage.objects FOR UPDATE USING (bucket_id = 'menu-images');
-CREATE POLICY "Public Delete Access" ON storage.objects FOR DELETE USING (bucket_id = 'menu-images');`;
+CREATE POLICY "Public Read Access" ON storage.objects FOR SELECT USING (bucket_id = 'PRODUCT-IMAGES');
+CREATE POLICY "Public Insert Access" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'PRODUCT-IMAGES');
+CREATE POLICY "Public Update Access" ON storage.objects FOR UPDATE USING (bucket_id = 'PRODUCT-IMAGES');
+CREATE POLICY "Public Delete Access" ON storage.objects FOR DELETE USING (bucket_id = 'PRODUCT-IMAGES');`;
 
 // For existing databases that still have the old is_available column, use this migration instead:
 export const SUPABASE_MIGRATION_SCRIPT = `-- Migration: fix menu_items column name and add missing tables/columns
@@ -243,7 +243,7 @@ export async function uploadMenuItemImage(file: File, itemId: string): Promise<s
     const filePath = `${itemId}/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
-      .from('menu-images')
+      .from('PRODUCT-IMAGES')
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false,
@@ -255,7 +255,7 @@ export async function uploadMenuItemImage(file: File, itemId: string): Promise<s
       return null;
     }
 
-    const { data } = supabase.storage.from('menu-images').getPublicUrl(filePath);
+    const { data } = supabase.storage.from('PRODUCT-IMAGES').getPublicUrl(filePath);
     return data?.publicUrl || null;
   } catch (err) {
     console.error('Error uploading image:', err);
@@ -268,7 +268,7 @@ export async function deleteMenuItemImage(imageUrl: string): Promise<boolean> {
   try {
     const url = new URL(imageUrl);
     const filePath = url.pathname.split('/').slice(-2).join('/');
-    const { error } = await supabase.storage.from('menu-images').remove([filePath]);
+    const { error } = await supabase.storage.from('PRODUCT-IMAGES').remove([filePath]);
     if (error) {
       console.error('Error deleting image:', error.message);
       return false;
