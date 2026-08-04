@@ -26,7 +26,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [uploadingImage, setUploadingImage] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { session } = useAuth();
+  const { session, isAdmin } = useAuth();
 
   const currentPrice = selectedOption ? selectedOption.price : item.price;
 
@@ -74,7 +74,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            {session ? (
+            {isAdmin ? (
               <button
                 onClick={() => setShowUpload(true)}
                 className="flex flex-col items-center gap-1 text-[#000000]/40 hover:text-[#000000] transition-colors"
@@ -93,7 +93,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         {/* Admin upload overlay button */}
-        {session && (
+        {isAdmin && (
           <>
             <button
               onClick={() => setShowUpload(true)}

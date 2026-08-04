@@ -5,6 +5,7 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase';
 interface AuthContextType {
   session: Session | null;
   loading: boolean;
+  isAdmin: boolean;
   login: (email: string, password: string) => Promise<{ error: string | null }>;
   logout: () => Promise<void>;
 }
@@ -14,6 +15,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const checkAdmin = (userEmail: string | undefined) => {
+    const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'bakemartnakuru@gmail.com';
+    setIsAdmin(userEmail?.toLowerCase() === adminEmail.toLowerCase() || false);
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -31,6 +38,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       .then(({ data: { session } }) => {
         if (mounted) {
           setSession(session);
+          checkAdmin(session?.user?.email);
           setLoading(false);
           clearTimeout(safetyTimeout);
         }
@@ -46,6 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (mounted) {
         setSession(session);
+        checkAdmin(session?.user?.email);
         clearTimeout(safetyTimeout);
         setLoading(false);
       }
@@ -72,7 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ session, loading, login, logout }}>
+    <AuthContext.Provider value={{ session, loading, isAdmin, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
