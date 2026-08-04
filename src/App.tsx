@@ -19,6 +19,7 @@ import { FAQ } from './components/FAQ';
 import { useAuth } from './components/AuthContext';
 import { MENU_ITEMS, CATEGORIES } from './data/menuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
+import { ShoppingBag, Send } from 'lucide-react';
 
 export default function App() {
   const navigate = useNavigate();
@@ -395,6 +396,38 @@ export default function App() {
         onRemoveFromWishlist={handleToggleWishlist}
         onAddToCart={handleAddToCart}
       />
+
+      {/* Sticky Bottom Cart Bar for Mobile */}
+      {totalCartCount > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#EADECB] shadow-lg md:hidden safe-bottom">
+          <div className="flex items-center justify-between gap-3 px-4 py-3">
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="flex items-center gap-2 bg-[#000000] text-white px-4 py-2.5 rounded-full font-bold text-sm shadow-md flex-1 justify-center"
+            >
+              <ShoppingBag className="w-4 h-4 text-orange-300" />
+              <span>View Cart ({totalCartCount})</span>
+            </button>
+            <button
+              onClick={() => {
+                const total = cartItems.reduce((acc, ci) => {
+                  const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
+                  return acc + price * ci.quantity;
+                }, 0);
+                const message = `*NEW ORDER - BAKEMART COFFEE HOUSE*\n----------------------------------\n*ORDER ITEMS:*\n${cartItems.map((ci, idx) => {
+                  const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
+                  return `${idx + 1}. *${ci.item.name}* x${ci.quantity} - KSh ${(price * ci.quantity).toLocaleString()}`;
+                }).join('\n')}\n----------------------------------\n*GRAND TOTAL:* KSh ${total.toLocaleString()}\n\n*Location:* BakeMart Coffee House, Tropical House, Watalii Rd, Nakuru City`;
+                window.open(`https://wa.me/254725009708?text=${encodeURIComponent(message)}`, '_blank');
+              }}
+              className="bg-[#000000] hover:bg-[#000000] text-white font-bold text-sm py-2.5 px-4 rounded-full shadow-md flex items-center gap-2"
+            >
+              <Send className="w-4 h-4" />
+              <span>Checkout</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Sticky Bottom Nav for Mobile */}
     </div>
