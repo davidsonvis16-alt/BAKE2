@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { Plus, Heart, Check } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Plus, Heart, Check, Upload } from 'lucide-react';
 import { MenuItem, MenuItemOption } from '../types';
+import { uploadMenuItemImage } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
+import { useAuth } from './AuthContext';
 
 interface ProductCardProps {
   item: MenuItem;
@@ -20,6 +23,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   );
   const [addedAnimation, setAddedAnimation] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { session } = useAuth();
 
   const currentPrice = selectedOption ? selectedOption.price : item.price;
 
@@ -29,15 +36,34 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     setTimeout(() => setAddedAnimation(false), 1200);
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingImage(true);
+    try {
+      const url = await uploadMenuItemImage(file, item.id);
+      if (url) {
+        await supabase.from('menu_items').update({ image: url }).eq('id', item.id);
+        setImageLoaded(false);
+      }
+    } catch (err) {
+      console.error('Image upload error:', err);
+    } finally {
+      setUploadingImage(false);
+      setShowUpload(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   return (
      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#EADECB] hover:border-[#000000]/60 hover:shadow-md smooth-card flex flex-col justify-between group">
 
       {/* Item Image */}
-      {item.image && (
-        <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#E6D8C5] mb-3">
-          {!imageLoaded && (
-            <div className="absolute inset-0 bg-gradient-to-r from-[#E6D8C5] via-[#F3E8D8] to-[#E6D8C5] animate-pulse" />
-          )}
+      <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#E6D8C5] mb-3">
+        {!imageLoaded && item.image && (
+          <div className="absolute inset-0 bg-gradient-to-r from-[#E6D8C5] via-[#F3E8D8] to-[#E6D8C5] animate-pulse z-10" />
+        )}
+        {item.image ? (
           <img
             src={item.image}
             alt={item.name}
@@ -46,8 +72,63 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
           />
-        </div>
-      )}
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            {session ? (
+              <button
+                onClick={() => setShowUpload(true)}
+                className="flex flex-col items-center gap-1 text-[#000000]/40 hover:text-[#000000] transition-colors"
+                title="Add image"
+              >
+                <Upload className="w-8 h-8" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">Add Image</span>
+              </button>
+            ) : (
+              <div className="flex flex-col items-center gap-1 text-[#000000]/30">
+                <Upload className="w-8 h-8" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">No Image</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Admin upload overlay button */}
+        {session && (
+          <>
+            <button
+              onClick={() => setShowUpload(true)}
+              className="absolute top-2 right-2 bg-black/70 hover:bg-black text-white p-1.5 rounded-lg z-20 transition-colors"
+              title="Change image"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+            {showUpload && (
+              <div className="absolute inset-0 bg-black/60 z-30 flex items-center justify-center">
+                <div className="bg-white rounded-xl p-4 mx-4 w-full max-w-xs space-y-3">
+                  <p className="text-xs font-bold text-[#000000] text-center">Upload image for {item.name}</p>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    className="w-full text-xs"
+                  />
+                  <button
+                    onClick={() => {
+                      setShowUpload(false);
+                      if (fileInputRef.current) fileInputRef.current.value = '';
+                    }}
+                    className="w-full bg-gray-200 text-[#000000] text-xs font-bold py-2 rounded-lg"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
 
       {/* Top Header: Title & Badges & Wishlist */}
       <div>

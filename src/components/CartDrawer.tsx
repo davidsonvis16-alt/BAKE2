@@ -133,7 +133,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           </div>
 
           {/* Body List */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-6">
             {cartItems.length === 0 ? (
               <div className="text-center py-16 space-y-3">
                 <Coffee className="w-12 h-12 text-[#000000] mx-auto opacity-40" />
