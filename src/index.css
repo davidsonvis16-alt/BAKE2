@@ -1,0 +1,249 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Fraunces', serif;
+  }
+
+  .font-mono {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer utilities {
+  .smooth-card {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .smooth-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .smooth-btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow;
+  }
+
+  .smooth-btn:active {
+    transform: scale(0.96);
+  }
+
+  .smooth-input {
+    transition: border-color 0.2s ease,
+                background-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.15s ease;
+  }
+
+  .smooth-input:focus {
+    transform: translateY(-1px);
+  }
+
+  .smooth-nav {
+    transition: color 0.2s ease,
+                background-color 0.2s ease,
+                transform 0.15s ease;
+  }
+
+  .smooth-nav:active {
+    transform: scale(0.94);
+  }
+
+  .smooth-badge {
+    animation: badge-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .smooth-fade-in {
+    animation: fade-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .smooth-slide-up {
+    animation: slide-up 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .smooth-scale-in {
+    animation: scale-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+}
+
+@keyframes badge-pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Smooth scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #EADECB;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D8C7B0;
+}
+
+/* Faster, smoother transitions globally */
+button, a, input, select, textarea {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Remove default focus outline and add custom smooth one */
+*:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Image loading smooth fade */
+img {
+  transition: opacity 0.3s ease;
+}
+
+img[loading] {
+  opacity: 0;
+}
+
+img.loaded {
+  opacity: 1;
+}
+
+/* Crisp logo rendering */
+.logo-img {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Smooth drawer animations */
+.drawer-overlay {
+  animation: fade-in 0.2s ease forwards;
+}
+
+.drawer-content {
+  animation: slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Loading shimmer */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #FAF3E7 25%,
+    #EADECB 50%,
+    #FAF3E7 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Smooth page transition overlay */
+.page-transition-overlay {
+  animation: overlay-in 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ticket-border {
+  background-image: radial-gradient(circle at center, transparent 6px, white 6px);
+  background-size: 16px 16px;
+  background-repeat: repeat-x;
+}
+
+.dotted-leader {
+  border-bottom: 2px dotted #D2C4B4;
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top, 16px);
+}
