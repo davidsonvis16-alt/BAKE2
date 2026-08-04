@@ -24,7 +24,7 @@ export const FAQ: React.FC = () => {
     },
     {
       question: 'How can I contact you or place an order?',
-      answer: 'Call or WhatsApp us at 0725 009 708, 0713 418 107, or +254 752 114 450. Follow @bakemartcoffeehouse on Instagram and Bakemart Coffee House / NakuruBakemartPlusShop on Facebook for promotions, menu specials, and updates.'
+      answer: 'Call or WhatsApp us at 0725 009 708. Follow @bakemartcoffeehouse on Instagram and Bakemart Coffee House / NakuruBakemartPlusShop on Facebook for promotions, menu specials, and updates.'
     },
     {
       question: 'Is it family-friendly / good for groups?',
