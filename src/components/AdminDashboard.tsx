@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { supabase, uploadMenuItemImage, validateImageFile } from '../lib/supabase';
 import { useAuth } from '../components/AuthContext';
 import { Trash2, Plus, Save, X, LogOut, Search, Image } from 'lucide-react';
@@ -27,7 +27,6 @@ export const AdminDashboard: React.FC = () => {
   const [editImage, setEditImage] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [imageError, setImageError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingItemId, setUploadingItemId] = useState<string | null>(null);
   const inlineFileInputRef = useRef<HTMLInputElement>(null);
@@ -176,10 +175,25 @@ export const AdminDashboard: React.FC = () => {
     );
   });
 
+  // Group filtered items by category
+  const groupedItems = useMemo(() => {
+    const groups: Record<string, MenuItemRow[]> = {};
+    filteredItems.forEach((item) => {
+      if (!groups[item.category]) groups[item.category] = [];
+      groups[item.category].push(item);
+    });
+    return groups;
+  }, [filteredItems]);
+
+  const categoryNames = Object.keys(groupedItems).sort();
+
+  const formatCategoryLabel = (id: string) =>
+    id.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
   return (
     <div className="min-h-screen bg-[#FAF3E7] pb-20">
       <header className="bg-white border-b border-[#000000]/10 sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <h1 className="font-serif-display text-xl font-bold text-[#000000]">BakeMart Menu Manager</h1>
           <button
             onClick={logout}
@@ -190,7 +204,7 @@ export const AdminDashboard: React.FC = () => {
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-4 py-6">
+      <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <button
             onClick={() => setShowAddForm(!showAddForm)}
@@ -290,135 +304,149 @@ export const AdminDashboard: React.FC = () => {
 
         {loading ? (
           <p className="text-[#000000]/60">Loading menu...</p>
+        ) : categoryNames.length === 0 ? (
+          <p className="text-[#000000]/60">No items found.</p>
         ) : (
-          <div className="space-y-2">
-            {filteredItems.map((item) => (
-              <div key={item.id} className="bg-white rounded-xl p-4 shadow-sm border border-[#000000]/10">
-                {editingId === item.id ? (
-                  <div className="space-y-2">
-                    <input value={editForm.name || ''}
-                      onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                      className="border rounded-lg px-3 py-2 w-full font-semibold" />
-                    <textarea value={editForm.description || ''}
-                      onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                      className="border rounded-lg px-3 py-2 w-full text-sm" />
-                    <div className="flex gap-3">
-                      <input type="number" value={editForm.price || 0}
-                        onChange={(e) => setEditForm({ ...editForm, price: Number(e.target.value) })}
-                        className="border rounded-lg px-3 py-2 w-32" />
-                      <input value={editForm.badge || ''} placeholder="Badge"
-                        onChange={(e) => setEditForm({ ...editForm, badge: e.target.value })}
-                        className="border rounded-lg px-3 py-2 flex-1" />
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <label className="flex items-center gap-2 bg-[#FAF3E7] border border-[#D8C7B0] rounded-lg px-3 py-2 cursor-pointer hover:bg-[#EADECB] transition-colors flex-1">
-                        <Image className="w-4 h-4 text-[#000000]" />
-                        <span className="text-xs text-[#000000]">
-                          {editImage ? editImage.name : 'Choose image file'}
-                        </span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          ref={editFileInputRef}
-                          onChange={(e) => {
-                            const file = e.target.files?.[0] || null;
-                            const validationError = validateImageFile(file);
-                            if (validationError) {
-                              alert(validationError);
-                              setEditImage(null);
-                              if (editFileInputRef.current) editFileInputRef.current.value = '';
-                              return;
-                            }
-                            setEditImage(file);
-                          }}
-                          className="hidden"
-                        />
-                      </label>
-                      {editImage && (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setEditImage(null);
-                            if (editFileInputRef.current) editFileInputRef.current.value = '';
-                          }}
-                          className="text-red-500 text-xs font-semibold"
-                        >
-                          Remove
-                        </button>
-                      )}
-                    </div>
-                    <div className="flex gap-2 pt-1">
-                      <button onClick={saveEdit}
-                        className="flex items-center gap-1 bg-[#000000] text-white px-4 py-1.5 rounded-full text-sm font-semibold">
-                        <Save className="w-3.5 h-3.5" /> Save
-                      </button>
-                      <button onClick={cancelEdit}
-                        className="flex items-center gap-1 bg-gray-200 text-[#000000] px-4 py-1.5 rounded-full text-sm font-semibold">
-                        <X className="w-3.5 h-3.5" /> Cancel
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      {item.image && (
-                        <img src={item.image} alt={item.name} className="w-10 h-10 rounded-lg object-cover shrink-0" />
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-semibold text-[#000000]">{item.name}</span>
-                          {item.badge && (
-                            <span className="text-[10px] bg-[#000000]/40 text-[#000000] px-2 py-0.5 rounded-full font-semibold">
-                              {item.badge}
-                            </span>
-                          )}
-                          {!item.available && (
-                            <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-semibold">
-                              Sold Out
-                            </span>
-                          )}
+          <div className="space-y-10">
+            {categoryNames.map((catId) => (
+              <section key={catId}>
+                <h2 className="text-sm font-bold uppercase tracking-wider text-[#000000] mb-3 border-b border-[#000000]/10 pb-2">
+                  {formatCategoryLabel(catId)} <span className="text-[#000000]/40 font-normal">({groupedItems[catId].length})</span>
+                </h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {groupedItems[catId].map((item) => (
+                    <div key={item.id} className="bg-white rounded-xl p-4 shadow-sm border border-[#000000]/10 flex flex-col">
+                      {editingId === item.id ? (
+                        <div className="space-y-2">
+                          <input value={editForm.name || ''}
+                            onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                            className="border rounded-lg px-3 py-2 w-full font-semibold text-sm" />
+                          <textarea value={editForm.description || ''}
+                            onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                            className="border rounded-lg px-3 py-2 w-full text-xs" />
+                          <div className="flex gap-2">
+                            <input type="number" value={editForm.price || 0}
+                              onChange={(e) => setEditForm({ ...editForm, price: Number(e.target.value) })}
+                              className="border rounded-lg px-3 py-2 w-24 text-sm" />
+                            <input value={editForm.badge || ''} placeholder="Badge"
+                              onChange={(e) => setEditForm({ ...editForm, badge: e.target.value })}
+                              className="border rounded-lg px-3 py-2 flex-1 text-sm" />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <label className="flex items-center gap-2 bg-[#FAF3E7] border border-[#D8C7B0] rounded-lg px-3 py-2 cursor-pointer hover:bg-[#EADECB] transition-colors flex-1">
+                              <Image className="w-3.5 h-3.5 text-[#000000]" />
+                              <span className="text-[10px] text-[#000000] truncate">
+                                {editImage ? editImage.name : 'Choose image'}
+                              </span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                ref={editFileInputRef}
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0] || null;
+                                  const validationError = validateImageFile(file);
+                                  if (validationError) {
+                                    alert(validationError);
+                                    setEditImage(null);
+                                    if (editFileInputRef.current) editFileInputRef.current.value = '';
+                                    return;
+                                  }
+                                  setEditImage(file);
+                                }}
+                                className="hidden"
+                              />
+                            </label>
+                            {editImage && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditImage(null);
+                                  if (editFileInputRef.current) editFileInputRef.current.value = '';
+                                }}
+                                className="text-red-500 text-[10px] font-semibold shrink-0"
+                              >
+                                Remove
+                              </button>
+                            )}
+                          </div>
+                          <div className="flex gap-2 pt-1">
+                            <button onClick={saveEdit}
+                              className="flex items-center gap-1 bg-[#000000] text-white px-3 py-1.5 rounded-full text-xs font-semibold">
+                              <Save className="w-3.5 h-3.5" /> Save
+                            </button>
+                            <button onClick={cancelEdit}
+                              className="flex items-center gap-1 bg-gray-200 text-[#000000] px-3 py-1.5 rounded-full text-xs font-semibold">
+                              <X className="w-3.5 h-3.5" /> Cancel
+                            </button>
+                          </div>
                         </div>
-                        <p className="text-xs text-[#000000]/50">{item.category}</p>
-                      </div>
+                      ) : (
+                        <>
+                          <div className="relative mb-3 aspect-square rounded-lg overflow-hidden bg-[#FAF3E7] flex items-center justify-center">
+                            {item.image ? (
+                              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <span className="text-[10px] text-[#000000]/40">No Image</span>
+                            )}
+                          </div>
+
+                          <div className="flex-1">
+                            <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                              <span className="font-semibold text-sm text-[#000000]">{item.name}</span>
+                              {item.badge && (
+                                <span className="text-[9px] bg-[#000000]/40 text-[#000000] px-1.5 py-0.5 rounded-full font-semibold">
+                                  {item.badge}
+                                </span>
+                              )}
+                              {!item.available && (
+                                <span className="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-semibold">
+                                  Sold Out
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-[#000000]/50 line-clamp-2 mb-2">{item.description}</p>
+                            <span className="font-mono font-bold text-[#000000] text-sm">KSh {item.price}</span>
+                          </div>
+
+                          <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-[#000000]/10">
+                            <button
+                              onClick={() => {
+                                setUploadingItemId(item.id);
+                                setTimeout(() => inlineFileInputRef.current?.click(), 0);
+                              }}
+                              disabled={uploadingItemId === item.id && uploading}
+                              className="text-[10px] bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] px-2 py-1.5 rounded-full font-semibold disabled:opacity-50 active:scale-95 transition-all flex items-center gap-1"
+                              title="Add/Change image"
+                            >
+                              <Image className="w-3 h-3" />
+                              Image
+                            </button>
+                            <button
+                              onClick={() => toggleAvailable(item)}
+                              className={`text-[10px] px-2 py-1.5 rounded-full font-semibold transition-all ${
+                                item.available
+                                  ? 'bg-green-100 text-green-700 hover:bg-green-200 active:scale-95'
+                                  : 'bg-red-100 text-red-600 hover:bg-red-200 active:scale-95'
+                              }`}
+                            >
+                              {item.available ? '✓ Avail' : '✕ Sold'}
+                            </button>
+                            <button onClick={() => startEdit(item)}
+                              className="text-[10px] bg-gray-100 hover:bg-gray-200 px-2 py-1.5 rounded-full font-semibold text-[#000000] active:scale-95 transition-all">
+                              Edit
+                            </button>
+                            <button onClick={() => deleteItem(item.id)}
+                              className="text-red-500 hover:bg-red-50 p-1.5 rounded-full active:scale-95 transition-all ml-auto">
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </div>
-                    <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-2 shrink-0">
-                      <span className="font-mono font-bold text-[#000000] text-sm">KSh {item.price}</span>
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={() => {
-                            setUploadingItemId(item.id);
-                            setTimeout(() => inlineFileInputRef.current?.click(), 0);
-                          }}
-                          disabled={uploadingItemId === item.id && uploading}
-                          className="text-xs bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] px-2.5 py-2 rounded-full font-semibold disabled:opacity-50 active:scale-95 transition-all flex items-center gap-1"
-                          title="Add/Change image"
-                        >
-                          <Image className="w-3.5 h-3.5" />
-                          <span className="hidden sm:inline">Image</span>
-                        </button>
-                        <button
-                          onClick={() => toggleAvailable(item)}
-                          className={`text-xs px-3 py-2 rounded-full font-semibold transition-all ${
-                            item.available 
-                              ? 'bg-green-100 text-green-700 hover:bg-green-200 active:scale-95' 
-                              : 'bg-red-100 text-red-600 hover:bg-red-200 active:scale-95'
-                          }`}
-                        >
-                          {item.available ? '✓ Available' : '✕ Sold Out'}
-                        </button>
-                        <button onClick={() => startEdit(item)}
-                          className="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-full font-semibold text-[#000000] active:scale-95 transition-all">
-                          Edit
-                        </button>
-                        <button onClick={() => deleteItem(item.id)}
-                          className="text-red-500 hover:bg-red-50 p-2 rounded-full active:scale-95 transition-all">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+                  ))}
+                </div>
+              </section>
             ))}
           </div>
         )}
