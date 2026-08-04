@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+⁷import React, { useState } from 'react';
 import { Search, ShoppingBag, Heart, Calendar, Menu, X, Phone } from 'lucide-react';
 
 interface NavbarProps {
@@ -47,8 +47,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const phoneNumbers = [
     { label: '0725 009 708', href: 'https://wa.me/254725009708' },
-    { label: '0713 418 107', href: 'https://wa.me/254713418107' },
-    { label: '+254 752 114 450', href: 'https://wa.me/254752114450' },
   ];
 
   return (
