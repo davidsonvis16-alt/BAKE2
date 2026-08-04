@@ -28,6 +28,8 @@ export const AdminDashboard: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingItemId, setUploadingItemId] = useState<string | null>(null);
+  const inlineFileInputRef = useRef<HTMLInputElement>(null);
   const editFileInputRef = useRef<HTMLInputElement>(null);
   const { logout } = useAuth();
 
@@ -112,6 +114,25 @@ export const AdminDashboard: React.FC = () => {
     fetchItems();
   };
 
+  const handleInlineUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !uploadingItemId || !supabase) return;
+    setUploading(true);
+    try {
+      const url = await uploadMenuItemImage(file, uploadingItemId);
+      if (url) {
+        await supabase.from('menu_items').update({ image: url }).eq('id', uploadingItemId);
+        fetchItems();
+      }
+    } catch (err) {
+      console.error('Inline upload error:', err);
+    } finally {
+      setUploading(false);
+      setUploadingItemId(null);
+      if (inlineFileInputRef.current) inlineFileInputRef.current.value = '';
+    }
+  };
+
   const addItem = async () => {
     if (!supabase) return;
     if (!newItem.id || !newItem.name || !newItem.category) {
@@ -181,6 +202,16 @@ export const AdminDashboard: React.FC = () => {
             />
           </div>
         </div>
+
+        {/* Hidden inline file input for quick image upload */}
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          ref={inlineFileInputRef}
+          onChange={handleInlineUpload}
+          className="hidden"
+        />
 
         {showAddForm && (
           <div className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-[#000000]/10 space-y-3">
@@ -333,7 +364,19 @@ export const AdminDashboard: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-2 shrink-0">
                       <span className="font-mono font-bold text-[#000000] text-sm">KSh {item.price}</span>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => {
+                            setUploadingItemId(item.id);
+                            setTimeout(() => inlineFileInputRef.current?.click(), 0);
+                          }}
+                          disabled={uploadingItemId === item.id && uploading}
+                          className="text-xs bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] px-2.5 py-2 rounded-full font-semibold disabled:opacity-50 active:scale-95 transition-all flex items-center gap-1"
+                          title="Add/Change image"
+                        >
+                          <Image className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">Image</span>
+                        </button>
                         <button
                           onClick={() => toggleAvailable(item)}
                           className={`text-xs px-3 py-2 rounded-full font-semibold transition-all ${
