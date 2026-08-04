@@ -1,4 +1,4 @@
-⁷import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Search, ShoppingBag, Heart, Calendar, Menu, X, Phone } from 'lucide-react';
 
 interface NavbarProps {
