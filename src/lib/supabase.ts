@@ -263,6 +263,19 @@ export async function uploadMenuItemImage(file: File, itemId: string): Promise<s
   }
 }
 
+export function validateImageFile(file: File | null): string | null {
+  if (!file) return null;
+  const maxSize = 5 * 1024 * 1024;
+  if (file.size > maxSize) {
+    return 'Image must be under 5MB';
+  }
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
+  if (!allowedTypes.includes(file.type)) {
+    return 'Only JPG, PNG, WebP and AVIF images are allowed';
+  }
+  return null;
+}
+
 export async function deleteMenuItemImage(imageUrl: string): Promise<boolean> {
   if (!supabase) return false;
   try {

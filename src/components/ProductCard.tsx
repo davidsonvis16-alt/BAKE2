@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Plus, Heart, Check, Upload } from 'lucide-react';
 import { MenuItem, MenuItemOption } from '../types';
-import { uploadMenuItemImage } from '../lib/supabase';
+import { uploadMenuItemImage, validateImageFile } from '../lib/supabase';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './AuthContext';
 
@@ -39,6 +39,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const validationError = validateImageFile(file);
+    if (validationError) {
+      alert(validationError);
+      setShowUpload(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
     setUploadingImage(true);
     try {
       const url = await uploadMenuItemImage(file, item.id);
@@ -109,7 +116,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   <input
                     type="file"
                     accept="image/*"
-                    capture="environment"
                     ref={fileInputRef}
                     onChange={handleImageUpload}
                     className="w-full text-xs"

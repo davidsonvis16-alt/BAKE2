@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { supabase, uploadMenuItemImage } from '../lib/supabase';
+import { supabase, uploadMenuItemImage, validateImageFile } from '../lib/supabase';
 import { useAuth } from '../components/AuthContext';
 import { Trash2, Plus, Save, X, LogOut, Search, Image } from 'lucide-react';
 
@@ -27,6 +27,7 @@ export const AdminDashboard: React.FC = () => {
   const [editImage, setEditImage] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [imageError, setImageError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingItemId, setUploadingItemId] = useState<string | null>(null);
   const inlineFileInputRef = useRef<HTMLInputElement>(null);
@@ -117,6 +118,13 @@ export const AdminDashboard: React.FC = () => {
   const handleInlineUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !uploadingItemId || !supabase) return;
+    const validationError = validateImageFile(file);
+    if (validationError) {
+      alert(validationError);
+      setUploadingItemId(null);
+      if (inlineFileInputRef.current) inlineFileInputRef.current.value = '';
+      return;
+    }
     setUploading(true);
     try {
       const url = await uploadMenuItemImage(file, uploadingItemId);
@@ -207,7 +215,6 @@ export const AdminDashboard: React.FC = () => {
         <input
           type="file"
           accept="image/*"
-          capture="environment"
           ref={inlineFileInputRef}
           onChange={handleInlineUpload}
           className="hidden"
@@ -246,10 +253,16 @@ export const AdminDashboard: React.FC = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  capture="environment"
                   ref={fileInputRef}
                   onChange={(e) => {
                     const file = e.target.files?.[0] || null;
+                    const validationError = validateImageFile(file);
+                    if (validationError) {
+                      alert(validationError);
+                      setNewItemImage(null);
+                      if (fileInputRef.current) fileInputRef.current.value = '';
+                      return;
+                    }
                     setNewItemImage(file);
                   }}
                   className="hidden"
@@ -306,10 +319,16 @@ export const AdminDashboard: React.FC = () => {
                         <input
                           type="file"
                           accept="image/*"
-                          capture="environment"
                           ref={editFileInputRef}
                           onChange={(e) => {
                             const file = e.target.files?.[0] || null;
+                            const validationError = validateImageFile(file);
+                            if (validationError) {
+                              alert(validationError);
+                              setEditImage(null);
+                              if (editFileInputRef.current) editFileInputRef.current.value = '';
+                              return;
+                            }
                             setEditImage(file);
                           }}
                           className="hidden"
