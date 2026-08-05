@@ -23,6 +23,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   );
   const [addedAnimation, setAddedAnimation] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -52,6 +53,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       if (url) {
         await supabase.from('menu_items').update({ image: url }).eq('id', item.id);
         setImageLoaded(false);
+        setImageFailed(false);
       }
     } catch (err) {
       console.error('Image upload error:', err);
@@ -62,20 +64,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     }
   };
 
+  const showImage = item.image && !imageFailed;
+
   return (
      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#EADECB] hover:border-[#000000]/60 hover:shadow-md smooth-card flex flex-col justify-between group">
 
       {/* Item Image */}
       <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#E6D8C5] mb-3">
-        {!imageLoaded && item.image && (
+        {!imageLoaded && showImage && (
           <div className="absolute inset-0 bg-gradient-to-r from-[#E6D8C5] via-[#F3E8D8] to-[#E6D8C5] animate-pulse z-10" />
         )}
-        {item.image ? (
+        {showImage ? (
           <img
             src={item.image}
             alt={item.name}
             loading="lazy"
             onLoad={() => setImageLoaded(true)}
+            onError={() => {
+              setImageFailed(true);
+              setImageLoaded(true);
+            }}
             className={`w-full h-full object-cover transition-opacity duration-300 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
@@ -89,7 +97,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 title="Add image"
               >
                 <Upload className="w-8 h-8" />
-                <span className="text-[10px] font-bold uppercase tracking-wider">Add Image</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider">
+                  {item.image && imageFailed ? 'Image Failed to Load' : 'Add Image'}
+                </span>
               </button>
             ) : (
               <div className="flex flex-col items-center gap-1 text-[#000000]/30">
