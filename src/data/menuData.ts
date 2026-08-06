@@ -96,39 +96,39 @@ export const MENU_ITEMS: MenuItem[] = [
   // ==========================================
   // BAKERY CORNER
   // ==========================================
-  { id: 'b1', name: 'Assorted English Muffins', category: 'bakery-desserts', price: 40, description: 'Freshly baked individual muffin', image: '/menu-items/saved-pics/Cold Cheese Cake.jpg' },
+  { id: 'b1', name: 'Assorted English Muffins', category: 'bakery-desserts', price: 40, description: 'Freshly baked individual muffin', image: '/menu-items/saved-pics/Cold-Cheese-Cake.jpg' },
   { id: 'b2', name: 'Butter Cookies (1pc)', category: 'bakery-desserts', price: 10, description: 'Crisp rich butter cookie' },
   { id: 'b3', name: 'Butter Cookies (16pc packet)', category: 'bakery-desserts', price: 200, description: 'Family pack crisp butter cookies' },
   { id: 'b4', name: 'Butter Cookies (10pc packet)', category: 'bakery-desserts', price: 150, description: 'Freshly packed butter cookies' },
-  { id: 'b5', name: 'English Tea Cake', category: 'bakery-desserts', price: 80, description: 'Classic buttery tea slice', image: '/menu-items/saved-pics/Cold Cheese Cake.jpg' },
-  { id: 'b6', name: 'Creamed Rich Cake', category: 'bakery-desserts', price: 100, description: 'Moist vanilla creamed cake slice', image: '/menu-items/saved-pics/Cold Cheese Cake.jpg' },
-  { id: 'b7', name: 'Black Forest / White Forest / Red Velvet Cake', category: 'bakery-desserts', price: 200, badge: 'Popular', image: '/menu-items/saved-pics/Cold Cheese Cake.jpg', description: 'Choice of rich chocolate, vanilla or red velvet cake slice' },
+  { id: 'b5', name: 'English Tea Cake', category: 'bakery-desserts', price: 80, description: 'Classic buttery tea slice', image: '/menu-items/saved-pics/Cold-Cheese-Cake.jpg' },
+  { id: 'b6', name: 'Creamed Rich Cake', category: 'bakery-desserts', price: 100, description: 'Moist vanilla creamed cake slice', image: '/menu-items/saved-pics/Cold-Cheese-Cake.jpg' },
+  { id: 'b7', name: 'Black Forest / White Forest / Red Velvet Cake', category: 'bakery-desserts', price: 200, badge: 'Popular', image: '/menu-items/saved-pics/Cold-Cheese-Cake.jpg', description: 'Choice of rich chocolate, vanilla or red velvet cake slice' },
   { id: 'b10', name: 'Caramel Cake Slice', category: 'bakery-desserts', price: 200, description: 'Decadent salted caramel glazed sponge' },
-  { id: 'b11', name: 'Chocolate Fudge Cake', category: 'bakery-desserts', price: 200, badge: 'Chef Special', image: '/menu-items/saved-pics/Chocolate Wiffle.jpg', description: 'Rich gooey dark chocolate fudge cake' },
-  { id: 'b12', name: 'Cheese Cake (Cold)', category: 'bakery-desserts', price: 250, badge: 'Popular', image: '/menu-items/saved-pics/Cold Cheese Cake.jpg', description: 'Creamy cold setting cheesecake with fruit topping' },
-  { id: 'b13', name: 'Chocolate & Vanilla Swiss Roll', category: 'bakery-desserts', price: 150, description: 'Soft rolled sponge filled with sweet vanilla cream', image: '/menu-items/saved-pics/Cold Cheese Cake.jpg' },
-  { id: 'b14', name: 'Tiramisu Cake Slice', category: 'bakery-desserts', price: 200, description: 'Italian coffee layered dessert slice', image: '/menu-items/saved-pics/Cold Cheese Cake.jpg' },
-  { id: 'b15', name: 'Strawberry Cake Slice', category: 'bakery-desserts', price: 150, description: 'Fresh strawberry layered sponge cake', image: '/menu-items/saved-pics/Cold Cheese Cake.jpg' },
+  { id: 'b11', name: 'Chocolate Fudge Cake', category: 'bakery-desserts', price: 200, badge: 'Chef Special', image: '/menu-items/saved-pics/Chocolate-Wiffle.jpg', description: 'Rich gooey dark chocolate fudge cake' },
+  { id: 'b12', name: 'Cheese Cake (Cold)', category: 'bakery-desserts', price: 250, badge: 'Popular', image: '/menu-items/saved-pics/Cold-Cheese-Cake.jpg', description: 'Creamy cold setting cheesecake with fruit topping' },
+  { id: 'b13', name: 'Chocolate & Vanilla Swiss Roll', category: 'bakery-desserts', price: 150, description: 'Soft rolled sponge filled with sweet vanilla cream', image: '/menu-items/saved-pics/Cold-Cheese-Cake.jpg' },
+  { id: 'b14', name: 'Tiramisu Cake Slice', category: 'bakery-desserts', price: 200, description: 'Italian coffee layered dessert slice', image: '/menu-items/saved-pics/Cold-Cheese-Cake.jpg' },
+  { id: 'b15', name: 'Strawberry Cake Slice', category: 'bakery-desserts', price: 150, description: 'Fresh strawberry layered sponge cake', image: '/menu-items/saved-pics/Cold-Cheese-Cake.jpg' },
 
   // DESSERTS
-  { id: 'd1', name: 'CoupJack (Fruits & Ice Cream)', category: 'bakery-desserts', price: 270, description: 'Tropical fresh fruit medley topped with premium ice cream', image: '/menu-items/saved-pics/Fruit Salad.jpg' },
-  { id: 'd2', name: 'Banana Split', category: 'bakery-desserts', price: 200, description: 'Split ripe banana with ice cream, chocolate drizzle and cherries', image: '/menu-items/saved-pics/Fruit Salad.jpg' },
-  { id: 'd3', name: 'Tropical Fruits Salad', category: 'bakery-desserts', price: 200, image: '/menu-items/saved-pics/Fruit Salad.jpg', description: 'Fresh Nakuru local seasonal fruits in natural juice' },
-  { id: 'd4', name: 'Bakemart Apple Delight', category: 'bakery-desserts', price: 250, badge: 'Chef Special', description: 'Warm baked spiced apples topped with cold vanilla scoop', image: '/menu-items/saved-pics/Fruit Salad.jpg' },
+  { id: 'd1', name: 'CoupJack (Fruits & Ice Cream)', category: 'bakery-desserts', price: 270, description: 'Tropical fresh fruit medley topped with premium ice cream', image: '/menu-items/saved-pics/Fruit-Salad.jpg' },
+  { id: 'd2', name: 'Banana Split', category: 'bakery-desserts', price: 200, description: 'Split ripe banana with ice cream, chocolate drizzle and cherries', image: '/menu-items/saved-pics/Fruit-Salad.jpg' },
+  { id: 'd3', name: 'Tropical Fruits Salad', category: 'bakery-desserts', price: 200, image: '/menu-items/saved-pics/Fruit-Salad.jpg', description: 'Fresh Nakuru local seasonal fruits in natural juice' },
+  { id: 'd4', name: 'Bakemart Apple Delight', category: 'bakery-desserts', price: 250, badge: 'Chef Special', description: 'Warm baked spiced apples topped with cold vanilla scoop', image: '/menu-items/saved-pics/Fruit-Salad.jpg' },
 
   // WAFFLES CORNER
-  { id: 'w1', name: 'Vanilla Waffle', category: 'waffles-triffles', price: 200, image: '/menu-items/saved-pics/Vanilla wiffle.jpg', description: 'Freshly ironed golden waffle with maple drizzle' },
-  { id: 'w2', name: 'Chocolate Waffle', category: 'waffles-triffles', price: 250, image: '/menu-items/saved-pics/Chocolate Wiffle.jpg', description: 'Crisp cocoa waffle with hot fudge' },
-  { id: 'w3', name: 'Red Velvet Waffle', category: 'waffles-triffles', price: 300, description: 'Signature red velvet waffle with cream sauce', image: '/menu-items/saved-pics/Chocolate Wiffle.jpg' },
+  { id: 'w1', name: 'Vanilla Waffle', category: 'waffles-triffles', price: 200, image: '/menu-items/saved-pics/Vanilla-wiffle.jpg', description: 'Freshly ironed golden waffle with maple drizzle' },
+  { id: 'w2', name: 'Chocolate Waffle', category: 'waffles-triffles', price: 250, image: '/menu-items/saved-pics/Chocolate-Wiffle.jpg', description: 'Crisp cocoa waffle with hot fudge' },
+  { id: 'w3', name: 'Red Velvet Waffle', category: 'waffles-triffles', price: 300, description: 'Signature red velvet waffle with cream sauce', image: '/menu-items/saved-pics/Chocolate-Wiffle.jpg' },
   { id: 'w4', name: 'Peanut Butter Waffle', category: 'waffles-triffles', price: 300, description: 'Creamy peanut butter drizzle and crushed nuts' },
   { id: 'w5', name: 'Vegetable Waffle', category: 'waffles-triffles', price: 300, description: 'Savory herb waffle' },
-  { id: 'w6', name: 'Waffle Topped with Ice Cream', category: 'waffles-triffles', price: 400, badge: 'Popular', description: 'Warm waffle topped with premium ice cream', image: '/menu-items/saved-pics/Chocolate Wiffle.jpg' },
+  { id: 'w6', name: 'Waffle Topped with Ice Cream', category: 'waffles-triffles', price: 400, badge: 'Popular', description: 'Warm waffle topped with premium ice cream', image: '/menu-items/saved-pics/Chocolate-Wiffle.jpg' },
 
   // TRIFFLES
-  { id: 'tr1', name: 'Chocolate Triffle', category: 'waffles-triffles', price: 250, image: '/menu-items/saved-pics/Vanila Triffle and Chocolate Triffle.jpg', description: 'Layered chocolate pudding, sponge and whipped cream' },
-  { id: 'tr2', name: 'Fruit Triffle', category: 'waffles-triffles', price: 250, image: '/menu-items/saved-pics/Vanila Triffle and Chocolate Triffle.jpg', description: 'Custard layered with fresh fruit and soft cake' },
-  { id: 'tr3', name: 'Mocca Triffle', category: 'waffles-triffles', price: 250, description: 'Espresso infused dessert layer cup', image: '/menu-items/saved-pics/Vanila Triffle and Chocolate Triffle.jpg' },
-  { id: 'tr4', name: 'Caramel Triffle', category: 'waffles-triffles', price: 250, image: '/menu-items/saved-pics/Vanila Triffle and Chocolate Triffle.jpg', description: 'Rich buttery caramel layered dessert' },
+  { id: 'tr1', name: 'Chocolate Triffle', category: 'waffles-triffles', price: 250, image: '/menu-items/saved-pics/Vanila-Triffle-and-Chocolate-Triffle.jpg', description: 'Layered chocolate pudding, sponge and whipped cream' },
+  { id: 'tr2', name: 'Fruit Triffle', category: 'waffles-triffles', price: 250, image: '/menu-items/saved-pics/Vanila-Triffle-and-Chocolate-Triffle.jpg', description: 'Custard layered with fresh fruit and soft cake' },
+  { id: 'tr3', name: 'Mocca Triffle', category: 'waffles-triffles', price: 250, description: 'Espresso infused dessert layer cup', image: '/menu-items/saved-pics/Vanila-Triffle-and-Chocolate-Triffle.jpg' },
+  { id: 'tr4', name: 'Caramel Triffle', category: 'waffles-triffles', price: 250, image: '/menu-items/saved-pics/Vanila-Triffle-and-Chocolate-Triffle.jpg', description: 'Rich buttery caramel layered dessert' },
 
   // ==========================================
   // JUICES, MOJITOS & SMOOTHIES
@@ -149,7 +149,7 @@ export const MENU_ITEMS: MenuItem[] = [
 
   // DETOX COCKTAILS
   { id: 'dt1', name: 'Green Juice', category: 'juices-cocktails', price: 250, badge: 'Healthy', description: 'Freshly squeezed kiwi, cucumber & garden spinach — blood system cleanser' },
-  { id: 'dt2', name: 'Pawa Juice', category: 'juices-cocktails', price: 250, image: '/menu-items/saved-pics/Mixed Fruit Cocktail.jpg', description: 'Freshly juiced passion of thorn melon' },
+  { id: 'dt2', name: 'Pawa Juice', category: 'juices-cocktails', price: 250, image: '/menu-items/saved-pics/Mixed-Fruit-Cocktail.jpg', description: 'Freshly juiced passion of thorn melon' },
   { id: 'dt3', name: 'Dona Colada', category: 'juices-cocktails', price: 250, description: 'Freshly blended pineapple and coconut juice' },
   { id: 'dt4', name: 'Papeno Doppio', category: 'juices-cocktails', price: 250, description: 'Fresh blend of rich Papino melon with antioxidants and apple fruit' },
   { id: 'dt5', name: 'Detox Cubes', category: 'juices-cocktails', price: 250, badge: 'Healthy', description: 'Iced herbs detox blend' },
@@ -160,7 +160,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'fj2', name: 'Carrot Juice', category: 'juices-cocktails', price: 200, description: '100% fresh pressed carrot juice' },
   { id: 'fj3', name: 'Orange Juice', category: 'juices-cocktails', price: 200, description: '100% fresh pressed orange juice' },
   { id: 'fj4', name: 'Beetroot Juice', category: 'juices-cocktails', price: 200, description: '100% fresh pressed beetroot juice' },
-  { id: 'fj5', name: 'Mixed Fruit Cocktail', category: 'juices-cocktails', price: 200, image: '/menu-items/saved-pics/Mixed Fruit Cocktail.jpg', description: '100% fresh mixed fruit juice cocktail' },
+  { id: 'fj5', name: 'Mixed Fruit Cocktail', category: 'juices-cocktails', price: 200, image: '/menu-items/saved-pics/Mixed-Fruit-Cocktail.jpg', description: '100% fresh mixed fruit juice cocktail' },
   { id: 'fj6', name: 'Tamarind Juice', category: 'juices-cocktails', price: 200, description: '100% fresh tamarind juice' },
 
   // JUICE BLENDS
@@ -181,15 +181,15 @@ export const MENU_ITEMS: MenuItem[] = [
   // SMOOTHIES
   { id: 'sm1', name: 'Oreo Smoothie', category: 'juices-cocktails', price: 350, badge: 'Popular', description: 'Creamy Oreo cookie blended smoothie' },
   { id: 'sm2', name: 'Coconut Smoothie', category: 'juices-cocktails', price: 350, description: 'Tropical coconut blended smoothie' },
-  { id: 'sm3', name: 'Avocado Smoothie', category: 'juices-cocktails', price: 250, description: 'Creamy fresh avocado smoothie', image: '/menu-items/saved-pics/Mixed Fruit Cocktail.jpg' },
-  { id: 'sm4', name: 'Peanut Butter Smoothie', category: 'juices-cocktails', price: 350, description: 'Rich peanut butter blended smoothie', image: '/menu-items/saved-pics/Mixed Fruit Cocktail.jpg' },
-  { id: 'sm5', name: 'Blueberry Smoothie', category: 'juices-cocktails', price: 400, description: 'Fresh blueberry blended smoothie', image: '/menu-items/saved-pics/Mixed Fruit Cocktail.jpg' },
+  { id: 'sm3', name: 'Avocado Smoothie', category: 'juices-cocktails', price: 250, description: 'Creamy fresh avocado smoothie', image: '/menu-items/saved-pics/Mixed-Fruit-Cocktail.jpg' },
+  { id: 'sm4', name: 'Peanut Butter Smoothie', category: 'juices-cocktails', price: 350, description: 'Rich peanut butter blended smoothie', image: '/menu-items/saved-pics/Mixed-Fruit-Cocktail.jpg' },
+  { id: 'sm5', name: 'Blueberry Smoothie', category: 'juices-cocktails', price: 400, description: 'Fresh blueberry blended smoothie', image: '/menu-items/saved-pics/Mixed-Fruit-Cocktail.jpg' },
 
   // ==========================================
   // BEVERAGES & COFFEE
   // ==========================================
   { id: 'hb1', name: 'White Coffee', category: 'hot-cold-drinks', price: 200, image: '/juices-cocktails.jpeg', description: 'Fresh Nakuru roast coffee with steamed whole milk' },
-  { id: 'hb2', name: 'Black Coffee', category: 'hot-cold-drinks', price: 200, image: '/menu-items/saved-pics/Black Coffee.jpg', description: 'Freshly brewed aromatic dark roast coffee' },
+  { id: 'hb2', name: 'Black Coffee', category: 'hot-cold-drinks', price: 200, image: '/menu-items/saved-pics/Black-Coffee.jpg', description: 'Freshly brewed aromatic dark roast coffee' },
   { id: 'hb3', name: 'White Chocolate Hot Drink', category: 'hot-cold-drinks', price: 200, image: '/juices-cocktails.jpeg', description: 'Velvety melted white chocolate with hot milk' },
   { id: 'hb4', name: 'Instant Baristo Tea', category: 'hot-cold-drinks', price: 200, description: 'Rich barista style spiced milk tea' },
   { id: 'hb5', name: 'Mixed Tea Brew Cup', category: 'hot-cold-drinks', price: 70, description: 'Traditional Kenyan brewed milk tea cup' },
@@ -217,16 +217,16 @@ export const MENU_ITEMS: MenuItem[] = [
   // ==========================================
   // NAKURU BREAKFAST
   // ==========================================
-  { id: 'br1', name: 'French Toast Special (Sausage/Eggs/Toast)', category: 'breakfast', price: 250, badge: 'Popular', description: 'Golden French toast served with beef sausage and eggs', image: '/menu-items/saved-pics/Fried Egg sausage.jpg' },
+  { id: 'br1', name: 'French Toast Special (Sausage/Eggs/Toast)', category: 'breakfast', price: 250, badge: 'Popular', description: 'Golden French toast served with beef sausage and eggs', image: '/menu-items/saved-pics/Fried-Egg-sausage.jpg' },
   { id: 'br2', name: 'Eggs Omelette', category: 'breakfast', price: 150, description: 'Double egg omelette with onions, tomatoes and green pepper' },
   { id: 'br3', name: 'Triple Eggs Omelette', category: 'breakfast', price: 200, description: 'Hearty 3-egg omelette loaded with herbs' },
   { id: 'br4', name: 'Boiled Eggs', category: 'breakfast', price: 80, description: 'Hard or soft boiled eggs with kachumbari' },
-  { id: 'br5', name: 'Beef Sausage', category: 'breakfast', price: 60, description: 'Sizzling fried beef sausages', image: '/menu-items/saved-pics/Fried Egg sausage.jpg' },
+  { id: 'br5', name: 'Beef Sausage', category: 'breakfast', price: 60, description: 'Sizzling fried beef sausages', image: '/menu-items/saved-pics/Fried-Egg-sausage.jpg' },
   { id: 'br6', name: 'Double Fried Eggs', category: 'breakfast', price: 80, description: 'Two sunny-side or fried eggs' },
   { id: 'br7', name: 'Nduma (Arrowroots)', category: 'breakfast', price: 200, badge: 'Healthy', description: 'Boiled indigenous Nakuru arrowroot roots' },
-  { id: 'br8', name: 'Ngwaci (Sweet Potatoes)', category: 'breakfast', price: 80, badge: 'Healthy', description: 'Naturally sweet steamed orange & white sweet potatoes', image: '/menu-items/saved-pics/Fried Banana.jpg' },
+  { id: 'br8', name: 'Ngwaci (Sweet Potatoes)', category: 'breakfast', price: 80, badge: 'Healthy', description: 'Naturally sweet steamed orange & white sweet potatoes', image: '/menu-items/saved-pics/Fried-Banana.jpg' },
   { id: 'br9', name: 'Cassava', category: 'breakfast', price: 100, description: 'Soft boiled cassava served with chili butter' },
-  { id: 'br10', name: 'Sweet Waffles', category: 'breakfast', price: 200, description: 'Golden crispy waffles served with syrup', image: '/menu-items/saved-pics/Chocolate Wiffle.jpg' },
+  { id: 'br10', name: 'Sweet Waffles', category: 'breakfast', price: 200, description: 'Golden crispy waffles served with syrup', image: '/menu-items/saved-pics/Chocolate-Wiffle.jpg' },
   { id: 'br11', name: 'Samosa', category: 'breakfast', price: 80, description: 'Crispy fried pastry triangle with spiced filling' },
   { id: 'br12', name: 'Vegetarian Waffles', category: 'breakfast', price: 250, description: 'Savory waffles with sautéed spinach and tomatoes' },
   { id: 'br13', name: 'Pancakes', category: 'breakfast', price: 120, description: 'Stack of sweet buttermilk pancakes' },
@@ -238,45 +238,45 @@ export const MENU_ITEMS: MenuItem[] = [
   // ==========================================
   // CHEF MAINS & STEWS
   // ==========================================
-  { id: 'm1_1', name: 'Ugali Greens (Managu/Spinach)', category: 'mains-meals', price: 200, image: '/menu-items/saved-pics/Ugali Beef Greens.jpg', description: 'Traditional ugali served with sautéed indigenous greens' },
-  { id: 'm1_2', name: 'Ugali Beef Stew', category: 'mains-meals', price: 300, badge: 'Popular', description: 'Tender beef chunks in rich tomato gravy with white ugali', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm1_3', name: 'Ugali Chicken Stew', category: 'mains-meals', price: 400, description: 'Slow cooked farm chicken in spiced curry gravy with ugali', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm1_4', name: 'Ugali Fried Double Egg', category: 'mains-meals', price: 250, image: '/menu-items/saved-pics/Ugali Beef Scrambled eggs dry fry.jpg', description: 'Pan fried eggs served with hot ugali and kachumbari' },
-  { id: 'm1_5', name: 'Brown Ugali & Greens', category: 'mains-meals', price: 200, badge: 'Low Carb', description: 'Wholesome millet/sorghum ugali with sautéed greens', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm1_6', name: 'Chicken 1/4 & Chips', category: 'mains-meals', price: 550, image: '/menu-items/saved-pics/Quarter Chicken.jpg', description: 'Quarter chicken served with golden fries' },
-  { id: 'm1_7', name: 'Rice Beef Stew', category: 'mains-meals', price: 300, description: 'Steamed pishori rice served with savory beef stew', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm1_8', name: 'Rice Chicken Stew', category: 'mains-meals', price: 400, description: 'Steamed pishori rice served with savory chicken stew', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm1_9', name: 'Sautee Potatoes with Beef', category: 'mains-meals', price: 400, image: '/menu-items/saved-pics/Potato Weges Beef.jpg', description: 'Crispy cubed potatoes sautéed with spicy beef strip gravy' },
-  { id: 'm1_10', name: 'Chapati Beef Greens', category: 'mains-meals', price: 250, description: 'Layered chapatis with beef stew and managu', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm1_11', name: 'Rice & Vegetable Stew (Minji)', category: 'mains-meals', price: 250, description: 'Steamed rice served with green peas vegetable stew', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm1_12', name: 'Pilau Plain', category: 'mains-meals', price: 300, description: 'Fragrant Swahili spiced rice served with kachumbari', image: '/menu-items/saved-pics/Pilau Beef.jpg' },
-  { id: 'm1_13', name: 'Kienyeji Kuku', category: 'mains-meals', price: 550, badge: 'Chef Special', image: '/menu-items/saved-pics/Kienyeji Kuku Ugali.jpg', description: 'Authentic free-range local chicken stew' },
-  { id: 'm2_1', name: 'Keema (Minced Beef with Minji & Chapati)', category: 'mains-meals', price: 300, badge: 'Popular', description: 'Spiced minced beef cooked with green peas served with chapati', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm2_2', name: 'Chicken Tikka Masala', category: 'mains-meals', price: 500, description: 'Roasted chicken tikka in thick aromatic cream tomato masala', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm2_3', name: 'Beef Chilli Stirfry with Ugali', category: 'mains-meals', price: 350, description: 'Sizzling beef strip stir fry with bell peppers and hot ugali', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm2_4', name: 'Egg Biryani', category: 'mains-meals', price: 300, image: '/menu-items/saved-pics/Egg Biriani.jpg', description: 'Basmati rice layered with spiced boiled eggs and biryani sauce' },
-  { id: 'm2_5', name: 'Chicken Biryani', category: 'mains-meals', price: 500, badge: 'Popular', image: '/menu-items/saved-pics/Chicken Biriani.jpg', description: 'Aromatic basmati rice cooked with marinated chicken and Swahili spices' },
-  { id: 'm2_6', name: 'Vegetable Biryani', category: 'mains-meals', price: 250, description: 'Saffron rice with garden vegetables and biryani masala', image: '/menu-items/saved-pics/Egg Biriani.jpg' },
-  { id: 'm2_7', name: 'Mutton Biryani', category: 'mains-meals', price: 450, description: 'Tender goat mutton cooked in authentic biryani gravy', image: '/menu-items/saved-pics/Egg Biriani.jpg' },
-  { id: 'm2_8', name: 'Ugali Omena', category: 'mains-meals', price: 400, description: 'Crispy fried Lake Victoria silver cyprinid in tomato garlic stew with ugali', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
-  { id: 'm2_9', name: 'Ugali Maini (Liver)', category: 'mains-meals', price: 400, badge: 'Chef Special', image: '/menu-items/saved-pics/Ugali Maini Greens.jpg', description: 'Tender beef liver sautéed with caramelized onions served with ugali' },
-  { id: 'm2_10', name: 'Pilau Beef', category: 'mains-meals', price: 350, badge: 'Popular', image: '/menu-items/saved-pics/Pilau Beef.jpg', description: 'Rich Swahili spiced beef rice served with kachumbari' },
-  { id: 'm2_11', name: 'Pilau Kuku', category: 'mains-meals', price: 400, description: 'Spiced pilau rice cooked with tender chicken pieces', image: '/menu-items/saved-pics/Pilau Beef.jpg' },
-  { id: 'm2_12', name: 'Chicken Fried Rice', category: 'mains-meals', price: 350, description: 'Wok tossed rice with shredded chicken, veggies and soy', image: '/menu-items/saved-pics/Pilau Beef.jpg' },
-  { id: 'm2_13', name: 'Fried Rice Beef', category: 'mains-meals', price: 400, description: 'Savory fried rice with beef cubes and spring onions', image: '/menu-items/saved-pics/Pilau Beef.jpg' },
-  { id: 'm2_14', name: 'Chips Masala Beef', category: 'mains-meals', price: 350, description: 'Spicy masala chips topped with tender beef gravy', image: '/menu-items/saved-pics/Chips Masala.jpg' },
+  { id: 'm1_1', name: 'Ugali Greens (Managu/Spinach)', category: 'mains-meals', price: 200, image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg', description: 'Traditional ugali served with sautéed indigenous greens' },
+  { id: 'm1_2', name: 'Ugali Beef Stew', category: 'mains-meals', price: 300, badge: 'Popular', description: 'Tender beef chunks in rich tomato gravy with white ugali', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm1_3', name: 'Ugali Chicken Stew', category: 'mains-meals', price: 400, description: 'Slow cooked farm chicken in spiced curry gravy with ugali', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm1_4', name: 'Ugali Fried Double Egg', category: 'mains-meals', price: 250, image: '/menu-items/saved-pics/Ugali-Beef-Scrambled-eggs-dry-fry.jpg', description: 'Pan fried eggs served with hot ugali and kachumbari' },
+  { id: 'm1_5', name: 'Brown Ugali & Greens', category: 'mains-meals', price: 200, badge: 'Low Carb', description: 'Wholesome millet/sorghum ugali with sautéed greens', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm1_6', name: 'Chicken 1/4 & Chips', category: 'mains-meals', price: 550, image: '/menu-items/saved-pics/Quarter-Chicken.jpg', description: 'Quarter chicken served with golden fries' },
+  { id: 'm1_7', name: 'Rice Beef Stew', category: 'mains-meals', price: 300, description: 'Steamed pishori rice served with savory beef stew', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm1_8', name: 'Rice Chicken Stew', category: 'mains-meals', price: 400, description: 'Steamed pishori rice served with savory chicken stew', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm1_9', name: 'Sautee Potatoes with Beef', category: 'mains-meals', price: 400, image: '/menu-items/saved-pics/Potato-Weges-Beef.jpg', description: 'Crispy cubed potatoes sautéed with spicy beef strip gravy' },
+  { id: 'm1_10', name: 'Chapati Beef Greens', category: 'mains-meals', price: 250, description: 'Layered chapatis with beef stew and managu', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm1_11', name: 'Rice & Vegetable Stew (Minji)', category: 'mains-meals', price: 250, description: 'Steamed rice served with green peas vegetable stew', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm1_12', name: 'Pilau Plain', category: 'mains-meals', price: 300, description: 'Fragrant Swahili spiced rice served with kachumbari', image: '/menu-items/saved-pics/Pilau-Beef.jpg' },
+  { id: 'm1_13', name: 'Kienyeji Kuku', category: 'mains-meals', price: 550, badge: 'Chef Special', image: '/menu-items/saved-pics/Kienyeji-Kuku-Ugali.jpg', description: 'Authentic free-range local chicken stew' },
+  { id: 'm2_1', name: 'Keema (Minced Beef with Minji & Chapati)', category: 'mains-meals', price: 300, badge: 'Popular', description: 'Spiced minced beef cooked with green peas served with chapati', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm2_2', name: 'Chicken Tikka Masala', category: 'mains-meals', price: 500, description: 'Roasted chicken tikka in thick aromatic cream tomato masala', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm2_3', name: 'Beef Chilli Stirfry with Ugali', category: 'mains-meals', price: 350, description: 'Sizzling beef strip stir fry with bell peppers and hot ugali', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm2_4', name: 'Egg Biryani', category: 'mains-meals', price: 300, image: '/menu-items/saved-pics/Egg-Biriani.jpg', description: 'Basmati rice layered with spiced boiled eggs and biryani sauce' },
+  { id: 'm2_5', name: 'Chicken Biryani', category: 'mains-meals', price: 500, badge: 'Popular', image: '/menu-items/saved-pics/Chicken-Biriani.jpg', description: 'Aromatic basmati rice cooked with marinated chicken and Swahili spices' },
+  { id: 'm2_6', name: 'Vegetable Biryani', category: 'mains-meals', price: 250, description: 'Saffron rice with garden vegetables and biryani masala', image: '/menu-items/saved-pics/Egg-Biriani.jpg' },
+  { id: 'm2_7', name: 'Mutton Biryani', category: 'mains-meals', price: 450, description: 'Tender goat mutton cooked in authentic biryani gravy', image: '/menu-items/saved-pics/Egg-Biriani.jpg' },
+  { id: 'm2_8', name: 'Ugali Omena', category: 'mains-meals', price: 400, description: 'Crispy fried Lake Victoria silver cyprinid in tomato garlic stew with ugali', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
+  { id: 'm2_9', name: 'Ugali Maini (Liver)', category: 'mains-meals', price: 400, badge: 'Chef Special', image: '/menu-items/saved-pics/Ugali-Maini-Greens.jpg', description: 'Tender beef liver sautéed with caramelized onions served with ugali' },
+  { id: 'm2_10', name: 'Pilau Beef', category: 'mains-meals', price: 350, badge: 'Popular', image: '/menu-items/saved-pics/Pilau-Beef.jpg', description: 'Rich Swahili spiced beef rice served with kachumbari' },
+  { id: 'm2_11', name: 'Pilau Kuku', category: 'mains-meals', price: 400, description: 'Spiced pilau rice cooked with tender chicken pieces', image: '/menu-items/saved-pics/Pilau-Beef.jpg' },
+  { id: 'm2_12', name: 'Chicken Fried Rice', category: 'mains-meals', price: 350, description: 'Wok tossed rice with shredded chicken, veggies and soy', image: '/menu-items/saved-pics/Pilau-Beef.jpg' },
+  { id: 'm2_13', name: 'Fried Rice Beef', category: 'mains-meals', price: 400, description: 'Savory fried rice with beef cubes and spring onions', image: '/menu-items/saved-pics/Pilau-Beef.jpg' },
+  { id: 'm2_14', name: 'Chips Masala Beef', category: 'mains-meals', price: 350, description: 'Spicy masala chips topped with tender beef gravy', image: '/menu-items/saved-pics/Chips-Masala.jpg' },
   { id: 'm2_15', name: 'Cassava Beef', category: 'mains-meals', price: 450, description: 'Boiled cassava tossed in rich beef stew' },
-  { id: 'm2_16', name: 'Cassava Greens', category: 'mains-meals', price: 200, description: 'Steamed cassava with managu & spinach', image: '/menu-items/saved-pics/Ugali Beef Greens.jpg' },
+  { id: 'm2_16', name: 'Cassava Greens', category: 'mains-meals', price: 200, description: 'Steamed cassava with managu & spinach', image: '/menu-items/saved-pics/Ugali-Beef-Greens.jpg' },
 
   // ==========================================
   // SNACKS & BURGERS
   // ==========================================
-  { id: 's1', name: 'Samosa Special', category: 'light-snacks', price: 250, image: '/menu-items/saved-pics/Beef Samosa.jpg', description: 'Golden beef samosas served with kachumbari' },
+  { id: 's1', name: 'Samosa Special', category: 'light-snacks', price: 250, image: '/menu-items/saved-pics/Beef-Samosa.jpg', description: 'Golden beef samosas served with kachumbari' },
   { id: 's2', name: 'Sausage Special', category: 'light-snacks', price: 250, description: 'Fried beef sausages special' },
   { id: 's3', name: 'Chicken Wings Special', category: 'light-snacks', price: 300, badge: 'Popular', description: 'Sticky BBQ or spicy buffalo chicken wings' },
   { id: 's4', name: 'Fried Eggs Special', category: 'light-snacks', price: 250, description: 'Fried eggs served special style' },
-  { id: 's5', name: 'Beef Burger & Chips', category: 'light-snacks', price: 480, badge: 'Popular', image: '/menu-items/saved-pics/Burger& Chips (2).jpg', description: 'Handcrafted beef patty, cheddar, lettuce, tomato & house sauce with golden chips' },
-  { id: 's6', name: 'Chips Masala', category: 'light-snacks', price: 300, image: '/menu-items/saved-pics/Chips Masala.jpg', description: 'French fries tossed in tomato chili masala garlic sauce' },
+  { id: 's5', name: 'Beef Burger & Chips', category: 'light-snacks', price: 480, badge: 'Popular', image: '/menu-items/saved-pics/Burger-Chips-(2).jpg', description: 'Handcrafted beef patty, cheddar, lettuce, tomato & house sauce with golden chips' },
+  { id: 's6', name: 'Chips Masala', category: 'light-snacks', price: 300, image: '/menu-items/saved-pics/Chips-Masala.jpg', description: 'French fries tossed in tomato chili masala garlic sauce' },
   { id: 's7', name: 'Chips', category: 'light-snacks', price: 200, description: 'Crispy golden potato fries' },
   { id: 's8', name: 'Smokie Special', category: 'light-snacks', price: 250, description: 'Smokies with kachumbari' },
   { id: 's9', name: 'Chips Kubwa (Large Chips)', category: 'light-snacks', price: 300, description: 'Extra large portion of French fries' },
@@ -288,7 +288,7 @@ export const MENU_ITEMS: MenuItem[] = [
   // KIENYEJI SPECIALS
   // ==========================================
   { id: 'k1', name: 'Githeri Special', category: 'kienyeji-traditional', price: 280, description: 'Traditional corn and beans stew' },
-  { id: 'k2', name: 'Mukimo Maize Beef', category: 'kienyeji-traditional', price: 350, badge: 'Popular', image: '/menu-items/saved-pics/Mukimo Beef.jpg', description: 'Traditional mashed potatoes, maize, pumpkin leaves served with beef stew' },
+  { id: 'k2', name: 'Mukimo Maize Beef', category: 'kienyeji-traditional', price: 350, badge: 'Popular', image: '/menu-items/saved-pics/Mukimo-Beef.jpg', description: 'Traditional mashed potatoes, maize, pumpkin leaves served with beef stew' },
   { id: 'k3', name: 'Mukimo Minji Beef', category: 'kienyeji-traditional', price: 350, description: 'Mukimo served with green peas and beef stew' },
   { id: 'k4', name: 'Matoke Stew Beef', category: 'kienyeji-traditional', price: 350, description: 'Green plantain banana stew slow cooked with tender beef' },
   { id: 'k5', name: 'Mashed Potatoes Beef', category: 'kienyeji-traditional', price: 350, description: 'Creamy potato mash served with beef stew' },
@@ -306,7 +306,7 @@ export const MENU_ITEMS: MenuItem[] = [
   // ==========================================
   // BARBECUE PLATTERS
   // ==========================================
-  { id: 'bbq1', name: 'Barbecue Platter #1 (Serves 2)', category: 'bbq-platters', price: 1500, badge: 'Chef Special', image: '/menu-items/saved-pics/Choma Platter.jpg', description: 'Mbuzi Choma, Kuku Choma, Sausage, Chips, Wedges, Ugali, Chapati, Salad & Sauce' },
+  { id: 'bbq1', name: 'Barbecue Platter #1 (Serves 2)', category: 'bbq-platters', price: 1500, badge: 'Chef Special', image: '/menu-items/saved-pics/Choma-Platter.jpg', description: 'Mbuzi Choma, Kuku Choma, Sausage, Chips, Wedges, Ugali, Chapati, Salad & Sauce' },
   { id: 'bbq2', name: 'Barbecue Grand Feast #2 (Serves 2)', category: 'bbq-platters', price: 2000, badge: 'Popular', image: '/bbq-platters.jpeg', description: 'Mbuzi Choma, Kuku Choma, Pilau, Wedges, Sausages, Chips Masala, Fried Cassava, Greens & Sauce' },
 
   // ==========================================
@@ -320,7 +320,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'sw1', name: 'Beef Sandwich', category: 'sandwiches-wraps', price: 250, description: 'Toasted bread loaded with sliced roast beef & mayo' },
   { id: 'sw2', name: 'Chicken Sandwich', category: 'sandwiches-wraps', price: 300, badge: 'Popular', description: 'Shredded chicken breast with creamy mayo and lettuce' },
   { id: 'sw3', name: 'Ham Sandwich', category: 'sandwiches-wraps', price: 300, description: 'Classic ham slice sandwich' },
-  { id: 'sw4', name: 'Cheese Sandwich', category: 'sandwiches-wraps', price: 300, image: '/menu-items/saved-pics/Cheese Sandwitch.jpg', description: 'Melted cheddar and mozzarella toastie' },
+  { id: 'sw4', name: 'Cheese Sandwich', category: 'sandwiches-wraps', price: 300, image: '/menu-items/saved-pics/Cheese-Sandwitch.jpg', description: 'Melted cheddar and mozzarella toastie' },
   { id: 'sw5', name: 'Tuna Sandwich', category: 'sandwiches-wraps', price: 400, description: 'Flaked tuna, capers, sweetcorn & light mayonnaise' },
   { id: 'sw6', name: 'Hot Dog', category: 'sandwiches-wraps', price: 300, description: 'Jumbo beef sausage in long bun with caramelized onions' },
   { id: 'sw7', name: 'Kebab', category: 'sandwiches-wraps', price: 100, description: 'Minced beef kebab patty with tomato' },
@@ -330,7 +330,7 @@ export const MENU_ITEMS: MenuItem[] = [
   // ITALIAN PIZZA & PASTAS
   // ==========================================
   { id: 'pas1', name: 'Spaghetti Bolognese', category: 'pizza-pasta', price: 350, description: 'Al dente spaghetti in slow simmered Italian minced beef tomato sauce' },
-  { id: 'pas2', name: 'Penne Pasta', category: 'pizza-pasta', price: 400, image: '/menu-items/saved-pics/Penne Pasta.jpg', description: 'Penne tubes tossed in garlic tomato basil sauce' },
+  { id: 'pas2', name: 'Penne Pasta', category: 'pizza-pasta', price: 400, image: '/menu-items/saved-pics/Penne-Pasta.jpg', description: 'Penne tubes tossed in garlic tomato basil sauce' },
   { id: 'pas3', name: 'Penne Pasta / Beef Stroganoff', category: 'pizza-pasta', price: 500, badge: 'Popular', description: 'Creamy mushroom and beef strip sauce served over penne' },
   { id: 'pas4', name: 'Noodles', category: 'pizza-pasta', price: 150, description: 'Pan fried egg noodles with soy & spring onion' },
   {
@@ -349,7 +349,7 @@ export const MENU_ITEMS: MenuItem[] = [
     options: [{ name: 'Medium', price: 1000 }, { name: 'Large', price: 1250 }]
   },
   {
-    id: 'p4', name: 'Chicken Hawaii Pizza', category: 'pizza-pasta', price: 1100, image: '/menu-items/saved-pics/Chicken Hawaii Pizza.jpg',
+    id: 'p4', name: 'Chicken Hawaii Pizza', category: 'pizza-pasta', price: 1100, image: '/menu-items/saved-pics/Chicken-Hawaii-Pizza.jpg',
     description: 'Tender chicken pieces, sweet pineapple chunks and melted cheese',
     options: [{ name: 'Medium', price: 1100 }, { name: 'Large', price: 1450 }]
   },
@@ -378,7 +378,7 @@ export const MENU_ITEMS: MenuItem[] = [
   // SOUPS & SALADS
   // ==========================================
   { id: 'sl1', name: 'Garden Salad', category: 'soups-salads', price: 250, description: 'Crisp lettuce, cucumber, tomatoes, bell peppers with vinaigrette' },
-  { id: 'sl2', name: 'Chicken Salad', category: 'soups-salads', price: 400, badge: 'Popular', image: '/menu-items/saved-pics/Chicken Salad.jpg', description: 'Grilled chicken strips over fresh garden greens' },
+  { id: 'sl2', name: 'Chicken Salad', category: 'soups-salads', price: 400, badge: 'Popular', image: '/menu-items/saved-pics/Chicken-Salad.jpg', description: 'Grilled chicken strips over fresh garden greens' },
   { id: 'sl3', name: 'Tomato/Onion Salad (Kachumbari)', category: 'soups-salads', price: 200, description: 'Freshly chopped Kenyan tomatoes, red onions, lemon juice & chili' },
   { id: 'sp1', name: 'Garden Soup (Vegetable)', category: 'soups-salads', price: 200, description: 'Clear fresh vegetable broth with celery and herbs' },
   { id: 'sp2', name: 'Chicken Soup', category: 'soups-salads', price: 300, badge: 'Popular', description: 'Warm chicken broth with tender chicken shredding' },
