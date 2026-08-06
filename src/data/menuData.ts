@@ -118,7 +118,7 @@ export const MENU_ITEMS: MenuItem[] = [
 
   // WAFFLES CORNER
   { id: 'w1', name: 'Vanilla Waffle', category: 'waffles-triffles', price: 200, description: 'Freshly ironed golden waffle with maple drizzle' },
-  { id: 'w2', name: 'Chocolate Waffle', category: 'waffles-triffles', price: 250, description: 'Crisp cocoa waffle with hot fudge' },
+  { id: 'w2', name: 'Chocolate Waffle', category: 'waffles-triffles', price: 250, image: '/menu-items/Saved PICS/Chocolate Wiffle.jpg', description: 'Crisp cocoa waffle with hot fudge' },
   { id: 'w3', name: 'Red Velvet Waffle', category: 'waffles-triffles', price: 300, description: 'Signature red velvet waffle with cream sauce' },
   { id: 'w4', name: 'Peanut Butter Waffle', category: 'waffles-triffles', price: 300, description: 'Creamy peanut butter drizzle and crushed nuts' },
   { id: 'w5', name: 'Vegetable Waffle', category: 'waffles-triffles', price: 300, description: 'Savory herb waffle' },
@@ -189,7 +189,7 @@ export const MENU_ITEMS: MenuItem[] = [
   // BEVERAGES & COFFEE
   // ==========================================
   { id: 'hb1', name: 'White Coffee', category: 'hot-cold-drinks', price: 200, image: '/menu-items/hot-cold-drinks.jpg', description: 'Fresh Nakuru roast coffee with steamed whole milk' },
-  { id: 'hb2', name: 'Black Coffee', category: 'hot-cold-drinks', price: 200, image: '/menu-items/hot-cold-drinks.jpg', description: 'Freshly brewed aromatic dark roast coffee' },
+  { id: 'hb2', name: 'Black Coffee', category: 'hot-cold-drinks', price: 200, image: '/menu-items/Saved PICS/Black Coffee.jpg', description: 'Freshly brewed aromatic dark roast coffee' },
   { id: 'hb3', name: 'White Chocolate Hot Drink', category: 'hot-cold-drinks', price: 200, image: '/menu-items/hot-cold-drinks.jpg', description: 'Velvety melted white chocolate with hot milk' },
   { id: 'hb4', name: 'Instant Baristo Tea', category: 'hot-cold-drinks', price: 200, description: 'Rich barista style spiced milk tea' },
   { id: 'hb5', name: 'Mixed Tea Brew Cup', category: 'hot-cold-drinks', price: 70, description: 'Traditional Kenyan brewed milk tea cup' },
@@ -231,7 +231,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'br12', name: 'Vegetarian Waffles', category: 'breakfast', price: 250, description: 'Savory waffles with sautéed spinach and tomatoes' },
   { id: 'br13', name: 'Pancakes', category: 'breakfast', price: 120, description: 'Stack of sweet buttermilk pancakes' },
   { id: 'br14', name: 'Mixed Wedges (Potatoes/Nduma)', category: 'breakfast', price: 250, description: 'Fried potato and arrowroot wedges' },
-  { id: 'br15', name: 'Chapati', category: 'breakfast', price: 50, description: 'Traditional flaky Kenyan layered chapati' },
+  { id: 'br15', name: 'Chapati', category: 'breakfast', price: 50, image: '/menu-items/Saved PICS/Chapati.jpg', description: 'Traditional flaky Kenyan layered chapati' },
   { id: 'br16', name: 'Sandwich Vegetables', category: 'breakfast', price: 100, description: 'Toasted bread filled with cucumber, tomatoes and lettuce' },
   { id: 'br17', name: 'Smocha (Chapati/Smokie)', category: 'breakfast', price: 150, badge: 'Popular', description: 'Warm chapati wrapped around a smokie sausage with kachumbari' },
 
@@ -255,7 +255,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'm2_2', name: 'Chicken Tikka Masala', category: 'mains-meals', price: 500, description: 'Roasted chicken tikka in thick aromatic cream tomato masala' },
   { id: 'm2_3', name: 'Beef Chilli Stirfry with Ugali', category: 'mains-meals', price: 350, description: 'Sizzling beef strip stir fry with bell peppers and hot ugali' },
   { id: 'm2_4', name: 'Egg Biryani', category: 'mains-meals', price: 300, description: 'Basmati rice layered with spiced boiled eggs and biryani sauce' },
-  { id: 'm2_5', name: 'Chicken Biryani', category: 'mains-meals', price: 500, badge: 'Popular', description: 'Aromatic basmati rice cooked with marinated chicken and Swahili spices' },
+  { id: 'm2_5', name: 'Chicken Biryani', category: 'mains-meals', price: 500, badge: 'Popular', image: '/menu-items/Saved PICS/Chicken Biriani.jpg', description: 'Aromatic basmati rice cooked with marinated chicken and Swahili spices' },
   { id: 'm2_6', name: 'Vegetable Biryani', category: 'mains-meals', price: 250, description: 'Saffron rice with garden vegetables and biryani masala' },
   { id: 'm2_7', name: 'Mutton Biryani', category: 'mains-meals', price: 450, description: 'Tender goat mutton cooked in authentic biryani gravy' },
   { id: 'm2_8', name: 'Ugali Omena', category: 'mains-meals', price: 400, description: 'Crispy fried Lake Victoria silver cyprinid in tomato garlic stew with ugali' },
@@ -275,8 +275,8 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 's2', name: 'Sausage Special', category: 'light-snacks', price: 250, description: 'Fried beef sausages special' },
   { id: 's3', name: 'Chicken Wings Special', category: 'light-snacks', price: 300, badge: 'Popular', description: 'Sticky BBQ or spicy buffalo chicken wings' },
   { id: 's4', name: 'Fried Eggs Special', category: 'light-snacks', price: 250, description: 'Fried eggs served special style' },
-  { id: 's5', name: 'Beef Burger & Chips', category: 'light-snacks', price: 480, badge: 'Popular', description: 'Handcrafted beef patty, cheddar, lettuce, tomato & house sauce with golden chips' },
-  { id: 's6', name: 'Chips Masala', category: 'light-snacks', price: 300, description: 'French fries tossed in tomato chili masala garlic sauce' },
+  { id: 's5', name: 'Beef Burger & Chips', category: 'light-snacks', price: 480, badge: 'Popular', image: '/menu-items/Saved PICS/Burger& Chips (2).jpg', description: 'Handcrafted beef patty, cheddar, lettuce, tomato & house sauce with golden chips' },
+  { id: 's6', name: 'Chips Masala', category: 'light-snacks', price: 300, image: '/menu-items/Saved PICS/Chips Masala.jpg', description: 'French fries tossed in tomato chili masala garlic sauce' },
   { id: 's7', name: 'Chips', category: 'light-snacks', price: 200, description: 'Crispy golden potato fries' },
   { id: 's8', name: 'Smokie Special', category: 'light-snacks', price: 250, description: 'Smokies with kachumbari' },
   { id: 's9', name: 'Chips Kubwa (Large Chips)', category: 'light-snacks', price: 300, description: 'Extra large portion of French fries' },
@@ -306,7 +306,7 @@ export const MENU_ITEMS: MenuItem[] = [
   // ==========================================
   // BARBECUE PLATTERS
   // ==========================================
-  { id: 'bbq1', name: 'Barbecue Platter #1 (Serves 2)', category: 'bbq-platters', price: 1500, badge: 'Chef Special', image: '/menu-items/bbq-platters.jpg', description: 'Mbuzi Choma, Kuku Choma, Sausage, Chips, Wedges, Ugali, Chapati, Salad & Sauce' },
+  { id: 'bbq1', name: 'Barbecue Platter #1 (Serves 2)', category: 'bbq-platters', price: 1500, badge: 'Chef Special', image: '/menu-items/Saved PICS/Choma Platter.jpg', description: 'Mbuzi Choma, Kuku Choma, Sausage, Chips, Wedges, Ugali, Chapati, Salad & Sauce' },
   { id: 'bbq2', name: 'Barbecue Grand Feast #2 (Serves 2)', category: 'bbq-platters', price: 2000, badge: 'Popular', image: '/menu-items/bbq-platters.jpg', description: 'Mbuzi Choma, Kuku Choma, Pilau, Wedges, Sausages, Chips Masala, Fried Cassava, Greens & Sauce' },
 
   // ==========================================
@@ -320,7 +320,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'sw1', name: 'Beef Sandwich', category: 'sandwiches-wraps', price: 250, description: 'Toasted bread loaded with sliced roast beef & mayo' },
   { id: 'sw2', name: 'Chicken Sandwich', category: 'sandwiches-wraps', price: 300, badge: 'Popular', description: 'Shredded chicken breast with creamy mayo and lettuce' },
   { id: 'sw3', name: 'Ham Sandwich', category: 'sandwiches-wraps', price: 300, description: 'Classic ham slice sandwich' },
-  { id: 'sw4', name: 'Cheese Sandwich', category: 'sandwiches-wraps', price: 300, description: 'Melted cheddar and mozzarella toastie' },
+  { id: 'sw4', name: 'Cheese Sandwich', category: 'sandwiches-wraps', price: 300, image: '/menu-items/Saved PICS/Cheese Sandwitch.jpg', description: 'Melted cheddar and mozzarella toastie' },
   { id: 'sw5', name: 'Tuna Sandwich', category: 'sandwiches-wraps', price: 400, description: 'Flaked tuna, capers, sweetcorn & light mayonnaise' },
   { id: 'sw6', name: 'Hot Dog', category: 'sandwiches-wraps', price: 300, description: 'Jumbo beef sausage in long bun with caramelized onions' },
   { id: 'sw7', name: 'Kebab', category: 'sandwiches-wraps', price: 100, description: 'Minced beef kebab patty with tomato' },
@@ -349,7 +349,7 @@ export const MENU_ITEMS: MenuItem[] = [
     options: [{ name: 'Medium', price: 1000 }, { name: 'Large', price: 1250 }]
   },
   {
-    id: 'p4', name: 'Chicken Hawaii Pizza', category: 'pizza-pasta', price: 1100, image: '/menu-items/pizza-pasta.jpg',
+    id: 'p4', name: 'Chicken Hawaii Pizza', category: 'pizza-pasta', price: 1100, image: '/menu-items/Saved PICS/Chicken Hawaii Pizza.jpg',
     description: 'Tender chicken pieces, sweet pineapple chunks and melted cheese',
     options: [{ name: 'Medium', price: 1100 }, { name: 'Large', price: 1450 }]
   },
@@ -378,7 +378,7 @@ export const MENU_ITEMS: MenuItem[] = [
   // SOUPS & SALADS
   // ==========================================
   { id: 'sl1', name: 'Garden Salad', category: 'soups-salads', price: 250, description: 'Crisp lettuce, cucumber, tomatoes, bell peppers with vinaigrette' },
-  { id: 'sl2', name: 'Chicken Salad', category: 'soups-salads', price: 400, badge: 'Popular', description: 'Grilled chicken strips over fresh garden greens' },
+  { id: 'sl2', name: 'Chicken Salad', category: 'soups-salads', price: 400, badge: 'Popular', image: '/menu-items/Saved PICS/Chicken Salad.jpg', description: 'Grilled chicken strips over fresh garden greens' },
   { id: 'sl3', name: 'Tomato/Onion Salad (Kachumbari)', category: 'soups-salads', price: 200, description: 'Freshly chopped Kenyan tomatoes, red onions, lemon juice & chili' },
   { id: 'sp1', name: 'Garden Soup (Vegetable)', category: 'soups-salads', price: 200, description: 'Clear fresh vegetable broth with celery and herbs' },
   { id: 'sp2', name: 'Chicken Soup', category: 'soups-salads', price: 300, badge: 'Popular', description: 'Warm chicken broth with tender chicken shredding' },

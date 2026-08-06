@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { CATEGORIES, MENU_ITEMS } from '../data/menuData';
 import { Category, MenuItem } from '../types';
 
 export function useMenuData() {
@@ -8,32 +8,9 @@ export function useMenuData() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-
-      const { data: catData, error: catError } = await supabase
-        .from('categories')
-        .select('*');
-
-      const { data: itemData, error: itemError } = await supabase
-        .from('menu_items')
-        .select('*');
-
-      if (catError) console.error('Category fetch error:', catError);
-      if (itemError) console.error('Menu items fetch error:', itemError);
-
-      setCategories(catData || []);
-      setMenuItems(
-        (itemData || []).map((item: any) => ({
-          ...item,
-          image: item.image,
-        }))
-      );
-
-      setLoading(false);
-    };
-
-    fetchData();
+    setCategories(CATEGORIES);
+    setMenuItems(MENU_ITEMS);
+    setLoading(false);
   }, []);
 
   return { categories, menuItems, loading };

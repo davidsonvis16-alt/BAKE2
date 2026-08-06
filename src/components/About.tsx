@@ -88,7 +88,7 @@ export const About: React.FC = () => {
                 YouTube
               </a>
               <a
-                href="mailto:Sales@bakemart.co.ke"
+                href="mailto:Salesbakemart.co.ke@gmail.com"
                 className="inline-flex items-center gap-2 bg-[#FAF3E7] text-[#000000] border border-[#D8C7B0] text-sm font-bold px-4 py-2.5 rounded-full hover:bg-[#EADECB] transition-colors"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16v16H4z"/><path d="M4 4l8 8 8-8"/></svg>
