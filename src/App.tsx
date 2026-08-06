@@ -224,7 +224,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF3E7] text-[#000000] flex flex-col font-sans selection:bg-black selection:text-white pb-0 lg:pb-0">
+    <div className="min-h-screen bg-[#FAF3E7] text-[#000000] flex flex-col font-sans selection:bg-black selection:text-white pb-0 lg:pb-0 overflow-x-hidden">
       
       {/* Page Transition Loading Overlay */}
       {isPageLoading && (

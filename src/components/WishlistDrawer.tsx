@@ -26,8 +26,8 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
         className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-[#FAF3E7] text-[#000000] shadow-2xl flex flex-col justify-between border-l border-[#EADECB]">
+      <div className="fixed inset-y-0 right-0 max-w-full flex">
+        <div className="w-full max-w-md h-full bg-[#FAF3E7] text-[#000000] shadow-2xl flex flex-col justify-between border-l border-[#EADECB]">
           
           {/* Header */}
           <div className="p-4 bg-[#000000] text-white flex items-center justify-between border-b border-neutral-700/40">

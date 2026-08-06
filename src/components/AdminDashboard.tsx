@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { supabase, uploadMenuItemImage, validateImageFile } from '../lib/supabase';
+import React, { useEffect, useState, useMemo } from 'react';
+import { supabase } from '../lib/supabase';
 import { useAuth } from '../components/AuthContext';
-import { Trash2, Plus, Save, X, LogOut, Search, Image } from 'lucide-react';
+import { Trash2, Plus, Save, X, LogOut, Search } from 'lucide-react';
 
 interface MenuItemRow {
   id: string;
@@ -11,7 +11,6 @@ interface MenuItemRow {
   description: string;
   badge: string | null;
   available: boolean;
-  image?: string | null;
 }
 
 export const AdminDashboard: React.FC = () => {
@@ -21,16 +20,10 @@ export const AdminDashboard: React.FC = () => {
   const [editForm, setEditForm] = useState<Partial<MenuItemRow>>({});
   const [showAddForm, setShowAddForm] = useState(false);
   const [newItem, setNewItem] = useState({
-    id: '', name: '', category: '', price: 0, description: '', badge: '', image: ''
+    id: '', name: '', category: '', price: 0, description: '', badge: ''
   });
-  const [newItemImage, setNewItemImage] = useState<File | null>(null);
-  const [editImage, setEditImage] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploadingItemId, setUploadingItemId] = useState<string | null>(null);
-  const inlineFileInputRef = useRef<HTMLInputElement>(null);
-  const editFileInputRef = useRef<HTMLInputElement>(null);
   const { logout } = useAuth();
 
   const fetchItems = async () => {
@@ -78,20 +71,14 @@ export const AdminDashboard: React.FC = () => {
     if (!editingId || !supabase) return;
     setUploading(true);
     try {
-      let imageUrl = editForm.image || null;
-      if (editImage) {
-        imageUrl = await uploadMenuItemImage(editImage, editingId);
-      }
       await supabase.from('menu_items').update({
         name: editForm.name,
         price: editForm.price,
         description: editForm.description,
         badge: editForm.badge || null,
         category: editForm.category,
-        image: imageUrl,
       }).eq('id', editingId);
       setEditingId(null);
-      setEditImage(null);
       fetchItems();
     } catch (err) {
       console.error('Error saving item:', err);
@@ -114,32 +101,6 @@ export const AdminDashboard: React.FC = () => {
     fetchItems();
   };
 
-  const handleInlineUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !uploadingItemId || !supabase) return;
-    const validationError = validateImageFile(file);
-    if (validationError) {
-      alert(validationError);
-      setUploadingItemId(null);
-      if (inlineFileInputRef.current) inlineFileInputRef.current.value = '';
-      return;
-    }
-    setUploading(true);
-    try {
-      const url = await uploadMenuItemImage(file, uploadingItemId);
-      if (url) {
-        await supabase.from('menu_items').update({ image: url }).eq('id', uploadingItemId);
-        fetchItems();
-      }
-    } catch (err) {
-      console.error('Inline upload error:', err);
-    } finally {
-      setUploading(false);
-      setUploadingItemId(null);
-      if (inlineFileInputRef.current) inlineFileInputRef.current.value = '';
-    }
-  };
-
   const addItem = async () => {
     if (!supabase) return;
     if (!newItem.id || !newItem.name || !newItem.category) {
@@ -148,13 +109,8 @@ export const AdminDashboard: React.FC = () => {
     }
     setUploading(true);
     try {
-      let imageUrl = newItem.image;
-      if (newItemImage) {
-        imageUrl = await uploadMenuItemImage(newItemImage, newItem.id);
-      }
-      await supabase.from('menu_items').insert([{ ...newItem, available: true, image: imageUrl || null }]);
-      setNewItem({ id: '', name: '', category: '', price: 0, description: '', badge: '', image: '' });
-      setNewItemImage(null);
+      await supabase.from('menu_items').insert([{ ...newItem, available: true }]);
+      setNewItem({ id: '', name: '', category: '', price: 0, description: '', badge: '' });
       setShowAddForm(false);
       fetchItems();
     } catch (err) {
@@ -225,15 +181,6 @@ export const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Hidden inline file input for quick image upload */}
-        <input
-          type="file"
-          accept="image/*"
-          ref={inlineFileInputRef}
-          onChange={handleInlineUpload}
-          className="hidden"
-        />
-
         {showAddForm && (
           <div className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-[#000000]/10 space-y-3">
             <div className="grid grid-cols-2 gap-3">
@@ -257,43 +204,6 @@ export const AdminDashboard: React.FC = () => {
               <input placeholder="Badge (optional)" value={newItem.badge}
                 onChange={(e) => setNewItem({ ...newItem, badge: e.target.value })}
                 className="border rounded-lg px-3 py-2" />
-            </div>
-            <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 bg-[#FAF3E7] border border-[#D8C7B0] rounded-lg px-3 py-2 cursor-pointer hover:bg-[#EADECB] transition-colors flex-1">
-                <Image className="w-4 h-4 text-[#000000]" />
-                <span className="text-xs text-[#000000]">
-                  {newItemImage ? newItemImage.name : 'Choose image file'}
-                </span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0] || null;
-                    const validationError = validateImageFile(file);
-                    if (validationError) {
-                      alert(validationError);
-                      setNewItemImage(null);
-                      if (fileInputRef.current) fileInputRef.current.value = '';
-                      return;
-                    }
-                    setNewItemImage(file);
-                  }}
-                  className="hidden"
-                />
-              </label>
-              {newItemImage && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setNewItemImage(null);
-                    if (fileInputRef.current) fileInputRef.current.value = '';
-                  }}
-                  className="text-red-500 text-xs font-semibold"
-                >
-                  Remove
-                </button>
-              )}
             </div>
             <button onClick={addItem}
               className="bg-[#000000] text-white px-4 py-2 rounded-full font-semibold">
@@ -332,117 +242,60 @@ export const AdminDashboard: React.FC = () => {
                             <input value={editForm.badge || ''} placeholder="Badge"
                               onChange={(e) => setEditForm({ ...editForm, badge: e.target.value })}
                               className="border rounded-lg px-3 py-2 flex-1 text-sm" />
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <label className="flex items-center gap-2 bg-[#FAF3E7] border border-[#D8C7B0] rounded-lg px-3 py-2 cursor-pointer hover:bg-[#EADECB] transition-colors flex-1">
-                              <Image className="w-3.5 h-3.5 text-[#000000]" />
-                              <span className="text-[10px] text-[#000000] truncate">
-                                {editImage ? editImage.name : 'Choose image'}
-                              </span>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                ref={editFileInputRef}
-                                onChange={(e) => {
-                                  const file = e.target.files?.[0] || null;
-                                  const validationError = validateImageFile(file);
-                                  if (validationError) {
-                                    alert(validationError);
-                                    setEditImage(null);
-                                    if (editFileInputRef.current) editFileInputRef.current.value = '';
-                                    return;
-                                  }
-                                  setEditImage(file);
-                                }}
-                                className="hidden"
-                              />
-                            </label>
-                            {editImage && (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setEditImage(null);
-                                  if (editFileInputRef.current) editFileInputRef.current.value = '';
-                                }}
-                                className="text-red-500 text-[10px] font-semibold shrink-0"
-                              >
-                                Remove
-                              </button>
-                            )}
-                          </div>
-                          <div className="flex gap-2 pt-1">
-                            <button onClick={saveEdit}
-                              className="flex items-center gap-1 bg-[#000000] text-white px-3 py-1.5 rounded-full text-xs font-semibold">
-                              <Save className="w-3.5 h-3.5" /> Save
-                            </button>
-                            <button onClick={cancelEdit}
-                              className="flex items-center gap-1 bg-gray-200 text-[#000000] px-3 py-1.5 rounded-full text-xs font-semibold">
-                              <X className="w-3.5 h-3.5" /> Cancel
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <>
-                          <div className="relative mb-3 aspect-square rounded-lg overflow-hidden bg-[#FAF3E7] flex items-center justify-center">
-                            {item.image ? (
-                              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <span className="text-[10px] text-[#000000]/40">No Image</span>
-                            )}
-                          </div>
+                           </div>
+                           <div className="flex gap-2 pt-1">
+                             <button onClick={saveEdit}
+                               className="flex items-center gap-1 bg-[#000000] text-white px-3 py-1.5 rounded-full text-xs font-semibold">
+                               <Save className="w-3.5 h-3.5" /> Save
+                             </button>
+                             <button onClick={cancelEdit}
+                               className="flex items-center gap-1 bg-gray-200 text-[#000000] px-3 py-1.5 rounded-full text-xs font-semibold">
+                               <X className="w-3.5 h-3.5" /> Cancel
+                             </button>
+                           </div>
+                         </div>
+                       ) : (
+                         <>
+                           <div className="flex-1">
+                             <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                               <span className="font-semibold text-sm text-[#000000]">{item.name}</span>
+                               {item.badge && (
+                                 <span className="text-[9px] bg-[#000000]/40 text-[#000000] px-1.5 py-0.5 rounded-full font-semibold">
+                                   {item.badge}
+                                 </span>
+                               )}
+                               {!item.available && (
+                                 <span className="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-semibold">
+                                   Sold Out
+                                 </span>
+                               )}
+                             </div>
+                             <p className="text-xs text-[#000000]/50 line-clamp-2 mb-2">{item.description}</p>
+                             <span className="font-mono font-bold text-[#000000] text-sm">KSh {item.price}</span>
+                           </div>
 
-                          <div className="flex-1">
-                            <div className="flex flex-wrap items-center gap-1.5 mb-1">
-                              <span className="font-semibold text-sm text-[#000000]">{item.name}</span>
-                              {item.badge && (
-                                <span className="text-[9px] bg-[#000000]/40 text-[#000000] px-1.5 py-0.5 rounded-full font-semibold">
-                                  {item.badge}
-                                </span>
-                              )}
-                              {!item.available && (
-                                <span className="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-semibold">
-                                  Sold Out
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-xs text-[#000000]/50 line-clamp-2 mb-2">{item.description}</p>
-                            <span className="font-mono font-bold text-[#000000] text-sm">KSh {item.price}</span>
-                          </div>
-
-                          <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-[#000000]/10">
-                            <button
-                              onClick={() => {
-                                setUploadingItemId(item.id);
-                                setTimeout(() => inlineFileInputRef.current?.click(), 0);
-                              }}
-                              disabled={uploadingItemId === item.id && uploading}
-                              className="text-[10px] bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] px-2 py-1.5 rounded-full font-semibold disabled:opacity-50 active:scale-95 transition-all flex items-center gap-1"
-                              title="Add/Change image"
-                            >
-                              <Image className="w-3 h-3" />
-                              Image
-                            </button>
-                            <button
-                              onClick={() => toggleAvailable(item)}
-                              className={`text-[10px] px-2 py-1.5 rounded-full font-semibold transition-all ${
-                                item.available
-                                  ? 'bg-green-100 text-green-700 hover:bg-green-200 active:scale-95'
-                                  : 'bg-red-100 text-red-600 hover:bg-red-200 active:scale-95'
-                              }`}
-                            >
-                              {item.available ? '✓ Avail' : '✕ Sold'}
-                            </button>
-                            <button onClick={() => startEdit(item)}
-                              className="text-[10px] bg-gray-100 hover:bg-gray-200 px-2 py-1.5 rounded-full font-semibold text-[#000000] active:scale-95 transition-all">
-                              Edit
-                            </button>
-                            <button onClick={() => deleteItem(item.id)}
-                              className="text-red-500 hover:bg-red-50 p-1.5 rounded-full active:scale-95 transition-all ml-auto">
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        </>
-                      )}
+                           <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-[#000000]/10">
+                             <button
+                               onClick={() => toggleAvailable(item)}
+                               className={`text-[10px] px-2 py-1.5 rounded-full font-semibold transition-all ${
+                                 item.available
+                                   ? 'bg-green-100 text-green-700 hover:bg-green-200 active:scale-95'
+                                   : 'bg-red-100 text-red-600 hover:bg-red-200 active:scale-95'
+                               }`}
+                             >
+                               {item.available ? '✓ Avail' : '✕ Sold'}
+                             </button>
+                             <button onClick={() => startEdit(item)}
+                               className="text-[10px] bg-gray-100 hover:bg-gray-200 px-2 py-1.5 rounded-full font-semibold text-[#000000] active:scale-95 transition-all">
+                               Edit
+                             </button>
+                             <button onClick={() => deleteItem(item.id)}
+                               className="text-red-500 hover:bg-red-50 p-1.5 rounded-full active:scale-95 transition-all ml-auto">
+                               <Trash2 className="w-3.5 h-3.5" />
+                             </button>
+                           </div>
+                         </>
+                       )}
                     </div>
                   ))}
                 </div>

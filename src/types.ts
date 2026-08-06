@@ -2,7 +2,7 @@ export interface Category {
   id: string;
   name: string;
   icon: string;
-  description: string;
+  description?: string;
   image?: string;
 }
 
@@ -16,7 +16,7 @@ export interface MenuItem {
   name: string;
   category: string;
   price: number;
-  description: string;
+  description?: string;
   badge?: 'Popular' | 'Chef Special' | 'Healthy' | 'Low Carb';
   options?: MenuItemOption[];
   image?: string;

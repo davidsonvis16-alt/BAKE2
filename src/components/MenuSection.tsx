@@ -59,7 +59,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
       const matchesSearch =
         searchQuery === '' ||
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchQuery.toLowerCase());
+        (item.description || '').toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesCategory =
         selectedCategory === 'all' || item.category === selectedCategory;
