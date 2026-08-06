@@ -46,7 +46,7 @@ export const Gallery: React.FC = () => {
             <div
               key={index}
               className="relative aspect-square rounded-2xl overflow-hidden bg-neutral-200 border border-[#000000]/10 shadow-sm"
-              style={{ backgroundImage: `url(${image.src})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+              style={{ backgroundImage: `url('${encodeURI(image.src)}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
               title={image.alt}
             />
           ))}

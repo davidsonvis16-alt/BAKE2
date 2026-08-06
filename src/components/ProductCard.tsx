@@ -31,6 +31,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   const currentPrice = selectedOption ? selectedOption.price : item.price;
 
+  const safeImageSrc = item.image;
+
   const handleAdd = () => {
     onAddToCart(item, selectedOption);
     setAddedAnimation(true);
@@ -76,7 +78,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         )}
         {showImage ? (
           <img
-            src={item.image}
+            src={safeImageSrc}
             alt={item.name}
             loading="lazy"
             onLoad={() => setImageLoaded(true)}

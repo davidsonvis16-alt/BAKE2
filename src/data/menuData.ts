@@ -188,9 +188,9 @@ export const MENU_ITEMS: MenuItem[] = [
   // ==========================================
   // BEVERAGES & COFFEE
   // ==========================================
-  { id: 'hb1', name: 'White Coffee', category: 'hot-cold-drinks', price: 200, image: '/menu-items/hot-cold-drinks.jpg', description: 'Fresh Nakuru roast coffee with steamed whole milk' },
+  { id: 'hb1', name: 'White Coffee', category: 'hot-cold-drinks', price: 200, image: '/juices-cocktails.jpeg', description: 'Fresh Nakuru roast coffee with steamed whole milk' },
   { id: 'hb2', name: 'Black Coffee', category: 'hot-cold-drinks', price: 200, image: '/menu-items/Saved PICS/Black Coffee.jpg', description: 'Freshly brewed aromatic dark roast coffee' },
-  { id: 'hb3', name: 'White Chocolate Hot Drink', category: 'hot-cold-drinks', price: 200, image: '/menu-items/hot-cold-drinks.jpg', description: 'Velvety melted white chocolate with hot milk' },
+  { id: 'hb3', name: 'White Chocolate Hot Drink', category: 'hot-cold-drinks', price: 200, image: '/juices-cocktails.jpeg', description: 'Velvety melted white chocolate with hot milk' },
   { id: 'hb4', name: 'Instant Baristo Tea', category: 'hot-cold-drinks', price: 200, description: 'Rich barista style spiced milk tea' },
   { id: 'hb5', name: 'Mixed Tea Brew Cup', category: 'hot-cold-drinks', price: 70, description: 'Traditional Kenyan brewed milk tea cup' },
   { id: 'hb6', name: 'Masala Tea Brew', category: 'hot-cold-drinks', price: 100, description: 'Milk tea infused with cardamon, ginger, cloves and cinnamon' },
@@ -307,7 +307,7 @@ export const MENU_ITEMS: MenuItem[] = [
   // BARBECUE PLATTERS
   // ==========================================
   { id: 'bbq1', name: 'Barbecue Platter #1 (Serves 2)', category: 'bbq-platters', price: 1500, badge: 'Chef Special', image: '/menu-items/Saved PICS/Choma Platter.jpg', description: 'Mbuzi Choma, Kuku Choma, Sausage, Chips, Wedges, Ugali, Chapati, Salad & Sauce' },
-  { id: 'bbq2', name: 'Barbecue Grand Feast #2 (Serves 2)', category: 'bbq-platters', price: 2000, badge: 'Popular', image: '/menu-items/bbq-platters.jpg', description: 'Mbuzi Choma, Kuku Choma, Pilau, Wedges, Sausages, Chips Masala, Fried Cassava, Greens & Sauce' },
+  { id: 'bbq2', name: 'Barbecue Grand Feast #2 (Serves 2)', category: 'bbq-platters', price: 2000, badge: 'Popular', image: '/bbq-platters.jpeg', description: 'Mbuzi Choma, Kuku Choma, Pilau, Wedges, Sausages, Chips Masala, Fried Cassava, Greens & Sauce' },
 
   // ==========================================
   // SANDWICHES & WRAPS
@@ -334,17 +334,17 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'pas3', name: 'Penne Pasta / Beef Stroganoff', category: 'pizza-pasta', price: 500, badge: 'Popular', description: 'Creamy mushroom and beef strip sauce served over penne' },
   { id: 'pas4', name: 'Noodles', category: 'pizza-pasta', price: 150, description: 'Pan fried egg noodles with soy & spring onion' },
   {
-    id: 'p1', name: 'Margarita Pizza', category: 'pizza-pasta', price: 1000, image: '/menu-items/pizza-pasta.jpg',
+    id: 'p1', name: 'Margarita Pizza', category: 'pizza-pasta', price: 1000, image: '/pizza-pasta.jpeg',
     description: 'Classic pizza with fresh tomato sauce, mozzarella cheese & oregano',
     options: [{ name: 'Medium', price: 1000 }, { name: 'Large', price: 1250 }]
   },
   {
-    id: 'p2', name: 'Chicken Tikka Pizza', category: 'pizza-pasta', price: 1100, badge: 'Popular', image: '/menu-items/pizza-pasta.jpg',
+    id: 'p2', name: 'Chicken Tikka Pizza', category: 'pizza-pasta', price: 1100, badge: 'Popular', image: '/pizza-pasta.jpeg',
     description: 'Marinated tikka chicken strips and mozzarella',
     options: [{ name: 'Medium', price: 1100 }, { name: 'Large', price: 1450 }]
   },
   {
-    id: 'p3', name: 'Vegetable Pizza', category: 'pizza-pasta', price: 1000, image: '/menu-items/pizza-pasta.jpg',
+    id: 'p3', name: 'Vegetable Pizza', category: 'pizza-pasta', price: 1000, image: '/pizza-pasta.jpeg',
     description: 'Capsicum, onion and mozzarella',
     options: [{ name: 'Medium', price: 1000 }, { name: 'Large', price: 1250 }]
   },
