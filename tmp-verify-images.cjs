@@ -1,0 +1,12 @@
+const fs = require('fs');
+const content = fs.readFileSync('src/data/menuData.ts', 'utf8');
+const menuSection = content.substring(content.indexOf('export const MENU_ITEMS'));
+const imageMatches = menuSection.match(/image:\s*'([^']+)'/g) || [];
+const paths = imageMatches.map(m => m.match(/image:\s*'([^']+)'/)[1]);
+const uniquePaths = [...new Set(paths)];
+const publicFiles = fs.readdirSync('public').filter(f => /\.(jpe?g|png|webp|gif|svg)$/i.test(f));
+const missing = uniquePaths.filter(p => !publicFiles.includes(p.substring(1)));
+console.log('Missing paths:');
+missing.forEach(p => console.log('  ' + p));
+console.log('Total unique item image paths: ' + uniquePaths.length);
+console.log('Missing count: ' + missing.length);

@@ -15,7 +15,7 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Combo Card 1: Grand Feast */}
         <div className="relative rounded-2xl bg-[#000000] text-white p-6 overflow-hidden border border-neutral-800 shadow-md flex flex-col justify-between group">
-          <div className="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-40 transition-opacity" style={{ backgroundImage: `url('/menu-items/bbq-platters.jpg')` }} />
+           <div className="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-40 transition-opacity" style={{ backgroundImage: `url('/bbq-platters.jpeg')` }} />
           <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/90 to-transparent" />
 
           <div className="relative z-10 space-y-2">
@@ -50,7 +50,7 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
 
         {/* Combo Card 2: Italian Pizza Deal */}
         <div className="relative rounded-2xl bg-[#000000] text-white p-6 overflow-hidden border border-neutral-800 shadow-md flex flex-col justify-between group">
-          <div className="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-40 transition-opacity" style={{ backgroundImage: `url('/menu-items/pizza-pasta.jpg')` }} />
+           <div className="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-40 transition-opacity" style={{ backgroundImage: `url('/pizza-pasta.jpeg')` }} />
           <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/90 to-transparent" />
 
           <div className="relative z-10 space-y-2">
