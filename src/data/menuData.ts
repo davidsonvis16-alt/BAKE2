@@ -11,84 +11,84 @@ export const CATEGORIES: Category[] = [
     name: 'Bakery & Desserts',
     icon: 'Cake',
     description: 'Freshly baked muffins, cakes, waffles, cold cheesecakes and trifles',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5Vh2XmaNsWm-Coc-WYbhNltVia9KxXPJjt2F7xcSjRw&s=10'
+    image: '/menu-items/bakery-desserts.jpeg'
   },
   {
     id: 'juices-cocktails',
     name: 'Juices, Mojitos & Smoothies',
     icon: 'GlassWater',
     description: 'Fresh juices, juice blends, layered juices, mojitos, lemonades, detox cocktails and smoothies',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9If6QJi3j6zMTMyDzIhOIJ9F6j_TAhjrnmud4o3pDlw&s=10'
+    image: '/menu-items/juices-cocktails.jpeg'
   },
   {
     id: 'hot-cold-drinks',
     name: 'Beverages & Coffee',
     icon: 'Coffee',
     description: 'Espresso coffees, brewed teas, dawa specials, iced drinks and sodas',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS9Hf0P3BMUrd1ct-qixs8MVrJiXiciNpu5Q9NliNWig&s=10'
+    image: '/menu-items/bakery-desserts.jpeg'
   },
   {
     id: 'breakfast',
     name: 'Nakuru Breakfast',
     icon: 'Egg',
     description: 'Fresh eggs, French toast, arrowroots, sweet potatoes and chapatis',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHqCh59L1u2LMQRsbS2o_UidpdsVwcqGnRqCA3cyQr6Q&s=10'
+    image: '/menu-items/breakfast.jpeg'
   },
   {
     id: 'mains-meals',
     name: 'Chef Mains & Stews',
     icon: 'UtensilsCrossed',
     description: 'Hearty chicken stew, biryani, pilau, sautee beef and fried rice',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_CjE5Qa9MiPCjmungK9T7TmX5TmLl22u7Uxgj8JNDQg&s=10'
+    image: '/menu-items/mains-meal.jpeg'
   },
   {
     id: 'light-snacks',
     name: 'Snacks & Burgers',
     icon: 'Beef',
     description: 'Beef burger & chips, samosa specials, wings, chips masala and mshikaki',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbdXhVNguJM7RqFxEpGiqXhCbulGPZ5fvzzNo_3U7_7w&s=10'
+    image: '/menu-items/bbq-platters.jpeg'
   },
   {
     id: 'kienyeji-traditional',
     name: 'Kienyeji Specials',
     icon: 'Flame',
     description: 'Authentic Kenyan Mukimo, Matoke, Githeri, Omena, and Uji Power',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxyAIaunPeKpwkQTDnLAn8-DCva6e6DrPIROOj-gvz8g&s=10'
+    image: '/menu-items/kienyeji-traditional.jpeg'
   },
   {
     id: 'pizza-pasta',
     name: 'Italian Pizza & Pastas',
     icon: 'Pizza',
     description: 'Open-kitchen hand-stretched pizzas, bolognese, penne and traditional pies',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmtZXW6mUpFEU0yJn6WC87YJAYXj9H14v_7PGYwDUoIA&s=10'
+    image: '/menu-items/pizza-pasta.jpeg'
   },
   {
     id: 'sandwiches-wraps',
     name: 'Sandwiches & Wraps',
     icon: 'Sandwich',
     description: 'Toasted beef, chicken, tuna sandwiches and filled chapati wraps',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjoCpNMeiNfffzJDc6-L9DL6K39KTC1K6rPV9a-P-pQg&s=10'
+    image: '/menu-items/bakery-desserts.jpeg'
   },
   {
     id: 'bbq-platters',
     name: 'Barbecue Platters',
     icon: 'Drumstick',
     description: 'Sizzling Mbuzi Choma and Kuku Choma platters for sharing',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvai3McJBVnH_iB-MXtQ_gYUhED-bOoJ-vZ7AG3zV3ro5EtT3q7xNSZZ0&s=10'
+    image: '/menu-items/bbq-platters.jpeg'
   },
   {
     id: 'waffles-triffles',
     name: 'Waffles & Triffles',
     icon: 'Cake',
     description: 'Golden waffles and layered triffle dessert cups',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwxj8KfnUPdksh2VqCf35HhGcmcig6BGjnToyMlJ4W8Q&s'
+    image: '/menu-items/bakery-desserts.jpeg'
   },
   {
     id: 'soups-salads',
     name: 'Soups & Salads',
     icon: 'Soup',
     description: 'Fresh kachumbari, garden salads, bone soup and mushroom soup',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2ZuTlONfLjeE3_WFNa_SguDLb7dViqYMxUT44ofeUmw&s=10'
+    image: '/menu-items/bakery-desserts.jpeg'
   }
 ];
 

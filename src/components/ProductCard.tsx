@@ -4,6 +4,7 @@ import { MenuItem, MenuItemOption } from '../types';
 import { uploadMenuItemImage, validateImageFile } from '../lib/supabase';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './AuthContext';
+import { CATEGORIES } from '../data/menuData';
 
 interface ProductCardProps {
   item: MenuItem;
@@ -31,7 +32,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   const currentPrice = selectedOption ? selectedOption.price : item.price;
 
-  const safeImageSrc = item.image;
+  const categoryImage = CATEGORIES.find((c) => c.id === item.category)?.image;
+  const safeImageSrc = item.image || categoryImage;
 
   const handleAdd = () => {
     onAddToCart(item, selectedOption);
