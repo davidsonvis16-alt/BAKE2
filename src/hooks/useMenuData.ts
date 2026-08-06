@@ -44,6 +44,10 @@ export function useMenuData() {
     const itemsWithImages: MenuItem[] = [];
 
     for (const item of MENU_ITEMS) {
+      if (item.image) {
+        itemsWithImages.push(item);
+        continue;
+      }
       const matched = matchImage(item.name, files, used);
       if (matched) {
         used.add(matched.slice(1));
