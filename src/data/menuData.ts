@@ -207,7 +207,7 @@ export const MENU_ITEMS: MenuItem[] = [
   // ==========================================
   // NAKURU BREAKFAST
   // ==========================================
-  { id: 'br1', name: 'French Toast Special (Sausage/Eggs/Toast)', category: 'breakfast', price: 250, image: '/breakfast.jpeg' },
+  { id: 'br1', name: 'French Toast Special (Sausage/Eggs/Toast)', category: 'breakfast', price: 250 },
   { id: 'br2', name: 'Eggs Omelette', category: 'breakfast', price: 150, image: '/egg-ommelete.jpeg' },
   { id: 'br3', name: 'Triple Eggs Omelette', category: 'breakfast', price: 200 },
   { id: 'br4', name: 'Boiled Eggs', category: 'breakfast', price: 80 },
