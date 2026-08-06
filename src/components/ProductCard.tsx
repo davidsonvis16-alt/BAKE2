@@ -31,7 +31,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   const currentPrice = selectedOption ? selectedOption.price : item.price;
 
-  const safeImageSrc = item.image;
+  const getSafeImageSrc = (src: string | undefined) => {
+    if (!src) return src;
+    if (/^https?:\/\//.test(src)) return src;
+    return src.split('/').map(encodeURIComponent).join('/');
+  };
+
+  const safeImageSrc = getSafeImageSrc(item.image);
 
   const handleAdd = () => {
     onAddToCart(item, selectedOption);
