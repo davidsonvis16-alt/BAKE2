@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, uploadMenuItemImage, validateImageFile } from '../lib/supabase';
 import { useAuth } from '../components/AuthContext';
 import { Trash2, Plus, Save, X, Check, LogOut, Search } from 'lucide-react';
 
@@ -11,6 +11,7 @@ interface MenuItemRow {
   description: string;
   badge: string | null;
   available: boolean;
+  image?: string | null;
 }
 
 export const AdminDashboard: React.FC = () => {
@@ -23,6 +24,8 @@ export const AdminDashboard: React.FC = () => {
     id: '', name: '', category: '', price: 0, description: '', badge: ''
   });
   const [uploading, setUploading] = useState(false);
+  const [newItemImage, setNewItemImage] = useState<File | null>(null);
+  const [editImage, setEditImage] = useState<File | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const { logout } = useAuth();
 
@@ -71,14 +74,20 @@ export const AdminDashboard: React.FC = () => {
     if (!editingId || !supabase) return;
     setUploading(true);
     try {
+      let imageUrl = editForm.image || null;
+      if (editImage) {
+        imageUrl = await uploadMenuItemImage(editImage, editingId);
+      }
       await supabase.from('menu_items').update({
         name: editForm.name,
         price: editForm.price,
         description: editForm.description,
         badge: editForm.badge || null,
         category: editForm.category,
+        image: imageUrl,
       }).eq('id', editingId);
       setEditingId(null);
+      setEditImage(null);
       fetchItems();
     } catch (err) {
       console.error('Error saving item:', err);
@@ -109,8 +118,13 @@ export const AdminDashboard: React.FC = () => {
     }
     setUploading(true);
     try {
-      await supabase.from('menu_items').insert([{ ...newItem, available: true }]);
+      let imageUrl = null;
+      if (newItemImage) {
+        imageUrl = await uploadMenuItemImage(newItemImage, newItem.id);
+      }
+      await supabase.from('menu_items').insert([{ ...newItem, available: true, image: imageUrl }]);
       setNewItem({ id: '', name: '', category: '', price: 0, description: '', badge: '' });
+      setNewItemImage(null);
       setShowAddForm(false);
       fetchItems();
     } catch (err) {
@@ -205,6 +219,23 @@ export const AdminDashboard: React.FC = () => {
                 onChange={(e) => setNewItem({ ...newItem, badge: e.target.value })}
                 className="border rounded-lg px-3 py-2" />
             </div>
+            <div>
+              <label className="block text-xs font-semibold text-[#000000]/70 mb-1">Item Image</label>
+              <input type="file" accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] || null;
+                  const validationError = validateImageFile(file);
+                  if (validationError) {
+                    alert(validationError);
+                    return;
+                  }
+                  setNewItemImage(file);
+                }}
+                className="block w-full text-xs text-[#000000]" />
+              {newItemImage && (
+                <p className="text-[10px] text-[#000000]/60 mt-1">{newItemImage.name}</p>
+              )}
+            </div>
             <button onClick={addItem}
               className="bg-[#000000] text-white px-4 py-2 rounded-full font-semibold">
               Save Item
@@ -243,7 +274,23 @@ export const AdminDashboard: React.FC = () => {
                               onChange={(e) => setEditForm({ ...editForm, badge: e.target.value })}
                               className="border rounded-lg px-3 py-2 flex-1 text-sm" />
                            </div>
-                           <div className="flex gap-2 pt-1">
+                           <div className="flex gap-2">
+                             <input type="file" accept="image/*"
+                               onChange={(e) => {
+                                 const file = e.target.files?.[0] || null;
+                                 const validationError = validateImageFile(file);
+                                 if (validationError) {
+                                   alert(validationError);
+                                   return;
+                                 }
+                                 setEditImage(file);
+                               }}
+                               className="block w-full text-xs text-[#000000]" />
+                             {editImage && (
+                               <p className="text-[10px] text-[#000000]/60">{editImage.name}</p>
+                             )}
+                           </div>
+                            <div className="flex gap-2 pt-1">
                              <button onClick={saveEdit}
                                className="flex items-center gap-1 bg-[#000000] text-white px-3 py-1.5 rounded-full text-xs font-semibold">
                                <Save className="w-3.5 h-3.5" /> Save
