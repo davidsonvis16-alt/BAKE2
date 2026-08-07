@@ -8,6 +8,11 @@ import { MenuItem } from '../types';
 const SESSION_KEY = 'bakemart_popular_seen';
 const FALLBACK_ITEM_IDS = ['s6', 'bbq1'];
 
+const FALLBACK_IMAGES: Record<string, string> = {
+  s6: '/Chips-Masala.jpg',
+  bbq1: '/Choma-Platter.jpg',
+};
+
 interface PopularItemsPopupProps {
   onClose: () => void;
   onAddToCart: (item: MenuItem, selectedOption?: any) => void;
@@ -171,9 +176,11 @@ export const PopularItemsPopup: React.FC<PopularItemsPopupProps> = ({
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <ShoppingBag className="w-12 h-12 text-[#000000]/20" />
-                      </div>
+                      <img
+                        src={FALLBACK_IMAGES[item.id] || '/placeholder-food.jpg'}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
                     )}
 
                     {/* Popular Badge */}
