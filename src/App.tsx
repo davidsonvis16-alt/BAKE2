@@ -20,6 +20,7 @@ import { useAuth } from './components/AuthContext';
 import { MENU_ITEMS, CATEGORIES } from './data/menuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
 import { ShoppingBag, Send } from 'lucide-react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 export default function App() {
   const navigate = useNavigate();
@@ -430,6 +431,7 @@ export default function App() {
       )}
 
       {/* Sticky Bottom Nav for Mobile */}
+      <SpeedInsights />
     </div>
   );
 }
