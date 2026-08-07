@@ -86,6 +86,14 @@ export const AdminDashboard: React.FC = () => {
         category: editForm.category,
         image: imageUrl,
       }).eq('id', editingId);
+      if (imageUrl) {
+        try {
+          const raw = localStorage.getItem('bakemart_menu_image_overrides');
+          const overrides = raw ? JSON.parse(raw) : {};
+          overrides[editingId] = imageUrl;
+          localStorage.setItem('bakemart_menu_image_overrides', JSON.stringify(overrides));
+        } catch {}
+      }
       setEditingId(null);
       setEditImage(null);
       fetchItems();
@@ -123,6 +131,14 @@ export const AdminDashboard: React.FC = () => {
         imageUrl = await uploadMenuItemImage(newItemImage, newItem.id);
       }
       await supabase.from('menu_items').insert([{ ...newItem, available: true, image: imageUrl }]);
+      if (imageUrl) {
+        try {
+          const raw = localStorage.getItem('bakemart_menu_image_overrides');
+          const overrides = raw ? JSON.parse(raw) : {};
+          overrides[newItem.id] = imageUrl;
+          localStorage.setItem('bakemart_menu_image_overrides', JSON.stringify(overrides));
+        } catch {}
+      }
       setNewItem({ id: '', name: '', category: '', price: 0, description: '', badge: '' });
       setNewItemImage(null);
       setShowAddForm(false);

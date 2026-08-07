@@ -1,8 +1,6 @@
 import React, { useState, useLayoutEffect, useRef, useCallback } from 'react';
-import { Search, ShoppingBag, Heart, Calendar, Menu, X, Phone, LogIn, User, Ticket } from 'lucide-react';
+import { Search, ShoppingBag, Heart, Menu, X, Phone, LogIn, User } from 'lucide-react';
 import { useAuth } from './AuthContext';
-import { LoginModal } from './LoginModal';
-import { CustomerProfileModal } from './CustomerProfileModal';
 
 interface NavbarProps {
   searchQuery: string;
@@ -15,12 +13,9 @@ interface NavbarProps {
   onNavigateCategories: () => void;
   onOpenCart: () => void;
   onOpenWishlist: () => void;
-  onOpenReservation: () => void;
   onNavigateGallery: () => void;
   onNavigateAbout: () => void;
   onNavigateFAQ: () => void;
-  onOpenLogin: () => void;
-  onOpenTicketTracking: () => void;
   onCartButtonRef?: (rect: DOMRect | null) => void;
 }
 
@@ -35,17 +30,12 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateCategories,
   onOpenCart,
   onOpenWishlist,
-  onOpenReservation,
   onNavigateGallery,
   onNavigateAbout,
   onNavigateFAQ,
-  onOpenLogin,
-  onOpenTicketTracking,
   onCartButtonRef,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const cartButtonRef = useRef<HTMLButtonElement>(null);
   const lastRectRef = useRef<{ left: number; top: number; width: number; height: number } | null>(null);
   const { session, isAdmin, isCustomer, logout } = useAuth();
@@ -151,50 +141,13 @@ export const Navbar: React.FC<NavbarProps> = ({
 
          {/* Right Actions */}
          <div className="flex items-center gap-2 sm:gap-3">
-          {/* Ticket Tracking Button */}
-          <button
-            onClick={onOpenTicketTracking}
-            className="hidden sm:flex p-2.5 rounded-full hover:bg-[#FAF3E7] text-[#000000] smooth-btn"
-            title="Track Ticket"
-          >
-            <Ticket className="w-5 h-5" />
-          </button>
-
-          {/* Customer Profile or Login */}
-          {isCustomer && !isAdmin ? (
-            <button
-              onClick={() => setIsProfileOpen(true)}
-              className="hidden sm:flex items-center gap-2 bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] border border-[#D8C7B0] font-bold text-xs px-3 py-2 rounded-full smooth-btn shadow-xs"
-            >
-              <User className="w-4 h-4" />
-              <span>Profile</span>
-            </button>
-          ) : !session && !isAdmin ? (
-            <button
-              onClick={() => setIsLoginOpen(true)}
-              className="hidden sm:flex items-center gap-2 bg-[#000000] hover:bg-[#000000] text-white font-bold text-xs px-4 py-2 rounded-full smooth-btn shadow-md"
-            >
-              <LogIn className="w-4 h-4" />
-              <span>Sign In</span>
-            </button>
-          ) : null}
-
-          {/* Hamburger Menu Button (Mobile) */}
+           {/* Hamburger Menu Button (Mobile) */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="lg:hidden p-2.5 rounded-full hover:bg-[#FAF3E7] text-[#000000] smooth-btn"
             title="Menu"
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-
-          {/* Reservation CTA */}
-          <button
-            onClick={onOpenReservation}
-            className="hidden sm:flex items-center gap-1.5 bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] border border-[#D8C7B0] font-bold text-xs md:text-sm px-3.5 py-2 rounded-full smooth-btn shadow-xs"
-          >
-            <Calendar className="w-4 h-4 text-[#000000]" />
-            <span>Book Table</span>
           </button>
 
           {/* Wishlist Button */}
@@ -281,19 +234,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           />
         </div>
       </div>
-
-      {/* Login Modal */}
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-        onSuccess={() => setIsLoginOpen(false)}
-      />
-
-      {/* Customer Profile Modal */}
-      <CustomerProfileModal
-        isOpen={isProfileOpen}
-        onClose={() => setIsProfileOpen(false)}
-      />
     </header>
   );
 };

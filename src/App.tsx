@@ -21,15 +21,12 @@ import { useAuth } from './components/AuthContext';
 import { MENU_ITEMS, CATEGORIES } from './data/menuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
 import { ShoppingBag, Send } from 'lucide-react';
-import { TicketTracking } from './components/TicketTracking';
 import { PopularItemsPopup } from './components/PopularItemsPopup';
-import { LoginModal } from './components/LoginModal';
-import { CustomerProfileModal } from './components/CustomerProfileModal';
 
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { session, loading } = useAuth();
+  const { session, loading, isAdmin } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
 
   const path = location.pathname;
@@ -72,9 +69,6 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(false);
-  const [isTicketTrackingOpen, setIsTicketTrackingOpen] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [showPopularPopup, setShowPopularPopup] = useState(false);
   const [cartButtonPosition, setCartButtonPosition] = useState<{ x: number; y: number } | null>(null);
   const handleCartButtonRef = useCallback((rect: DOMRect | null) => {
@@ -172,6 +166,7 @@ export default function App() {
     const item = MENU_ITEMS.find((i) => i.id === itemId);
     if (item) {
       handleAddToCart(item);
+      setIsCartOpen(true);
     }
   };
 
@@ -226,7 +221,7 @@ export default function App() {
         </div>
       );
     }
-    if (!session) {
+    if (!session || !isAdmin) {
       return <Login />;
     }
     return (
@@ -265,12 +260,9 @@ export default function App() {
         }}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenWishlist={() => setIsWishlistOpen(true)}
-        onOpenReservation={handleOpenReservation}
         onNavigateGallery={() => navigate('/gallery')}
         onNavigateAbout={() => navigate('/about')}
         onNavigateFAQ={() => navigate('/faq')}
-        onOpenLogin={() => setIsLoginOpen(true)}
-        onOpenTicketTracking={() => setIsTicketTrackingOpen(true)}
         onCartButtonRef={handleCartButtonRef}
       />
 
@@ -347,7 +339,7 @@ export default function App() {
             />
 
             {/* Feature Cards */}
-            <FeatureCards />
+            <FeatureCards onNavigateReservation={handleOpenReservation} />
 
             {/* Category Quick Nav Hub - 1 card per category with representative image */}
             <CategoryQuickNav
@@ -416,12 +408,6 @@ export default function App() {
         onAddToCart={handleAddToCart}
       />
 
-      {/* Ticket Tracking */}
-      <TicketTracking
-        isOpen={isTicketTrackingOpen}
-        onClose={() => setIsTicketTrackingOpen(false)}
-      />
-
       {/* Popular Items Popup for all visitors */}
       <PopularItemsPopup
         onClose={() => setShowPopularPopup(false)}
@@ -429,37 +415,50 @@ export default function App() {
         cartButtonPosition={cartButtonPosition}
       />
 
-      {/* Sticky Bottom Cart Bar for Mobile */}
-      {totalCartCount > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#EADECB] shadow-lg md:hidden safe-bottom">
-          <div className="flex items-center justify-between gap-3 px-4 py-3">
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="flex items-center gap-2 bg-[#000000] text-white px-4 py-2.5 rounded-full font-bold text-sm shadow-md flex-1 justify-center"
-            >
-              <ShoppingBag className="w-4 h-4 text-orange-300" />
-              <span>View Cart ({totalCartCount})</span>
-            </button>
-            <button
-              onClick={() => {
-                const total = cartItems.reduce((acc, ci) => {
-                  const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
-                  return acc + price * ci.quantity;
-                }, 0);
-                const message = `*NEW ORDER - BAKEMART COFFEE HOUSE*\n----------------------------------\n*ORDER ITEMS:*\n${cartItems.map((ci, idx) => {
-                  const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
-                  return `${idx + 1}. *${ci.item.name}* x${ci.quantity} - KSh ${(price * ci.quantity).toLocaleString()}`;
-                }).join('\n')}\n----------------------------------\n*GRAND TOTAL:* KSh ${total.toLocaleString()}\n\n*Location:* BakeMart Coffee House, Tropical House, Watalii Rd, Nakuru City`;
-                window.open(`https://wa.me/254725009708?text=${encodeURIComponent(message)}`, '_blank');
-              }}
-              className="bg-[#000000] hover:bg-[#000000] text-white font-bold text-sm py-2.5 px-4 rounded-full shadow-md flex items-center gap-2"
-            >
-              <Send className="w-4 h-4" />
-              <span>Checkout</span>
-            </button>
-          </div>
+      {/* Sticky Bottom Bar for Mobile */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#EADECB] shadow-lg md:hidden safe-bottom">
+        <div className="flex items-center justify-between gap-2 px-4 py-2.5">
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="flex items-center gap-1.5 bg-[#000000] text-white px-3 py-2 rounded-full font-bold text-xs shadow-md flex-1 justify-center"
+          >
+            <ShoppingBag className="w-4 h-4 text-orange-300" />
+            <span>View Cart ({totalCartCount})</span>
+          </button>
+          <button
+            onClick={() => navigate('/reservation')}
+            className="flex items-center justify-center bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] border border-[#D8C7B0] px-3 py-2 rounded-full shadow-xs"
+            title="Reserve a Table"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 3v18" />
+              <path d="M7 16h4" />
+              <path d="M7 11h10" />
+              <path d="M17 3v6" />
+              <path d="M17 11v6" />
+              <path d="M21 16v4" />
+            </svg>
+          </button>
+          <button
+            onClick={() => {
+              if (cartItems.length === 0) return;
+              const total = cartItems.reduce((acc, ci) => {
+                const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
+                return acc + price * ci.quantity;
+              }, 0);
+              const message = `*NEW ORDER - BAKEMART COFFEE HOUSE*\n----------------------------------\n*ORDER ITEMS:*\n${cartItems.map((ci, idx) => {
+                const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
+                return `${idx + 1}. *${ci.item.name}* x${ci.quantity} - KSh ${(price * ci.quantity).toLocaleString()}`;
+              }).join('\n')}\n----------------------------------\n*GRAND TOTAL:* KSh ${total.toLocaleString()}\n\n*Location:* BakeMart Coffee House, Tropical House, Watalii Rd, Nakuru City`;
+              window.open(`https://wa.me/254725009708?text=${encodeURIComponent(message)}`, '_blank');
+            }}
+            className={`font-bold text-sm py-2 px-4 rounded-full shadow-md flex items-center gap-2 ${cartItems.length > 0 ? 'bg-[#000000] hover:bg-[#000000] text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
+          >
+            <Send className="w-4 h-4" />
+            <span>Checkout</span>
+          </button>
         </div>
-      )}
+      </div>
 
       {/* Sticky Bottom Nav for Mobile */}
     </div>
