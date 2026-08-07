@@ -31,7 +31,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 450);
+    }, 700);
     return () => clearTimeout(timer);
   }, [selectedCategory, searchQuery]);
 

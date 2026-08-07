@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ShoppingBag, Heart, Calendar, Menu, X, Phone } from 'lucide-react';
+import { Search, ShoppingBag, Heart, Calendar, Menu, X, Phone, LogIn, Ticket } from 'lucide-react';
 
 interface NavbarProps {
   searchQuery: string;
@@ -16,6 +16,8 @@ interface NavbarProps {
   onNavigateGallery: () => void;
   onNavigateAbout: () => void;
   onNavigateFAQ: () => void;
+  onOpenLogin: () => void;
+  onOpenTicketTracking: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -33,6 +35,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateGallery,
   onNavigateAbout,
   onNavigateFAQ,
+  onOpenLogin,
+  onOpenTicketTracking,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -98,19 +102,28 @@ export const Navbar: React.FC<NavbarProps> = ({
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-[#FAF3E7] border border-[#E1D4C0] focus:border-[#000000] focus:bg-white text-xs md:text-sm text-[#000000] placeholder-[#000000] rounded-full pl-9 pr-4 py-2 transition-all outline-none"
             />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#000000] hover:text-[#000000] font-bold bg-[#EADECB] rounded-full w-4 h-4 flex items-center justify-center"
-              >
-                ✕
-              </button>
-            )}
+             {searchQuery && (
+               <button
+                 onClick={() => setSearchQuery('')}
+                 className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#000000] hover:text-[#000000] font-bold bg-[#EADECB] rounded-full w-4 h-4 flex items-center justify-center"
+               >
+                 <X className="w-3 h-3" />
+               </button>
+             )}
           </div>
         </div>
 
-        {/* Right Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
+         {/* Right Actions */}
+         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Ticket Tracking Button */}
+          <button
+            onClick={onOpenTicketTracking}
+            className="hidden sm:flex p-2.5 rounded-full hover:bg-[#FAF3E7] text-[#000000] smooth-btn"
+            title="Track Ticket"
+          >
+            <Ticket className="w-5 h-5" />
+          </button>
+
           {/* Hamburger Menu Button (Mobile) */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

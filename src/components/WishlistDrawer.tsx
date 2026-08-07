@@ -61,8 +61,20 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
               wishlistItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white p-3 rounded-xl border border-[#EADECB] shadow-2xs flex items-center justify-between gap-3"
+                  className="bg-white p-3 rounded-xl border border-[#EADECB] shadow-2xs flex items-center gap-3"
                 >
+                  {item.image && (
+                    <div className="w-12 h-12 rounded-lg overflow-hidden bg-[#FAF3E7] shrink-0">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  )}
                   <div className="flex-1 min-w-0">
                     <h4 className="font-display font-bold text-xs sm:text-sm text-[#000000] truncate">
                       {item.name}

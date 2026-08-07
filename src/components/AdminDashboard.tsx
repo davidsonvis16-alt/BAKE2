@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../components/AuthContext';
-import { Trash2, Plus, Save, X, LogOut, Search } from 'lucide-react';
+import { Trash2, Plus, Save, X, Check, LogOut, Search } from 'lucide-react';
 
 interface MenuItemRow {
   id: string;
@@ -283,7 +283,11 @@ export const AdminDashboard: React.FC = () => {
                                    : 'bg-red-100 text-red-600 hover:bg-red-200 active:scale-95'
                                }`}
                              >
-                               {item.available ? '✓ Avail' : '✕ Sold'}
+                                {item.available ? (
+                                  <span className="flex items-center gap-1"><Check className="w-3.5 h-3.5" /> Avail</span>
+                                ) : (
+                                  <span className="flex items-center gap-1"><X className="w-3.5 h-3.5" /> Sold</span>
+                                )}
                              </button>
                              <button onClick={() => startEdit(item)}
                                className="text-[10px] bg-gray-100 hover:bg-gray-200 px-2 py-1.5 rounded-full font-semibold text-[#000000] active:scale-95 transition-all">

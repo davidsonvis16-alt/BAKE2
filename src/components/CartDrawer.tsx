@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, Trash2, Plus, Minus, ShoppingBag, MapPin, Send, Coffee } from 'lucide-react';
 import { CartItem } from '../types';
+import { OrderTicket } from './OrderTicket';
+import { generateSecureOrderId } from '../utils/ids';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -25,6 +27,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [tableNumber, setTableNumber] = useState('');
   const [orderNotes, setOrderNotes] = useState('');
+  const [showTicket, setShowTicket] = useState(false);
+  const [sentStatus, setSentStatus] = useState<'idle' | 'sent'>('idle');
 
   if (!isOpen) return null;
 
@@ -38,11 +42,18 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   const handleCheckoutWhatsApp = () => {
     if (cartItems.length === 0) return;
+    setSentStatus('idle');
+    setShowTicket(true);
+  };
 
+  const confirmAndSendWhatsApp = () => {
+    setSentStatus('sent');
+    setShowTicket(false);
+    
     // Save order to local storage for Recent Orders profile view
     try {
       const newOrder = {
-        id: `BM-${Math.floor(1000 + Math.random() * 9000)}`,
+        id: generateSecureOrderId(),
         date: 'Just Now',
         status: 'In Kitchen',
         orderType: orderType,
@@ -159,8 +170,22 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     return (
                       <div
                         key={ci.id}
-                        className="bg-white p-3 rounded-xl border border-[#EADECB] shadow-2xs flex items-center justify-between gap-3"
+                        className="bg-white p-3 rounded-xl border border-[#EADECB] shadow-2xs flex items-center gap-3"
                       >
+                        {/* Item Image Thumbnail */}
+                        {ci.item.image && (
+                          <div className="w-12 h-12 rounded-lg overflow-hidden bg-[#FAF3E7] shrink-0">
+                            <img
+                              src={ci.item.image}
+                              alt={ci.item.name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        )}
+
                         <div className="flex-1 min-w-0">
                           <h4 className="font-display font-bold text-xs sm:text-sm text-[#000000] truncate">
                             {ci.item.name}
@@ -329,13 +354,35 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 className="w-full bg-[#000000] hover:bg-[#000000] text-white font-bold text-sm py-3 rounded-full shadow-md transition-all flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4" />
-                <span>Send Order to WhatsApp (0725 009708)</span>
+                <span>Review Ticket & Order</span>
               </button>
             </div>
           )}
 
         </div>
       </div>
+
+      {/* Order Ticket Modal */}
+      <OrderTicket
+        isOpen={showTicket}
+        onClose={() => {
+          setShowTicket(false);
+          setSentStatus('idle');
+        }}
+        cartItems={cartItems}
+        orderType={orderType === 'dine-in' ? 'pickup' : 'delivery'}
+        deliveryFee={deliveryFee}
+        orderNotes={orderNotes}
+        customerName={customerName}
+        customerPhone={customerPhone}
+        onConfirmSend={confirmAndSendWhatsApp}
+        onCancelOrder={() => {
+          setShowTicket(false);
+          setSentStatus('idle');
+          onClearCart();
+        }}
+        sentStatus={sentStatus}
+      />
     </div>
   );
 };

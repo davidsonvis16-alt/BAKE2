@@ -50,7 +50,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 450);
+    }, 700);
     return () => clearTimeout(timer);
   }, [categoryId, selectedSubFilter, categorySearch]);
 

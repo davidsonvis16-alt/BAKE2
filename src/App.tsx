@@ -20,6 +20,8 @@ import { useAuth } from './components/AuthContext';
 import { MENU_ITEMS, CATEGORIES } from './data/menuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
 import { ShoppingBag, Send } from 'lucide-react';
+import { TicketTracking } from './components/TicketTracking';
+import { PopularItemsPopup } from './components/PopularItemsPopup';
 
 export default function App() {
   const navigate = useNavigate();
@@ -67,6 +69,8 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(false);
+  const [isTicketTrackingOpen, setIsTicketTrackingOpen] = useState(false);
+  const [showPopularPopup, setShowPopularPopup] = useState(false);
 
   const handleReorderBatch = (orderItems: { item: MenuItem; quantity: number; optionName?: string }[]) => {
     setCartItems((prevCart) => {
@@ -132,6 +136,16 @@ export default function App() {
       return () => clearTimeout(timer);
     }
   }, [path, prevPath]);
+
+  // Show popular items popup for logged-in admin
+  useEffect(() => {
+    if (!loading && session && !showPopularPopup) {
+      const timer = setTimeout(() => {
+        setShowPopularPopup(true);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, session, showPopularPopup]);
 
   // Handle category selection - triggers unfolding category page
   const handleSelectCategory = (catId: string) => {
@@ -256,6 +270,8 @@ export default function App() {
         onNavigateGallery={() => navigate('/gallery')}
         onNavigateAbout={() => navigate('/about')}
         onNavigateFAQ={() => navigate('/faq')}
+        onOpenLogin={() => {}}
+        onOpenTicketTracking={() => setIsTicketTrackingOpen(true)}
       />
 
       {/* Main Page Content */}
@@ -395,6 +411,18 @@ export default function App() {
         wishlistItems={wishlistItems}
         onRemoveFromWishlist={handleToggleWishlist}
         onAddToCart={handleAddToCart}
+      />
+
+      {/* Ticket Tracking */}
+      <TicketTracking
+        isOpen={isTicketTrackingOpen}
+        onClose={() => setIsTicketTrackingOpen(false)}
+      />
+
+      {/* Popular Items Popup for Admin */}
+      <PopularItemsPopup
+        isOpen={showPopularPopup}
+        onClose={() => setShowPopularPopup(false)}
       />
 
       {/* Sticky Bottom Cart Bar for Mobile */}
