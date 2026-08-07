@@ -136,7 +136,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
 
       return true;
     });
-  }, [categoryId, categorySearch, selectedSubFilter]);
+  }, [categoryId, categorySearch, selectedSubFilter, menuItems]);
 
   // Find next category for bottom preview
   const currentIndex = CATEGORIES.findIndex((c) => c.id === categoryId);
