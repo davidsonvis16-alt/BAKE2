@@ -30,7 +30,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const { session, isAdmin } = useAuth();
 
   const currentPrice = selectedOption ? selectedOption.price : item.price;
-
   const safeImageSrc = item.image;
 
   const handleAdd = () => {
@@ -69,10 +68,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const showImage = item.image && !imageFailed;
 
   return (
-     <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#EADECB] hover:border-[#000000]/60 hover:shadow-md smooth-card flex flex-col justify-between group">
-
+    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
       {/* Item Image */}
-      <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#E6D8C5] mb-3">
+      <div className="relative w-full h-[180px] overflow-hidden bg-[#FAF3E7]">
         {!imageLoaded && showImage && (
           <div className="absolute inset-0 bg-gradient-to-r from-[#E6D8C5] via-[#F3E8D8] to-[#E6D8C5] animate-pulse z-10" />
         )}
@@ -112,12 +110,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         )}
 
+        {/* Favourite Heart Icon */}
+        <button
+          onClick={() => onToggleWishlist(item)}
+          className={`absolute top-2 right-2 p-2 rounded-full transition-colors z-20 ${
+            isWishlisted
+              ? 'text-red-500 bg-red-50'
+              : 'text-white/80 hover:text-white bg-black/20 hover:bg-black/40'
+          }`}
+          title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
+        >
+          <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-red-500' : ''}`} />
+        </button>
+
         {/* Admin upload overlay button */}
         {isAdmin && (
           <>
             <button
               onClick={() => setShowUpload(true)}
-              className="absolute top-2 right-2 bg-black/70 hover:bg-black text-white p-1.5 rounded-lg z-20 transition-colors"
+              className="absolute top-2 left-2 bg-black/70 hover:bg-black text-white p-1.5 rounded-lg z-20 transition-colors"
               title="Change image"
             >
               <Plus className="w-4 h-4" />
@@ -149,50 +160,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         )}
       </div>
 
-      {/* Top Header: Title & Badges & Wishlist */}
-      <div>
-        <div className="flex items-start justify-between gap-2 mb-1.5">
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-serif font-bold text-base text-[#000000] group-hover:text-[#000000] transition-colors">
-              {item.name}
-            </h3>
-
-            {item.badge && (
-              <span
-                className={`text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-xs ${
-                  item.badge === 'Chef Special'
-                    ? 'bg-[#000000] text-orange-300'
-                    : item.badge === 'Popular'
-                    ? 'bg-[#000000] text-white'
-                    : item.badge === 'Healthy'
-                    ? 'bg-[#000000] text-white'
-                    : 'bg-orange-100 text-[#000000]'
-                }`}
-              >
-                {item.badge}
-              </span>
-            )}
-          </div>
-
-          <button
-            onClick={() => onToggleWishlist(item)}
-            className={`p-1.5 rounded-full transition-colors shrink-0 ${
-              isWishlisted
-                ? 'text-red-500 bg-red-50'
-                : 'text-[#000000] hover:text-[#000000] hover:bg-[#FAF3E7]'
-            }`}
-            title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
-          >
-            <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-red-500' : ''}`} />
-          </button>
+      {/* Content */}
+      <div className="p-4 flex flex-col flex-grow">
+        <div className="flex items-start justify-between gap-2 mb-1">
+          <h3 className="font-bold text-sm text-[#000000] line-clamp-2 leading-snug">
+            {item.name}
+          </h3>
+          {item.badge && (
+            <span
+              className={`text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-xs shrink-0 ${
+                item.badge === 'Chef Special'
+                  ? 'bg-[#000000] text-orange-300'
+                  : item.badge === 'Popular'
+                  ? 'bg-[#000000] text-white'
+                  : item.badge === 'Healthy'
+                  ? 'bg-[#000000] text-white'
+                  : 'bg-orange-100 text-[#000000]'
+              }`}
+            >
+              {item.badge}
+            </span>
+          )}
         </div>
 
-        {/* Item Description */}
-        <p className="text-xs text-[#000000] leading-relaxed line-clamp-2">
-          {item.description}
-        </p>
-
-        {/* Portion / Size Option Selector (e.g. Medium / Large Pizza sizes) */}
+        {/* Portion / Size Option Selector */}
         {item.options && item.options.length > 0 && (
           <div className="mt-3 flex items-center gap-1.5 bg-[#FAF3E7] p-1 rounded-xl border border-[#EADECB]">
             {item.options.map((opt) => (
@@ -211,25 +202,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             ))}
           </div>
         )}
-      </div>
 
-      {/* Bottom Actions: Price & Add Button */}
-      <div className="mt-4 pt-3 border-t border-[#F3E8D8] flex items-center justify-between">
-        <div className="flex flex-col">
-          <span className="text-[10px] uppercase font-bold text-[#000000] tracking-wider">Price</span>
-          <span className="font-mono font-bold text-base sm:text-lg text-[#000000]">
+        {/* Price */}
+        <div className="mt-3">
+          <span className="font-mono font-bold text-sm text-[#000000]">
             KSh {currentPrice.toLocaleString()}
           </span>
         </div>
 
+        {/* Add Button */}
         <button
           onClick={handleAdd}
           disabled={addedAnimation}
-            className={`h-9 px-4 rounded-xl flex items-center gap-1.5 font-bold text-xs text-white smooth-btn shadow-sm ${
-              addedAnimation
-                ? 'bg-[#000000]'
-                : 'bg-[#000000] hover:bg-[#000000]'
-            }`}
+          className={`w-full mt-3 py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-bold text-xs text-white smooth-btn shadow-sm ${
+            addedAnimation
+              ? 'bg-[#000000]'
+              : 'bg-[#000000] hover:bg-[#000000]'
+          }`}
           title="Add to cart"
         >
           {addedAnimation ? (
@@ -245,7 +234,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           )}
         </button>
       </div>
-
     </div>
   );
 };
