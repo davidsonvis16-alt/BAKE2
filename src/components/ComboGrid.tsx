@@ -1,14 +1,15 @@
 import React from 'react';
 import { ShoppingBag } from 'lucide-react';
-import { MENU_ITEMS } from '../data/menuData';
+import { useMenuData } from '../hooks/useMenuData';
 
 interface ComboGridProps {
   onAddToCart: (itemId: string) => void;
 }
 
 export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
-  const grandFeast = MENU_ITEMS.find((i) => i.id === 'bbq2') || MENU_ITEMS[0];
-  const tikkaPizza = MENU_ITEMS.find((i) => i.id === 'p2') || MENU_ITEMS[0];
+  const { menuItems } = useMenuData();
+  const grandFeast = menuItems.find((i) => i.id === 'bbq2') || menuItems[0];
+  const tikkaPizza = menuItems.find((i) => i.id === 'p2') || menuItems[0];
 
   return (
     <section className="py-6 px-4 max-w-7xl mx-auto">

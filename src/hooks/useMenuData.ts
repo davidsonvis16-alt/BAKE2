@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { CATEGORIES, MENU_ITEMS } from '../data/menuData';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { Category, MenuItem } from '../types';
-
-const IMAGE_OVERRIDE_KEY = 'bakemart_menu_image_overrides';
 
 export function useMenuData() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -11,24 +10,51 @@ export function useMenuData() {
 
   useEffect(() => {
     setCategories(CATEGORIES);
-    let overrides: Record<string, string> = {};
-    try {
-      const raw = localStorage.getItem(IMAGE_OVERRIDE_KEY);
-      if (raw) overrides = JSON.parse(raw);
-    } catch {
-      overrides = {};
+    const base = MENU_ITEMS;
+
+    if (!isSupabaseConfigured || !supabase) {
+      setMenuItems(base);
+      setLoading(false);
+      return;
     }
 
-    const merged: MenuItem[] = MENU_ITEMS.map((item) => {
-      const override = overrides[item.id];
-      if (override) {
-        return { ...item, image: override };
-      }
-      return item;
-    });
+    let cancelled = false;
 
-    setMenuItems(merged);
-    setLoading(false);
+    supabase
+      .from('menu_items')
+      .select('id, image')
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (error || !data) {
+          setMenuItems(base);
+          setLoading(false);
+          return;
+        }
+        const remoteImages: Record<string, string> = {};
+        for (const row of data) {
+          if (row.id && row.image) {
+            remoteImages[row.id] = row.image;
+          }
+        }
+        const merged: MenuItem[] = base.map((item) => {
+          const remote = remoteImages[item.id];
+          if (remote) {
+            return { ...item, image: remote };
+          }
+          return item;
+        });
+        setMenuItems(merged);
+        setLoading(false);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setMenuItems(base);
+        setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return { categories, menuItems, loading };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Category } from '../types';
-import { MENU_ITEMS, CATEGORIES } from '../data/menuData';
+import { CATEGORIES } from '../data/menuData';
+import { useMenuData } from '../hooks/useMenuData';
 import { ChevronRight, Utensils } from 'lucide-react';
 import { ImageWithSkeleton } from './Skeletons';
 
@@ -13,7 +14,8 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   category,
   onSelectCategory,
 }) => {
-  const categoryItems = MENU_ITEMS.filter((i) => i.category === category.id);
+  const { menuItems } = useMenuData();
+  const categoryItems = menuItems.filter((i) => i.category === category.id);
   const minPrice = categoryItems.length > 0
     ? Math.min(...categoryItems.map((i) => i.price))
     : 0;

@@ -18,7 +18,8 @@ import { About } from './components/About';
 import { FAQ } from './components/FAQ';
 import { FeatureCards } from './components/FeatureCards';
 import { useAuth } from './components/AuthContext';
-import { MENU_ITEMS, CATEGORIES } from './data/menuData';
+import { CATEGORIES } from './data/menuData';
+import { useMenuData } from './hooks/useMenuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
 import { ShoppingBag, Send } from 'lucide-react';
 import { PopularItemsPopup } from './components/PopularItemsPopup';
@@ -27,6 +28,7 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const { session, loading, isAdmin } = useAuth();
+  const { menuItems } = useMenuData();
   const [searchQuery, setSearchQuery] = useState('');
 
   const path = location.pathname;
@@ -163,7 +165,7 @@ export default function App() {
 
   // Add item by ID helper
   const handleAddToCartById = (itemId: string) => {
-    const item = MENU_ITEMS.find((i) => i.id === itemId);
+    const item = menuItems.find((i) => i.id === itemId);
     if (item) {
       handleAddToCart(item);
       setIsCartOpen(true);
@@ -209,7 +211,7 @@ export default function App() {
     navigate('/reservation');
   };
 
-  const wishlistItems = MENU_ITEMS.filter((i) => wishlistIds.includes(i.id));
+  const wishlistItems = menuItems.filter((i) => wishlistIds.includes(i.id));
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   // Admin route protection

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { CATEGORIES, MENU_ITEMS } from '../data/menuData';
+import { CATEGORIES } from '../data/menuData';
+import { useMenuData } from '../hooks/useMenuData';
 import { ProductCard } from './ProductCard';
 import { MenuItem, MenuItemOption } from '../types';
 import { ProductCardSkeleton, TicketListItemSkeleton, ImageWithSkeleton } from './Skeletons';
@@ -40,6 +41,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
   onAddToCart,
   onToggleWishlist,
 }) => {
+  const { menuItems } = useMenuData();
   const [categorySearch, setCategorySearch] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'ticket'>('grid');
   const [selectedSubFilter, setSelectedSubFilter] = useState<string>('all');
@@ -82,7 +84,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
 
   // Generate sub-filter tags dynamically based on category
   const subFilters = useMemo(() => {
-    const items = MENU_ITEMS.filter((i) => i.category === categoryId);
+    const items = menuItems.filter((i) => i.category === categoryId);
     if (categoryId === 'pizza-pasta') {
       return [
         { id: 'all', label: 'All Items' },
@@ -105,11 +107,11 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
       ];
     }
     return [{ id: 'all', label: 'All Items' }];
-  }, [categoryId]);
+  }, [categoryId, menuItems]);
 
   // All items belonging to current category
   const categoryItems = useMemo(() => {
-    return MENU_ITEMS.filter((item) => {
+    return menuItems.filter((item) => {
       if (item.category !== categoryId) return false;
 
       // Filter by search
@@ -214,7 +216,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
 
             <div className="pt-1 flex items-center gap-3 text-xs text-orange-300 font-bold">
               <span className="bg-[#000000] px-3 py-1 rounded-lg border border-neutral-700/60">
-                {MENU_ITEMS.filter((i) => i.category === categoryId).length} Available Items
+                {menuItems.filter((i) => i.category === categoryId).length} Available Items
               </span>
               <span className="text-orange-400">
                 Freshly Prepared Daily
