@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -22,6 +22,8 @@ import { MenuItem, MenuItemOption, CartItem } from './types';
 import { ShoppingBag, Send } from 'lucide-react';
 import { TicketTracking } from './components/TicketTracking';
 import { PopularItemsPopup } from './components/PopularItemsPopup';
+import { LoginModal } from './components/LoginModal';
+import { CustomerProfileModal } from './components/CustomerProfileModal';
 
 export default function App() {
   const navigate = useNavigate();
@@ -70,7 +72,13 @@ export default function App() {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(false);
   const [isTicketTrackingOpen, setIsTicketTrackingOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [showPopularPopup, setShowPopularPopup] = useState(false);
+  const [cartButtonPosition, setCartButtonPosition] = useState<{ x: number; y: number } | null>(null);
+  const handleCartButtonRef = useCallback((rect: DOMRect | null) => {
+    setCartButtonPosition(rect ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 } : null);
+  }, []);
 
   const handleReorderBatch = (orderItems: { item: MenuItem; quantity: number; optionName?: string }[]) => {
     setCartItems((prevCart) => {
@@ -136,16 +144,6 @@ export default function App() {
       return () => clearTimeout(timer);
     }
   }, [path, prevPath]);
-
-  // Show popular items popup for logged-in admin
-  useEffect(() => {
-    if (!loading && session && !showPopularPopup) {
-      const timer = setTimeout(() => {
-        setShowPopularPopup(true);
-      }, 800);
-      return () => clearTimeout(timer);
-    }
-  }, [loading, session, showPopularPopup]);
 
   // Handle category selection - triggers unfolding category page
   const handleSelectCategory = (catId: string) => {
@@ -270,8 +268,9 @@ export default function App() {
         onNavigateGallery={() => navigate('/gallery')}
         onNavigateAbout={() => navigate('/about')}
         onNavigateFAQ={() => navigate('/faq')}
-        onOpenLogin={() => {}}
+        onOpenLogin={() => setIsLoginOpen(true)}
         onOpenTicketTracking={() => setIsTicketTrackingOpen(true)}
+        onCartButtonRef={handleCartButtonRef}
       />
 
       {/* Main Page Content */}
@@ -419,10 +418,11 @@ export default function App() {
         onClose={() => setIsTicketTrackingOpen(false)}
       />
 
-      {/* Popular Items Popup for Admin */}
+      {/* Popular Items Popup for all visitors */}
       <PopularItemsPopup
-        isOpen={showPopularPopup}
         onClose={() => setShowPopularPopup(false)}
+        onAddToCart={handleAddToCart}
+        cartButtonPosition={cartButtonPosition}
       />
 
       {/* Sticky Bottom Cart Bar for Mobile */}

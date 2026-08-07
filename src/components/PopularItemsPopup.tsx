@@ -1,143 +1,246 @@
-import React from 'react';
-import { X, Star, Clock, TrendingUp } from 'lucide-react';
-import { MENU_ITEMS } from '../data/menuData';
-import { useAuth } from './AuthContext';
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, X, Flame, ShoppingBag } from 'lucide-react';
+import { useMenuData } from '../hooks/useMenuData';
+import { supabase } from '../lib/supabase';
+import { MenuItem } from '../types';
+
+const SESSION_KEY = 'bakemart_popular_seen';
+const FALLBACK_ITEM_IDS = ['s6', 'bbq1'];
 
 interface PopularItemsPopupProps {
-  isOpen: boolean;
   onClose: () => void;
+  onAddToCart: (item: MenuItem, selectedOption?: any) => void;
+  cartButtonPosition?: { x: number; y: number } | null;
 }
 
-export const PopularItemsPopup: React.FC<PopularItemsPopupProps> = ({ isOpen, onClose }) => {
-  const { isAdmin } = useAuth();
+export const PopularItemsPopup: React.FC<PopularItemsPopupProps> = ({
+  onClose,
+  onAddToCart,
+  cartButtonPosition,
+}) => {
+  const { menuItems, loading: menuLoading } = useMenuData();
+  const [isOpen, setIsOpen] = useState(false);
+  const [items, setItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [flyingItem, setFlyingItem] = useState<{
+    id: string;
+    startX: number;
+    startY: number;
+  } | null>(null);
 
-  if (!isOpen || !isAdmin) return null;
+  useEffect(() => {
+    const alreadySeen = sessionStorage.getItem(SESSION_KEY);
+    if (alreadySeen || menuLoading) return;
+    fetchPopularItems();
+  }, [menuLoading]);
 
-  const popularItems = MENU_ITEMS.filter(
-    (item) => item.badge === 'Popular' || item.badge === 'Chef Special'
-  ).slice(0, 4);
+  async function fetchPopularItems() {
+    if (!supabase) {
+      showItemsForIds(FALLBACK_ITEM_IDS);
+      return;
+    }
 
-  const today = new Date().toLocaleDateString('en-KE', {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric',
-  });
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('items');
+
+    if (error || !orders) {
+      showItemsForIds(FALLBACK_ITEM_IDS);
+      return;
+    }
+
+    const totals: Record<string, number> = {};
+    for (const order of orders) {
+      const lineItems = Array.isArray(order.items) ? order.items : [];
+      for (const li of lineItems) {
+        const id = li.id ?? li.product_id ?? li.item_id;
+        const qty = Number(li.quantity ?? li.qty ?? 1);
+        if (!id) continue;
+        totals[id] = (totals[id] || 0) + qty;
+      }
+    }
+
+    const rankedIds = Object.entries(totals)
+      .sort((a, b) => Number(b[1]) - Number(a[1]))
+      .slice(0, 2)
+      .map(([id]) => id);
+
+    const idsToUse = rankedIds.length > 0 ? rankedIds : FALLBACK_ITEM_IDS;
+    showItemsForIds(idsToUse);
+  }
+
+  function showItemsForIds(ids: string[]) {
+    const ordered = ids
+      .map((id) => menuItems.find((m) => m.id === id))
+      .filter(Boolean) as MenuItem[];
+    setItems(ordered);
+    setLoading(false);
+    if (ordered.length > 0) {
+      setIsOpen(true);
+    }
+  }
+
+  function handleClose() {
+    setIsOpen(false);
+    sessionStorage.setItem(SESSION_KEY, 'true');
+  }
+
+  const handleAddToCart = useCallback(
+    (item: MenuItem, e: React.MouseEvent) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const target = cartButtonPosition;
+
+      if (target) {
+        setFlyingItem({
+          id: item.id,
+          startX: rect.left + rect.width / 2,
+          startY: rect.top + rect.height / 2,
+        });
+      }
+
+      setTimeout(() => {
+        onAddToCart(item);
+        setFlyingItem(null);
+      }, 500);
+    },
+    [onAddToCart, cartButtonPosition]
+  );
+
+  if (loading || !isOpen || items.length === 0) return null;
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
-
-      {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-in">
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-1.5 rounded-full bg-white/90 hover:bg-white text-[#000000] shadow-sm transition-colors"
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[70] flex items-center justify-center p-4"
+          onClick={handleClose}
         >
-          <X className="w-5 h-5" />
-        </button>
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={handleClose}
+          />
 
-        {/* Header */}
-        <div className="bg-[#000000] text-white p-6 rounded-t-2xl relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-orange-300 rounded-full blur-2xl" />
-          </div>
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-2">
-              <TrendingUp className="w-5 h-5 text-orange-300" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-orange-300">
-                Trending Now
-              </span>
+          {/* Modal Card */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 space-y-5 animate-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={handleClose}
+              className="absolute top-4 right-4 p-1 rounded-full text-[#000000]/40 hover:text-[#000000] hover:bg-[#FAF3E7] transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Header */}
+            <div className="text-center">
+              <div className="w-12 h-12 rounded-full bg-[#000000] flex items-center justify-center mx-auto mb-3">
+                <Flame className="w-6 h-6 text-orange-300" />
+              </div>
+              <h2 className="font-display font-bold text-xl text-[#000000]">
+                Customer Favorites
+              </h2>
+              <p className="text-xs text-[#000000]/60 mt-1">
+                Top picks from today&apos;s orders
+              </p>
             </div>
-            <h2 className="font-display font-bold text-2xl text-white mb-1">Popular This Week</h2>
-            <p className="text-xs text-orange-200/80 flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5" />
-              Updated {today}
-            </p>
-          </div>
-        </div>
 
-        {/* Content */}
-        <div className="p-5">
-          <div className="grid grid-cols-2 gap-3">
-            {popularItems.map((item, idx) => (
-              <div
-                key={item.id}
-                className="group bg-white border border-[#EADECB] rounded-xl overflow-hidden hover:border-[#000000]/60 hover:shadow-md transition-all"
-              >
-                {/* Image */}
-                <div className="relative h-28 bg-[#FAF3E7] overflow-hidden">
-                  {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Star className="w-8 h-8 text-[#000000]/20" />
-                    </div>
-                  )}
-                  {/* Badge */}
-                  {item.badge && (
-                    <span className="absolute top-2 left-2 bg-[#000000] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
-                  {/* Rank */}
-                  <span className="absolute top-2 right-2 w-6 h-6 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center">
-                    {idx + 1}
-                  </span>
-                </div>
+            {/* Cards Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  {/* Image Container */}
+                  <div className="relative aspect-square overflow-hidden bg-[#FAF3E7]">
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <ShoppingBag className="w-12 h-12 text-[#000000]/20" />
+                      </div>
+                    )}
 
-                {/* Info */}
-                <div className="p-3">
-                  <h4 className="font-display font-bold text-xs text-[#000000] truncate mb-1">
-                    {item.name}
-                  </h4>
-                  <p className="text-[10px] text-[#000000]/50 line-clamp-2 mb-2">
-                    {item.description || 'Freshly prepared at BakeMart Coffee House'}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono font-bold text-xs text-[#000000]">
-                      KSh {item.price.toLocaleString()}
+                    {/* Popular Badge */}
+                    <span className="absolute top-2.5 left-2.5 bg-[#000000] text-white text-[9px] font-bold px-2.5 py-1 rounded-full tracking-wider">
+                      POPULAR
                     </span>
-                    <div className="flex items-center gap-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-3 h-3 text-orange-400 fill-orange-400"
-                        />
-                      ))}
-                    </div>
+
+                    {/* Add to Cart Button */}
+                    <button
+                      onClick={(e) => handleAddToCart(item, e)}
+                      className="absolute bottom-2.5 right-2.5 w-10 h-10 rounded-full bg-[#000000] hover:bg-[#000000] text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-all active:scale-90 z-10"
+                    >
+                      <Plus className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Item Info */}
+                  <div className="p-3.5">
+                    <h3 className="font-display font-bold text-sm text-[#000000] truncate mb-1">
+                      {item.name}
+                    </h3>
+                    <p className="font-mono font-bold text-sm text-[#F97316]">
+                      KSh {item.price?.toLocaleString() || '—'}
+                    </p>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* CTA */}
-          <div className="mt-5 pt-4 border-t border-[#EADECB] text-center">
-            <p className="text-[10px] text-[#000000]/50 mb-3">
-              These are the most ordered items this week
-            </p>
+            {/* Flying Item Animation */}
+            <AnimatePresence>
+              {flyingItem && cartButtonPosition && (
+                <motion.div
+                  initial={{
+                    position: 'fixed',
+                    left: flyingItem.startX - 15,
+                    top: flyingItem.startY - 15,
+                    width: 30,
+                    height: 30,
+                    borderRadius: '50%',
+                    backgroundColor: '#000000',
+                    zIndex: 9999,
+                    opacity: 1,
+                  }}
+                  animate={{
+                    left: cartButtonPosition.x - 15,
+                    top: cartButtonPosition.y - 15,
+                    scale: [1, 1.2, 0.5, 0.1],
+                    opacity: [1, 1, 0.8, 0],
+                  }}
+                  transition={{ duration: 0.5, ease: 'easeInOut' }}
+                  onAnimationComplete={() => setFlyingItem(null)}
+                  className="fixed pointer-events-none"
+                />
+              )}
+            </AnimatePresence>
+
+            {/* Bottom CTA */}
             <button
-              onClick={onClose}
-              className="bg-[#000000] hover:bg-neutral-800 text-white text-xs font-bold py-2.5 px-6 rounded-full transition-colors shadow-md"
+              onClick={handleClose}
+              className="w-full bg-[#000000] hover:bg-neutral-800 text-white font-bold text-sm py-3 rounded-full transition-all shadow-md hover:shadow-lg active:scale-[0.98]"
             >
-              Continue Browsing
+              View Full Menu
             </button>
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };

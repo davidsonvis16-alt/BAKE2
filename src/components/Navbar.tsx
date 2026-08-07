@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { Search, ShoppingBag, Heart, Calendar, Menu, X, Phone, LogIn, Ticket } from 'lucide-react';
+import React, { useState, useLayoutEffect, useRef, useCallback } from 'react';
+import { Search, ShoppingBag, Heart, Calendar, Menu, X, Phone, LogIn, User, Ticket } from 'lucide-react';
+import { useAuth } from './AuthContext';
+import { LoginModal } from './LoginModal';
+import { CustomerProfileModal } from './CustomerProfileModal';
 
 interface NavbarProps {
   searchQuery: string;
@@ -18,6 +21,7 @@ interface NavbarProps {
   onNavigateFAQ: () => void;
   onOpenLogin: () => void;
   onOpenTicketTracking: () => void;
+  onCartButtonRef?: (rect: DOMRect | null) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -37,8 +41,40 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateFAQ,
   onOpenLogin,
   onOpenTicketTracking,
+  onCartButtonRef,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const cartButtonRef = useRef<HTMLButtonElement>(null);
+  const lastRectRef = useRef<{ left: number; top: number; width: number; height: number } | null>(null);
+  const { session, isAdmin, isCustomer, logout } = useAuth();
+
+  const reportCartButtonRect = useCallback(() => {
+    if (!onCartButtonRef || !cartButtonRef.current) return;
+    const rect = cartButtonRef.current.getBoundingClientRect();
+    const last = lastRectRef.current;
+    if (last && last.left === rect.left && last.top === rect.top && last.width === rect.width && last.height === rect.height) {
+      return;
+    }
+    lastRectRef.current = { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+    onCartButtonRef(rect);
+  }, [onCartButtonRef]);
+
+  useLayoutEffect(() => {
+    reportCartButtonRect();
+
+    const handleResize = () => reportCartButtonRect();
+    const handleScroll = () => reportCartButtonRect();
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleScroll, true);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [reportCartButtonRect]);
 
   const navItems = [
     { label: 'Home', onClick: onNavigateHome, active: activePage === 'home' },
@@ -124,6 +160,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Ticket className="w-5 h-5" />
           </button>
 
+          {/* Customer Profile or Login */}
+          {isCustomer && !isAdmin ? (
+            <button
+              onClick={() => setIsProfileOpen(true)}
+              className="hidden sm:flex items-center gap-2 bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] border border-[#D8C7B0] font-bold text-xs px-3 py-2 rounded-full smooth-btn shadow-xs"
+            >
+              <User className="w-4 h-4" />
+              <span>Profile</span>
+            </button>
+          ) : !session && !isAdmin ? (
+            <button
+              onClick={() => setIsLoginOpen(true)}
+              className="hidden sm:flex items-center gap-2 bg-[#000000] hover:bg-[#000000] text-white font-bold text-xs px-4 py-2 rounded-full smooth-btn shadow-md"
+            >
+              <LogIn className="w-4 h-4" />
+              <span>Sign In</span>
+            </button>
+          ) : null}
+
           {/* Hamburger Menu Button (Mobile) */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -159,6 +214,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Cart Icon Button */}
           <button
             onClick={onOpenCart}
+            ref={cartButtonRef}
             className="relative flex items-center gap-2 bg-[#000000] hover:bg-[#000000] text-white px-3.5 py-2 rounded-full font-bold text-xs md:text-sm smooth-btn shadow-md"
           >
             <ShoppingBag className="w-4 h-4 text-orange-300" />
@@ -225,6 +281,19 @@ export const Navbar: React.FC<NavbarProps> = ({
           />
         </div>
       </div>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onSuccess={() => setIsLoginOpen(false)}
+      />
+
+      {/* Customer Profile Modal */}
+      <CustomerProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+      />
     </header>
   );
 };
