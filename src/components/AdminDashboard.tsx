@@ -178,12 +178,12 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#FAF3E7] pb-20">
-      <header className="bg-white border-b border-[#000000]/10 sticky top-0 z-10">
+      <header className="bg-white border-b border-[#EADECB] sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="font-serif-display text-xl font-bold text-[#000000]">BakeMart Menu Manager</h1>
+          <h1 className="font-serif text-xl font-bold text-[#000000]">BakeMart Menu Manager</h1>
           <button
             onClick={logout}
-            className="flex items-center gap-2 text-sm text-[#000000]/60 hover:text-[#000000]"
+            className="flex items-center gap-2 text-sm text-[#000000]/60 hover:text-[#000000] font-semibold"
           >
             <LogOut className="w-4 h-4" /> Sign Out
           </button>
@@ -194,7 +194,7 @@ export const AdminDashboard: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <button
             onClick={() => setShowAddForm(!showAddForm)}
-            className="flex items-center gap-2 bg-[#000000] text-white px-5 py-2.5 rounded-full font-semibold hover:bg-[#000000]/90"
+            className="flex items-center gap-2 bg-[#000000] text-white px-5 py-2.5 rounded-full font-semibold hover:bg-[#000000]/90 shadow-md transition-all active:scale-95"
           >
             <Plus className="w-4 h-4" /> Add New Item
           </button>
@@ -206,34 +206,34 @@ export const AdminDashboard: React.FC = () => {
               placeholder="Search items..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full sm:w-80 bg-white border border-[#000000]/10 rounded-full pl-9 pr-4 py-2 text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000]/40 transition-colors"
+              className="w-full sm:w-80 bg-white border border-[#D8C7B0] rounded-full pl-9 pr-4 py-2 text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors"
             />
           </div>
         </div>
 
         {showAddForm && (
-          <div className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-[#000000]/10 space-y-3">
+          <div className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-[#EADECB] space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <input placeholder="ID (e.g. b16)" value={newItem.id}
                 onChange={(e) => setNewItem({ ...newItem, id: e.target.value })}
-                className="border rounded-lg px-3 py-2" />
+                className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
               <input placeholder="Category id (e.g. bakery-desserts)" value={newItem.category}
                 onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-                className="border rounded-lg px-3 py-2" />
+                className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
             </div>
             <input placeholder="Item name" value={newItem.name}
               onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-              className="border rounded-lg px-3 py-2 w-full" />
+              className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
             <textarea placeholder="Description" value={newItem.description}
               onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
-              className="border rounded-lg px-3 py-2 w-full" />
+              className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full text-xs text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
             <div className="grid grid-cols-2 gap-3">
               <input type="number" placeholder="Price (KSh)" value={newItem.price || ''}
                 onChange={(e) => setNewItem({ ...newItem, price: Number(e.target.value) })}
-                className="border rounded-lg px-3 py-2" />
+                className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
               <input placeholder="Badge (optional)" value={newItem.badge}
                 onChange={(e) => setNewItem({ ...newItem, badge: e.target.value })}
-                className="border rounded-lg px-3 py-2" />
+                className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-[#000000]/70 mb-1">Item Image</label>
@@ -253,7 +253,7 @@ export const AdminDashboard: React.FC = () => {
               )}
             </div>
             <button onClick={addItem}
-              className="bg-[#000000] text-white px-4 py-2 rounded-full font-semibold">
+              className="bg-[#000000] text-white px-5 py-2.5 rounded-full font-semibold shadow-md transition-all active:scale-95">
               Save Item
             </button>
           </div>
@@ -267,28 +267,28 @@ export const AdminDashboard: React.FC = () => {
           <div className="space-y-10">
             {categoryNames.map((catId) => (
               <section key={catId}>
-                <h2 className="text-sm font-bold uppercase tracking-wider text-[#000000] mb-3 border-b border-[#000000]/10 pb-2">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-[#000000] mb-3 border-b border-[#EADECB] pb-2">
                   {formatCategoryLabel(catId)} <span className="text-[#000000]/40 font-normal">({groupedItems[catId].length})</span>
                 </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {groupedItems[catId].map((item) => (
-                    <div key={item.id} className="bg-white rounded-xl p-4 shadow-sm border border-[#000000]/10 flex flex-col">
+                    <div key={item.id} className="bg-white rounded-xl p-4 shadow-sm border border-[#EADECB] flex flex-col">
                       {editingId === item.id ? (
                         <div className="space-y-2">
                           <input value={editForm.name || ''}
                             onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                            className="border rounded-lg px-3 py-2 w-full font-semibold text-sm" />
+                            className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full font-semibold text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
                           <textarea value={editForm.description || ''}
                             onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                            className="border rounded-lg px-3 py-2 w-full text-xs" />
+                            className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full text-xs text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
                           <div className="flex gap-2">
                             <input type="number" value={editForm.price || 0}
                               onChange={(e) => setEditForm({ ...editForm, price: Number(e.target.value) })}
-                              className="border rounded-lg px-3 py-2 w-24 text-sm" />
+                              className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-24 text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
                             <input value={editForm.badge || ''} placeholder="Badge"
                               onChange={(e) => setEditForm({ ...editForm, badge: e.target.value })}
-                              className="border rounded-lg px-3 py-2 flex-1 text-sm" />
+                              className="border border-[#D8C7B0] rounded-lg px-3 py-2 flex-1 text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
                            </div>
                            <div className="flex gap-2">
                              <input type="file" accept="image/*"
@@ -306,63 +306,63 @@ export const AdminDashboard: React.FC = () => {
                                <p className="text-[10px] text-[#000000]/60">{editImage.name}</p>
                              )}
                            </div>
-                            <div className="flex gap-2 pt-1">
-                             <button onClick={saveEdit}
-                               className="flex items-center gap-1 bg-[#000000] text-white px-3 py-1.5 rounded-full text-xs font-semibold">
-                               <Save className="w-3.5 h-3.5" /> Save
-                             </button>
-                             <button onClick={cancelEdit}
-                               className="flex items-center gap-1 bg-gray-200 text-[#000000] px-3 py-1.5 rounded-full text-xs font-semibold">
-                               <X className="w-3.5 h-3.5" /> Cancel
-                             </button>
-                           </div>
-                         </div>
-                       ) : (
-                         <>
-                           <div className="flex-1">
-                             <div className="flex flex-wrap items-center gap-1.5 mb-1">
-                               <span className="font-semibold text-sm text-[#000000]">{item.name}</span>
-                               {item.badge && (
-                                 <span className="text-[9px] bg-[#000000]/40 text-[#000000] px-1.5 py-0.5 rounded-full font-semibold">
-                                   {item.badge}
-                                 </span>
-                               )}
-                               {!item.available && (
-                                 <span className="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-semibold">
-                                   Sold Out
-                                 </span>
-                               )}
-                             </div>
-                             <p className="text-xs text-[#000000]/50 line-clamp-2 mb-2">{item.description}</p>
-                             <span className="font-mono font-bold text-[#000000] text-sm">KSh {item.price}</span>
-                           </div>
+                           <div className="flex gap-2 pt-1">
+                            <button onClick={saveEdit}
+                              className="flex items-center gap-1 bg-[#000000] text-white px-4 py-2 rounded-full text-xs font-semibold shadow-md transition-all active:scale-95">
+                              <Save className="w-3.5 h-3.5" /> Save
+                            </button>
+                            <button onClick={cancelEdit}
+                              className="flex items-center gap-1 bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] px-4 py-2 rounded-full text-xs font-semibold border border-[#D8C7B0] transition-all active:scale-95">
+                              <X className="w-3.5 h-3.5" /> Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex-1">
+                            <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                              <span className="font-semibold text-sm text-[#000000]">{item.name}</span>
+                              {item.badge && (
+                                <span className="text-[9px] bg-[#000000]/40 text-[#000000] px-2 py-0.5 rounded-full font-semibold">
+                                  {item.badge}
+                                </span>
+                              )}
+                              {!item.available && (
+                                <span className="text-[9px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-semibold">
+                                  Sold Out
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-[#000000]/50 line-clamp-2 mb-2">{item.description}</p>
+                            <span className="font-mono font-bold text-[#000000] text-sm">KSh {item.price.toLocaleString()}</span>
+                          </div>
 
-                           <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-[#000000]/10">
-                             <button
-                               onClick={() => toggleAvailable(item)}
-                               className={`text-[10px] px-2 py-1.5 rounded-full font-semibold transition-all ${
-                                 item.available
-                                   ? 'bg-green-100 text-green-700 hover:bg-green-200 active:scale-95'
-                                   : 'bg-red-100 text-red-600 hover:bg-red-200 active:scale-95'
-                               }`}
-                             >
-                                {item.available ? (
-                                  <span className="flex items-center gap-1"><Check className="w-3.5 h-3.5" /> Avail</span>
-                                ) : (
-                                  <span className="flex items-center gap-1"><X className="w-3.5 h-3.5" /> Sold</span>
-                                )}
-                             </button>
-                             <button onClick={() => startEdit(item)}
-                               className="text-[10px] bg-gray-100 hover:bg-gray-200 px-2 py-1.5 rounded-full font-semibold text-[#000000] active:scale-95 transition-all">
-                               Edit
-                             </button>
-                             <button onClick={() => deleteItem(item.id)}
-                               className="text-red-500 hover:bg-red-50 p-1.5 rounded-full active:scale-95 transition-all ml-auto">
-                               <Trash2 className="w-3.5 h-3.5" />
-                             </button>
-                           </div>
-                         </>
-                       )}
+                          <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-[#EADECB]">
+                            <button
+                              onClick={() => toggleAvailable(item)}
+                              className={`text-[10px] px-2.5 py-1.5 rounded-full font-semibold transition-all ${
+                                item.available
+                                  ? 'bg-green-100 text-green-700 hover:bg-green-200 active:scale-95'
+                                  : 'bg-red-100 text-red-600 hover:bg-red-200 active:scale-95'
+                              }`}
+                            >
+                               {item.available ? (
+                                 <span className="flex items-center gap-1"><Check className="w-3.5 h-3.5" /> Avail</span>
+                               ) : (
+                                 <span className="flex items-center gap-1"><X className="w-3.5 h-3.5" /> Sold</span>
+                               )}
+                            </button>
+                            <button onClick={() => startEdit(item)}
+                              className="text-[10px] bg-[#FAF3E7] hover:bg-[#EADECB] px-2.5 py-1.5 rounded-full font-semibold text-[#000000] border border-[#D8C7B0] active:scale-95 transition-all">
+                              Edit
+                            </button>
+                            <button onClick={() => deleteItem(item.id)}
+                              className="text-red-500 hover:bg-red-50 p-1.5 rounded-full active:scale-95 transition-all ml-auto">
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   ))}
                 </div>
