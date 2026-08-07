@@ -183,23 +183,31 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           )}
         </div>
 
+        {item.description && (
+          <p className="text-xs text-[#000000]/70 leading-relaxed line-clamp-2 mb-3">
+            {item.description}
+          </p>
+        )}
+
         {/* Portion / Size Option Selector */}
         {item.options && item.options.length > 0 && (
-          <div className="mt-3 flex items-center gap-1.5 bg-[#FAF3E7] p-1 rounded-xl border border-[#EADECB]">
-            {item.options.map((opt) => (
-              <button
-                key={opt.name}
-                type="button"
-                onClick={() => setSelectedOption(opt)}
-                className={`flex-1 text-[11px] font-bold py-1 px-2 rounded-lg smooth-btn ${
-                  selectedOption?.name === opt.name
-                    ? 'bg-[#000000] text-white shadow-xs'
-                    : 'text-[#000000] hover:bg-[#EADECB]'
-                }`}
-              >
-                {opt.name} (KSh {opt.price})
-              </button>
-            ))}
+          <div className="mt-auto pt-2">
+            <div className="flex items-center gap-1.5 bg-[#FAF3E7] p-1 rounded-xl border border-[#EADECB]">
+              {item.options.map((opt) => (
+                <button
+                  key={opt.name}
+                  type="button"
+                  onClick={() => setSelectedOption(opt)}
+                  className={`flex-1 text-[11px] font-bold py-1 px-2 rounded-lg smooth-btn ${
+                    selectedOption?.name === opt.name
+                      ? 'bg-[#000000] text-white shadow-xs'
+                      : 'text-[#000000] hover:bg-[#EADECB]'
+                  }`}
+                >
+                  {opt.name}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 

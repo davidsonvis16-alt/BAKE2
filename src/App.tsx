@@ -16,6 +16,7 @@ import { Login } from './components/Login';
 import { Gallery } from './components/Gallery';
 import { About } from './components/About';
 import { FAQ } from './components/FAQ';
+import { FeatureCards } from './components/FeatureCards';
 import { useAuth } from './components/AuthContext';
 import { MENU_ITEMS, CATEGORIES } from './data/menuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
@@ -344,6 +345,9 @@ export default function App() {
             <Hero
               onScrollToMenu={() => navigate('/menu')}
             />
+
+            {/* Feature Cards */}
+            <FeatureCards />
 
             {/* Category Quick Nav Hub - 1 card per category with representative image */}
             <CategoryQuickNav
