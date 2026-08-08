@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { CategoryQuickNav } from './components/CategoryQuickNav';
+import { CategoryPlatterNav } from './components/CategoryPlatterNav';
 import { PromoBanner } from './components/PromoBanner';
 import { ComboGrid } from './components/ComboGrid';
 import { MenuSection } from './components/MenuSection';
@@ -372,11 +372,13 @@ export default function App() {
              {/* Feature Cards */}
              <FeatureCards onNavigateReservation={handleOpenReservation} />
 
-            {/* Category Quick Nav Hub - 1 card per category with representative image */}
-            <CategoryQuickNav
-              selectedCategory={selectedCategory}
-              onSelectCategory={handleSelectCategory}
-            />
+             {/* Category Platter Nav Hub */}
+             <CategoryPlatterNav
+               categories={CATEGORIES}
+               menuItems={menuItems}
+               selectedCategory={selectedCategory}
+               onSelectCategory={handleSelectCategory}
+             />
 
             {/* BBQ Promo Banner */}
             <PromoBanner

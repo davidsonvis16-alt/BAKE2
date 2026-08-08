@@ -168,23 +168,28 @@ export const PopularItemsPopup: React.FC<PopularItemsPopupProps> = ({
                   className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
                 >
                   {/* Image Container */}
-                  <div className="relative aspect-square overflow-hidden bg-[#FAF3E7]">
+                  <div className="relative aspect-square bg-white">
                     {item.image ? (
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="max-w-[85%] max-h-[85%] object-contain group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
                     ) : (
-                      <img
-                        src={FALLBACK_IMAGES[item.id] || '/placeholder-food.jpg'}
-                        alt={item.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-16 h-16 rounded-full bg-[#FAF3E7] flex items-center justify-center">
+                          <span className="text-2xl">🍽️</span>
+                        </div>
+                      </div>
                     )}
 
+                    {/* Subtle shadow beneath food */}
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-3/4 h-3 bg-black/5 rounded-full blur-md pointer-events-none" />
+
                     {/* Popular Badge */}
-                    <span className="absolute top-2.5 left-2.5 bg-[#000000] text-white text-[9px] font-bold px-2.5 py-1 rounded-full tracking-wider">
+                    <span className="absolute top-2.5 left-2.5 bg-[#000000] text-white text-[9px] font-bold px-2.5 py-1 rounded-full tracking-wider z-10">
                       POPULAR
                     </span>
 

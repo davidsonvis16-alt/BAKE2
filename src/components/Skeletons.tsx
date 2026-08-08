@@ -12,8 +12,15 @@ export const Skeleton: React.FC<{ className?: string }> = ({ className = '' }) =
 // 1. Product Card Skeleton
 export const ProductCardSkeleton: React.FC = () => {
   return (
-    <div className="bg-white rounded-2xl p-3 sm:p-4 border border-[#EADECB] shadow-2xs flex flex-col justify-between h-full space-y-3">
-      <div>
+    <div className="bg-white rounded-2xl border border-[#EADECB] shadow-2xs flex flex-col h-full">
+      {/* Image area skeleton */}
+      <div className="relative w-full h-52 sm:h-48 md:h-56 bg-[#E6D8C5] animate-pulse">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-16 h-16 rounded-full bg-white/40" />
+        </div>
+      </div>
+
+      <div className="p-3 sm:p-4 flex flex-col justify-between flex-grow space-y-3">
         {/* Title & Badge */}
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2 flex-1">
@@ -34,15 +41,15 @@ export const ProductCardSkeleton: React.FC = () => {
           <Skeleton className="h-5 flex-1 rounded-lg" />
           <Skeleton className="h-5 flex-1 rounded-lg" />
         </div>
-      </div>
 
-      {/* Bottom Price & Button */}
-      <div className="pt-2 border-t border-[#F3E8D8] flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
-        <div className="space-y-1">
-          <Skeleton className="h-2.5 w-10" />
-          <Skeleton className="h-4 w-16" />
+        {/* Bottom Price & Button */}
+        <div className="pt-2 border-t border-[#F3E8D8] flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
+          <div className="space-y-1">
+            <Skeleton className="h-2.5 w-10" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+          <Skeleton className="h-8 w-full xs:w-20 rounded-full" />
         </div>
-        <Skeleton className="h-8 w-full xs:w-20 rounded-full" />
       </div>
     </div>
   );

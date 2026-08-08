@@ -2,8 +2,9 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useMenuData } from '../hooks/useMenuData';
 import { ProductCard } from './ProductCard';
 import { MenuItem, MenuItemOption } from '../types';
-import { LayoutGrid, List, Search, Coffee, Cake, GlassWater, Egg, UtensilsCrossed, Beef, Flame, Pizza, Sandwich, Drumstick, Soup, Utensils } from 'lucide-react';
+import { LayoutGrid, List, Search } from 'lucide-react';
 import { ProductCardSkeleton, TicketListItemSkeleton } from './Skeletons';
+import { CategoryPlatterNav } from './CategoryPlatterNav';
 
 interface MenuSectionProps {
   searchQuery: string;
@@ -34,24 +35,6 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
     }, 700);
     return () => clearTimeout(timer);
   }, [selectedCategory, searchQuery]);
-
-  // Map category icons dynamically
-  const getCategoryIcon = (id: string) => {
-    switch (id) {
-      case 'bakery-desserts': return <Cake className="w-3.5 h-3.5" />;
-      case 'juices-cocktails': return <GlassWater className="w-3.5 h-3.5" />;
-      case 'hot-cold-drinks': return <Coffee className="w-3.5 h-3.5" />;
-      case 'breakfast': return <Egg className="w-3.5 h-3.5" />;
-      case 'mains-meals': return <UtensilsCrossed className="w-3.5 h-3.5" />;
-      case 'light-snacks': return <Beef className="w-3.5 h-3.5" />;
-      case 'kienyeji-traditional': return <Flame className="w-3.5 h-3.5" />;
-      case 'pizza-pasta': return <Pizza className="w-3.5 h-3.5" />;
-      case 'sandwiches-wraps': return <Sandwich className="w-3.5 h-3.5" />;
-      case 'bbq-platters': return <Drumstick className="w-3.5 h-3.5" />;
-      case 'soups-salads': return <Soup className="w-3.5 h-3.5" />;
-      default: return <Utensils className="w-3.5 h-3.5" />;
-    }
-  };
 
   // Filter items by search query and category
   const filteredItems = useMemo(() => {
@@ -85,38 +68,13 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
         </p>
       </div>
 
-      {/* Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 touch-pan-x no-scrollbar">
-        <button
-          onClick={() => onSelectCategory('all')}
-          className={`shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors active:scale-95 ${
-            selectedCategory === 'all'
-              ? 'bg-[#000000] text-white'
-              : 'bg-white text-[#000000] border border-[#EADECB] hover:border-[#000000]'
-          }`}
-        >
-          <span>All Items</span>
-          <span className="ml-1.5 text-[10px] opacity-70">({menuItems.length})</span>
-        </button>
-
-        {categories.map((cat) => {
-          const isSelected = selectedCategory === cat.id;
-          return (
-            <button
-              key={cat.id}
-              onClick={() => onSelectCategory(cat.id)}
-              className={`shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors active:scale-95 ${
-                isSelected
-                  ? 'bg-[#000000] text-white'
-                  : 'bg-white text-[#000000] border border-[#EADECB] hover:border-[#000000]'
-              }`}
-            >
-              {getCategoryIcon(cat.id)}
-              <span className="ml-1.5">{cat.name}</span>
-            </button>
-          );
-        })}
-      </div>
+      {/* Category Platter Navigation */}
+      <CategoryPlatterNav
+        categories={categories}
+        menuItems={menuItems}
+        selectedCategory={selectedCategory}
+        onSelectCategory={onSelectCategory}
+      />
 
       {/* Results Count */}
       <div className="mb-6">

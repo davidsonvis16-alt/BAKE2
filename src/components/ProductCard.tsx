@@ -36,27 +36,36 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-[#EADECB] hover:border-[#000000]/40 hover:shadow-lg transition-all duration-300 flex flex-col group">
       {/* Item Image */}
-      <div className="relative w-full h-48 sm:h-44 md:h-48 overflow-hidden bg-[#FAF3E7]">
+      <div className="relative w-full h-52 sm:h-48 md:h-56 bg-white">
         {!imageLoaded && showImage && (
           <div className="absolute inset-0 bg-gradient-to-r from-[#E6D8C5] via-[#F3E8D8] to-[#E6D8C5] animate-pulse z-10" />
         )}
         {showImage ? (
-          <img
-            src={safeImageSrc}
-            alt={item.name}
-            loading="lazy"
-            onLoad={() => setImageLoaded(true)}
-            onError={() => {
-              setImageFailed(true);
-              setImageLoaded(true);
-            }}
-            className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <img
+              src={safeImageSrc}
+              alt={item.name}
+              loading="lazy"
+              onLoad={() => setImageLoaded(true)}
+              onError={() => {
+                setImageFailed(true);
+                setImageLoaded(true);
+              }}
+              className={`max-w-[85%] max-h-[85%] object-contain transition-all duration-500 group-hover:scale-105 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          </div>
         ) : (
-          <div className="w-full h-full bg-[#FAF3E7]" />
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-[#FAF3E7] flex items-center justify-center">
+              <span className="text-2xl">🍽️</span>
+            </div>
+          </div>
         )}
+
+        {/* Subtle shadow beneath food for floating effect */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-3/4 h-3 bg-black/5 rounded-full blur-md pointer-events-none" />
 
         {/* Favourite Heart Icon */}
         <button
@@ -64,7 +73,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           className={`absolute top-2 right-2 p-2 rounded-full transition-colors z-20 ${
             isWishlisted
               ? 'text-red-500 bg-red-50'
-              : 'text-white/80 hover:text-white bg-black/20 hover:bg-black/40'
+              : 'text-black/40 hover:text-black bg-white/80 hover:bg-white'
           }`}
           title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
         >

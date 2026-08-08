@@ -244,3 +244,12 @@ img.loaded {
 .safe-top {
   padding-top: env(safe-area-inset-top, 16px);
 }
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

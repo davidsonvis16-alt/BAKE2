@@ -64,11 +64,11 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
                   className="bg-white p-3 rounded-xl border border-[#EADECB] shadow-2xs flex items-center gap-3"
                 >
                   {item.image && (
-                    <div className="w-12 h-12 rounded-lg overflow-hidden bg-[#FAF3E7] shrink-0">
+                    <div className="w-12 h-12 rounded-lg overflow-hidden bg-white shrink-0 flex items-center justify-center">
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-full object-cover"
+                        className="max-w-[80%] max-h-[80%] object-contain"
                         onError={(e) => {
                           (e.target as HTMLImageElement).style.display = 'none';
                         }}
