@@ -26,7 +26,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
        className="group bg-white rounded-2xl overflow-hidden border border-[#EADECB] shadow-xs hover:shadow-xl hover:border-[#000000]/60 smooth-card cursor-pointer"
      >
       {/* Category Representative Image */}
-      <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-[#000000]">
+      <div className="relative h-44 sm:h-52 w-full overflow-hidden bg-[#000000]">
         <ImageWithSkeleton
           src={category.image}
           alt={category.name}
@@ -47,13 +47,13 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       </div>
 
       {/* Category Details */}
-      <div className="p-5 flex-1 flex flex-col justify-between">
+      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="p-1 rounded-md bg-[#FAF3E7] text-[#000000]">
               <Utensils className="w-3.5 h-3.5" />
             </span>
-            <h3 className="font-serif font-bold text-lg text-[#000000] group-hover:text-[#000000] transition-colors">
+            <h3 className="font-serif font-bold text-base sm:text-lg text-[#000000] group-hover:text-[#000000] transition-colors line-clamp-1">
               {category.name}
             </h3>
           </div>
@@ -64,7 +64,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
         </div>
 
         {/* Footer info & CTA button */}
-        <div className="mt-4 pt-3 border-t border-[#F3E8D8] flex items-center justify-between">
+        <div className="mt-4 pt-3 border-t border-[#F3E8D8] flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
           <div>
             <span className="text-[10px] uppercase font-semibold text-[#000000]">Starting at</span>
             <p className="font-mono font-bold text-sm text-[#000000]">
@@ -72,7 +72,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
             </p>
           </div>
 
-          <button className="bg-[#FAF3E7] group-hover:bg-[#000000] text-[#000000] group-hover:text-white text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1 transition-colors">
+          <button className="bg-[#FAF3E7] group-hover:bg-[#000000] text-[#000000] group-hover:text-white text-xs font-bold px-3.5 py-2 rounded-full flex items-center justify-center gap-1 transition-colors w-full xs:w-auto">
             <span>View List</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
