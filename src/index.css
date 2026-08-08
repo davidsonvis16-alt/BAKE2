@@ -176,7 +176,6 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
 }
 
 /* ===== UTILITY CLASSES ===== */
