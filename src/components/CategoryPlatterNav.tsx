@@ -21,24 +21,26 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
   const totalItems = menuItems.length;
 
   return (
-    <div className="relative mb-8 md:mb-10">
-      <div className="relative z-10 overflow-hidden rounded-[32px] border border-[#E6D3C2] bg-white/95 shadow-sm">
-        <div className="flex items-center justify-between px-4 py-4 sm:px-6 sm:py-5 border-b border-[#F3E8D8]">
-          <div>
-            <span className="text-[11px] uppercase tracking-[0.3em] text-[#7A6756]">
-              Explore Categories
+    <section className="py-8 md:py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+        <div className="flex items-end justify-between">
+          <div className="max-w-2xl">
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
+              EXPLORE CATEGORIES
             </span>
-            <p className="text-sm font-semibold text-[#111] mt-1">
+            <h2 className="font-serif font-black text-2xl sm:text-3xl text-[#1a120b] mt-1 tracking-tight">
               Swipe through our menu specialties.
+            </h2>
+            <p className="text-xs sm:text-sm text-[#5c4b3f] mt-1">
+              {totalItems} items across {categories.length} categories
             </p>
           </div>
-          <div className="text-right text-[10px] uppercase tracking-[0.28em] text-[#7A6756]">
-            {totalItems} items
-          </div>
         </div>
+      </div>
 
+      <div className="relative">
         <div
-          className="flex gap-4 overflow-x-auto no-scrollbar px-4 py-5 sm:px-6 scroll-smooth"
+          className="flex gap-4 overflow-x-auto no-scrollbar px-4 sm:px-6 lg:px-8 pb-4 scroll-smooth"
           style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x' }}
         >
           {categories.map((cat) => {
@@ -49,32 +51,34 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
               <button
                 key={cat.id}
                 onClick={() => onSelectCategory(cat.id)}
-                className={`shrink-0 min-w-[220px] sm:min-w-[240px] lg:min-w-[260px] max-w-[280px] group flex flex-col rounded-[28px] border bg-white shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-300 ${
+                className={`shrink-0 min-w-[200px] sm:min-w-[220px] lg:min-w-[240px] max-w-[280px] group flex flex-col rounded-2xl border bg-white transition-all duration-300 ${
                   isSelected
-                    ? 'border-[#111] shadow-lg'
-                    : 'border-[#E6D3C2] hover:-translate-y-1 hover:shadow-lg'
+                    ? 'border-[#1a120b] shadow-lg'
+                    : 'border-[#e6d3c2] hover:border-[#1a120b]/30 hover:shadow-md'
                 }`}
               >
-                <div className="relative h-56 overflow-hidden rounded-t-[28px] bg-[#F5EFE7]">
+                {/* Category Image */}
+                <div className="relative h-48 sm:h-52 overflow-hidden rounded-t-2xl bg-[#f8f1e5]">
                   <img
                     src={cat.image}
                     alt={cat.name}
                     loading="lazy"
                     className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/35 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent" />
                   <div className="absolute inset-x-0 bottom-0 p-4">
-                    <p className="text-xs uppercase tracking-[0.25em] text-[#F3E2CF]">
+                    <p className="text-[10px] uppercase tracking-widest text-[#f8f1e5] font-bold">
                       {itemCount} {itemCount === 1 ? 'item' : 'items'}
                     </p>
-                    <h3 className="text-lg font-serif font-black text-white leading-tight">
+                    <h3 className="font-serif font-black text-base sm:text-lg text-white leading-tight mt-0.5">
                       {cat.name}
                     </h3>
                   </div>
                 </div>
 
-                <div className="px-4 py-4 text-left">
-                  <p className="text-sm text-[#6F5A4A] leading-relaxed line-clamp-2">
+                {/* Category Description */}
+                <div className="px-4 py-3.5 text-left">
+                  <p className="text-xs text-[#5c4b3f] leading-relaxed line-clamp-2">
                     {cat.description}
                   </p>
                 </div>
@@ -83,6 +87,6 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 };

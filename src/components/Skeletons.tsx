@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 export const Skeleton: React.FC<{ className?: string }> = ({ className = '' }) => {
   return (
     <div
-      className={`animate-pulse bg-[#E6D8C5] rounded-xl ${className}`}
+      className={`animate-pulse rounded-xl bg-[#e6d3c2] ${className}`}
     />
   );
 };
@@ -12,11 +12,11 @@ export const Skeleton: React.FC<{ className?: string }> = ({ className = '' }) =
 // 1. Product Card Skeleton
 export const ProductCardSkeleton: React.FC = () => {
   return (
-    <div className="bg-white rounded-2xl border border-[#EADECB] shadow-2xs flex flex-col h-full">
+    <div className="bg-white rounded-2xl border border-[#e6d3c2] shadow-sm flex flex-col h-full">
       {/* Image area skeleton */}
-      <div className="relative w-full h-52 sm:h-48 md:h-56 bg-[#E6D8C5] animate-pulse">
+      <div className="relative w-full aspect-[4/3] bg-[#e6d3c2] animate-pulse">
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-16 h-16 rounded-full bg-white/40" />
+          <div className="w-16 h-16 rounded-full bg-[#fdfaf3]/40" />
         </div>
       </div>
 
@@ -37,13 +37,13 @@ export const ProductCardSkeleton: React.FC = () => {
         </div>
 
         {/* Option Selector Pill */}
-        <div className="mt-3 flex gap-1.5 bg-[#FAF3E7] p-1 rounded-xl border border-[#EADECB]">
+        <div className="mt-3 flex gap-1.5 bg-[#fdfaf3] p-1 rounded-xl border border-[#e6d3c2]">
           <Skeleton className="h-5 flex-1 rounded-lg" />
           <Skeleton className="h-5 flex-1 rounded-lg" />
         </div>
 
         {/* Bottom Price & Button */}
-        <div className="pt-2 border-t border-[#F3E8D8] flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
+        <div className="pt-2 border-t border-[#f3e8d8] flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
           <div className="space-y-1">
             <Skeleton className="h-2.5 w-10" />
             <Skeleton className="h-4 w-16" />
@@ -58,11 +58,11 @@ export const ProductCardSkeleton: React.FC = () => {
 // 2. Category Card Skeleton
 export const CategoryCardSkeleton: React.FC = () => {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden border border-[#EADECB] shadow-2xs flex flex-col justify-between">
+    <div className="bg-white rounded-2xl overflow-hidden border border-[#e6d3c2] shadow-sm flex flex-col justify-between">
       {/* Hero Image Box Skeleton */}
-      <div className="relative h-44 sm:h-52 w-full bg-[#E6D8C5] animate-pulse">
+      <div className="relative h-44 sm:h-52 w-full bg-[#e6d3c2] animate-pulse">
         <div className="absolute top-3 right-3">
-          <Skeleton className="h-5 w-16 rounded-full bg-white/40" />
+          <Skeleton className="h-5 w-16 rounded-full bg-[#fdfaf3]/40" />
         </div>
       </div>
 
@@ -78,7 +78,7 @@ export const CategoryCardSkeleton: React.FC = () => {
         </div>
 
         {/* Footer info */}
-        <div className="pt-3 border-t border-[#F3E8D8] flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
+        <div className="pt-3 border-t border-[#f3e8d8] flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
           <div className="space-y-1">
             <Skeleton className="h-2.5 w-14" />
             <Skeleton className="h-4 w-14" />
@@ -125,11 +125,11 @@ export const ImageWithSkeleton: React.FC<ImageWithSkeletonProps> = ({
   const [hasError, setHasError] = useState(false);
 
   return (
-    <div className={`relative overflow-hidden bg-[#E6D8C5] ${containerClassName}`}>
+    <div className={`relative overflow-hidden bg-[#e6d3c2] ${containerClassName}`}>
       {/* Skeleton overlay shown until image is fully loaded */}
       {(!isLoaded || hasError) && (
-        <div className="absolute inset-0 bg-gradient-to-r from-[#E6D8C5] via-[#F3E8D8] to-[#E6D8C5] z-10 flex items-center justify-center">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#000000]/40">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#e6d3c2] via-[#f3e8d8] to-[#e6d3c2] z-10 flex items-center justify-center">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#1a120b]/40">
             BakeMart
           </span>
         </div>

@@ -23,23 +23,23 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
     <div className="fixed inset-0 z-50 overflow-hidden">
       <div
         onClick={onClose}
-        className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+        className="absolute inset-0 bg-black/40 transition-opacity drawer-overlay"
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex">
-        <div className="w-full max-w-md h-full bg-[#FAF3E7] text-[#000000] shadow-2xl flex flex-col justify-between border-l border-[#EADECB]">
-          
+        <div className="w-full max-w-md h-full bg-[#fdfaf3] text-[#1a120b] shadow-2xl flex flex-col border-l border-[#e6d3c2] drawer-content">
+
           {/* Header */}
-          <div className="p-4 bg-[#000000] text-white flex items-center justify-between border-b border-neutral-700/40">
+          <div className="p-4 bg-white border-b border-[#e6d3c2] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Heart className="w-5 h-5 text-red-400 fill-red-400" />
-              <h2 className="font-display font-bold text-base text-[#FAF3E7]">
+              <Heart className="w-5 h-5 text-[#d4a35a] fill-[#d4a35a]" />
+              <h2 className="font-serif font-bold text-base text-[#1a120b]">
                 Saved Favorites ({wishlistItems.length})
               </h2>
             </div>
             <button
               onClick={onClose}
-              className="p-1 rounded-full text-orange-300 hover:text-white hover:bg-white/10 transition-colors"
+              className="p-1 rounded-full text-[#8c7a6c] hover:text-[#1a120b] hover:bg-[#f8f1e5] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -49,11 +49,11 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {wishlistItems.length === 0 ? (
               <div className="text-center py-16 space-y-3">
-                <Heart className="w-12 h-12 text-[#000000] mx-auto opacity-30" />
-                <h3 className="font-display font-bold text-lg text-[#000000]">
+                <Heart className="w-12 h-12 text-[#8c7a6c] mx-auto opacity-30" />
+                <h3 className="font-serif font-bold text-lg text-[#1a120b]">
                   No favorites saved yet
                 </h3>
-                <p className="text-xs text-[#000000] max-w-xs mx-auto">
+                <p className="text-xs text-[#5c4b3f] max-w-xs mx-auto">
                   Click the heart icon on any menu item to save it for quick future ordering.
                 </p>
               </div>
@@ -61,10 +61,10 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
               wishlistItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white p-3 rounded-xl border border-[#EADECB] shadow-2xs flex items-center gap-3"
+                  className="bg-white p-3 rounded-xl border border-[#e6d3c2] flex items-center gap-3"
                 >
                   {item.image && (
-                    <div className="w-12 h-12 rounded-lg overflow-hidden bg-white shrink-0 flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-lg overflow-hidden bg-[#f8f1e5] shrink-0 flex items-center justify-center">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -76,13 +76,13 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-display font-bold text-xs sm:text-sm text-[#000000] truncate">
+                    <h4 className="font-serif font-bold text-xs sm:text-sm text-[#1a120b] truncate">
                       {item.name}
                     </h4>
-                    <p className="text-[11px] text-[#000000] truncate mt-0.5">
+                    <p className="text-[11px] text-[#5c4b3f] truncate mt-0.5">
                       {item.description}
                     </p>
-                    <p className="font-mono font-bold text-xs text-[#000000] mt-1">
+                    <p className="font-mono font-bold text-xs text-[#1a120b] mt-1">
                       KSh {item.price.toLocaleString()}
                     </p>
                   </div>
@@ -90,7 +90,7 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => onAddToCart(item)}
-                      className="bg-[#000000] hover:bg-[#000000] text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
+                      className="bg-[#1a120b] hover:bg-[#2b1b12] text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Add</span>

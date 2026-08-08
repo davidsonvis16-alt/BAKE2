@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useMenuData } from '../hooks/useMenuData';
 import { ProductCard } from './ProductCard';
 import { MenuItem, MenuItemOption } from '../types';
-import { LayoutGrid, List, Search } from 'lucide-react';
 import { ProductCardSkeleton, TicketListItemSkeleton } from './Skeletons';
 import { CategoryPlatterNav } from './CategoryPlatterNav';
 
@@ -27,7 +26,6 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
   const [viewMode, setViewMode] = useState<'grid' | 'ticket'>('grid');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Brief initial & category fetch loader simulation for smooth perceived performance
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
@@ -36,7 +34,6 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
     return () => clearTimeout(timer);
   }, [selectedCategory, searchQuery]);
 
-  // Filter items by search query and category
   const filteredItems = useMemo(() => {
     return menuItems.filter((item) => {
       const matchesSearch =
@@ -54,118 +51,147 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
   const showLoading = isLoading || dataLoading;
 
   return (
-    <section id="full-menu" className="py-10 md:py-16 px-4 max-w-7xl mx-auto scroll-mt-20">
-      {/* Section Header */}
-      <div className="text-center max-w-2xl mx-auto mb-8 md:mb-10">
-        <span className="text-[11px] uppercase font-bold tracking-[0.2em] text-[#000000]">
-          FULL MENU
-        </span>
-        <h2 className="font-serif font-black text-2xl sm:text-3xl md:text-4xl text-[#000000] mt-2 tracking-tight">
-          Popular Dishes & Drinks
-        </h2>
-        <p className="text-xs sm:text-sm text-[#000000]/70 mt-2 max-w-lg mx-auto">
-          Open-kitchen freshly cooked delicacies, brewed Nakuru coffees, hand-stretched pizzas & local specialties.
-        </p>
-      </div>
-
-      {/* Category Platter Navigation */}
-      <CategoryPlatterNav
-        categories={categories}
-        menuItems={menuItems}
-        selectedCategory={selectedCategory}
-        onSelectCategory={onSelectCategory}
-      />
-
-      {/* Results Count */}
-      <div className="mb-6">
-        <p className="text-xs font-semibold text-[#000000]/70">
-          {selectedCategory === 'all' ? (
-            <>Showing all <span className="text-[#000000] font-bold">{filteredItems.length}</span> items</>
-          ) : (
-            <>
-              {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'} in{" "}
-              <span className="font-bold text-[#000000]">{categories.find(c => c.id === selectedCategory)?.name}</span>
-            </>
-          )}
-        </p>
-      </div>
-
-      {/* Main Content */}
-      {showLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <ProductCardSkeleton key={i} />
-          ))}
+    <section id="full-menu" className="py-10 md:py-16 scroll-mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center max-w-2xl mx-auto mb-8 md:mb-10">
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
+            FULL MENU
+          </span>
+          <h2 className="font-serif font-black text-3xl sm:text-4xl text-[#1a120b] mt-2 tracking-tight">
+            Popular Dishes & Drinks
+          </h2>
+          <p className="text-sm text-[#5c4b3f] mt-3 max-w-lg mx-auto leading-relaxed">
+            Open-kitchen freshly cooked delicacies, brewed Nakuru coffees, hand-stretched pizzas & local specialties.
+          </p>
         </div>
-      ) : filteredItems.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-sm text-[#000000]/60 font-semibold">No items found</p>
-          <button
-            onClick={() => {
-              onSelectCategory('all');
-              setSearchQuery('');
-            }}
-            className="mt-3 text-xs font-bold text-[#000000] underline underline-offset-4"
-          >
-            Clear filters
-          </button>
-        </div>
-      ) : viewMode === 'grid' ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-          {filteredItems.map((item) => (
-            <ProductCard
-              key={item.id}
-              item={item}
-              isWishlisted={wishlistIds.includes(item.id)}
-              onAddToCart={onAddToCart}
-              onToggleWishlist={onToggleWishlist}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="bg-white rounded-2xl border border-[#EADECB] shadow-sm overflow-hidden">
-          <div className="divide-y divide-[#F3E8D8]">
-            {filteredItems.map((item) => {
-              const isWishlisted = wishlistIds.includes(item.id);
-              return (
-                <div
-                  key={item.id}
-                  className="py-4 px-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#FAF3E7]/50 transition-colors"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-bold text-sm text-[#000000]">
-                        {item.name}
-                      </span>
-                      {item.badge && (
-                        <span className="text-[9px] uppercase font-extrabold bg-[#000000] text-white px-2 py-0.5 rounded-full">
-                          {item.badge}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-xs text-[#000000]/60 mt-0.5 line-clamp-1">
-                      {item.description}
-                    </p>
-                  </div>
 
-                  <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0">
-                    <span className="font-mono font-bold text-sm text-[#000000]">
-                      KSh {item.price.toLocaleString()}
-                    </span>
+        {/* Category Platter Navigation */}
+        <CategoryPlatterNav
+          categories={categories}
+          menuItems={menuItems}
+          selectedCategory={selectedCategory}
+          onSelectCategory={onSelectCategory}
+        />
 
-                    <button
-                      onClick={() => onAddToCart(item)}
-                      className="bg-[#000000] hover:bg-[#000000] text-white text-xs font-bold px-4 py-2 rounded-full transition-all flex items-center gap-1.5"
-                    >
-                      <span>+ Add</span>
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+        {/* Results Count & View Toggle */}
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-xs font-semibold text-[#5c4b3f]">
+            {selectedCategory === 'all' ? (
+              <>Showing all <span className="text-[#1a120b] font-bold">{filteredItems.length}</span> items</>
+            ) : (
+              <>
+                {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'} in{" "}
+                <span className="font-bold text-[#1a120b]">{categories.find(c => c.id === selectedCategory)?.name}</span>
+              </>
+            )}
+          </p>
+
+          {/* View Toggle */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded-lg transition-colors ${
+                viewMode === 'grid'
+                  ? 'bg-[#1a120b] text-white'
+                  : 'bg-white text-[#5c4b3f] border border-[#e6d3c2] hover:border-[#1a120b]'
+              }`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setViewMode('ticket')}
+              className={`p-2 rounded-lg transition-colors ${
+                viewMode === 'ticket'
+                  ? 'bg-[#1a120b] text-white'
+                  : 'bg-white text-[#5c4b3f] border border-[#e6d3c2] hover:border-[#1a120b]'
+              }`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
         </div>
-      )}
+
+        {/* Main Content */}
+        {showLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : filteredItems.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-sm text-[#5c4b3f] font-semibold">No items found</p>
+            <button
+              onClick={() => {
+                onSelectCategory('all');
+              }}
+              className="mt-3 text-xs font-bold text-[#1a120b] underline underline-offset-4"
+            >
+              Clear filters
+            </button>
+          </div>
+        ) : viewMode === 'grid' ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {filteredItems.map((item) => (
+              <ProductCard
+                key={item.id}
+                item={item}
+                isWishlisted={wishlistIds.includes(item.id)}
+                onAddToCart={onAddToCart}
+                onToggleWishlist={onToggleWishlist}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-2xl border border-[#e6d3c2] overflow-hidden">
+            <div className="divide-y divide-[#f3e8d8]">
+              {filteredItems.map((item) => {
+                const isWishlisted = wishlistIds.includes(item.id);
+                return (
+                  <div
+                    key={item.id}
+                    className="py-4 px-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#fdfaf3] transition-colors"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-bold text-sm text-[#1a120b]">
+                          {item.name}
+                        </span>
+                        {item.badge && (
+                          <span className="text-[9px] uppercase font-extrabold bg-[#1a120b] text-white px-2 py-0.5 rounded-full">
+                            {item.badge}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-[#5c4b3f] mt-0.5 line-clamp-1">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0">
+                      <span className="font-mono font-bold text-sm text-[#1a120b]">
+                        KSh {item.price.toLocaleString()}
+                      </span>
+
+                      <button
+                        onClick={() => onAddToCart(item)}
+                        className="bg-[#1a120b] hover:bg-[#2b1b12] text-white text-xs font-bold px-4 py-2 rounded-full transition-all flex items-center gap-1.5"
+                      >
+                        <span>+ Add</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
     </section>
   );
 };

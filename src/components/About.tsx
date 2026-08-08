@@ -2,108 +2,113 @@ import React from 'react';
 
 export const About: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#FAF3E7] pb-20">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <span className="text-xs uppercase font-extrabold tracking-widest text-[#000000]">
+    <div className="min-h-screen bg-[#fdfaf3] pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14">
+        <div className="max-w-3xl">
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             ABOUT US
           </span>
-          <h1 className="font-serif font-black text-3xl md:text-4xl text-[#000000] mt-1">
-            Bakemart Coffee House
+          <h1 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-[#1a120b] mt-4 leading-tight">
+            The only open-kitchen coffee shop in Nakuru City
           </h1>
+          <p className="mt-4 text-sm sm:text-base text-[#5c4b3f] leading-relaxed max-w-2xl">
+            Bakemart Coffee House is located on Moi Road at Tropical House, behind Gilanis Supermarket and besides Nakuru GPO in Nakuru City, Kenya.
+          </p>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 md:p-8 border border-[#000000]/10 shadow-sm space-y-6">
-          <div>
-            <h2 className="font-serif font-bold text-xl text-[#000000] mb-3">
-              The Only Open-Kitchen Coffee Shop in Nakuru City
-            </h2>
-            <p className="text-sm text-[#000000]/80 leading-relaxed">
-              Bakemart Coffee House is located on Moi Road at Tropical House, behind Gilanis Supermarket and besides Nakuru GPO in Nakuru City, Kenya. We offer a trendy, relaxing, serene, and cozy atmosphere where guests can watch food being prepared in our open kitchen.
-            </p>
+        {/* Brand Story */}
+        <div className="mt-12 grid gap-8 lg:grid-cols-2 lg:gap-12">
+          <div className="bg-white rounded-2xl border border-[#e6d3c2] overflow-hidden shadow-sm">
+            <div className="aspect-[4/3] overflow-hidden bg-[#f8f1e5]">
+              <img
+                src="/open-kitchen.jpeg"
+                alt="Open kitchen"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+            </div>
+            <div className="p-6 sm:p-8 space-y-4">
+              <h2 className="font-serif font-bold text-xl text-[#1a120b]">
+                Our Story
+              </h2>
+              <p className="text-sm text-[#5c4b3f] leading-relaxed">
+                We offer a trendy, relaxing, serene, and cozy atmosphere where guests can watch food being prepared in our open kitchen.
+              </p>
+            </div>
           </div>
 
-          <div>
-            <h2 className="font-serif font-bold text-xl text-[#000000] mb-3">
+          <div className="bg-white rounded-2xl border border-[#e6d3c2] p-6 sm:p-8 shadow-sm">
+            <h2 className="font-serif font-bold text-xl text-[#1a120b] mb-4">
               What Makes Us Special
             </h2>
-            <p className="text-sm text-[#000000]/80 leading-relaxed">
-              We're the only open-kitchen coffee shop in Nakuru City, offering a broad menu that mixes coffeehouse classics with pizzas, burgers, waffles, healthy options, and local Kenyan flavors. Our open-kitchen concept lets you watch our chefs craft your meals fresh daily, creating a unique dining experience that combines transparency with exceptional taste.
+            <p className="text-sm text-[#5c4b3f] leading-relaxed mb-6">
+              We&apos;re the only open-kitchen coffee shop in Nakuru City, offering a broad menu that mixes coffeehouse classics with pizzas, burgers, waffles, healthy options, and local Kenyan flavors.
             </p>
-          </div>
 
-          <div>
-            <h2 className="font-serif font-bold text-xl text-[#000000] mb-3">
-              Our Menu
-            </h2>
-            <p className="text-sm text-[#000000]/80 leading-relaxed mb-3">
-              We specialize in a wide range of items including:
-            </p>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-[#000000]/80">
+            <h3 className="font-serif font-bold text-base text-[#1a120b] mb-3">
+              Our Menu Highlights
+            </h3>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-[#5c4b3f]">
               <li>• Specialty coffee (cappuccino, white/black coffee, iced options)</li>
               <li>• Milkshakes, smoothies, and iced coffee</li>
               <li>• Authentic Italian-style pizzas</li>
               <li>• Beef burgers and chapati wraps</li>
-              <li>• Waffles (vanilla, chocolate, red velvet, peanut butter)</li>
+              <li>• Waffles (vanilla, chocolate, red velvet)</li>
               <li>• Cocktails and mojitos</li>
               <li>• Fresh juices and lemonades</li>
-              <li>• Bakery items and desserts (trifles, ice cream, banana split)</li>
+              <li>• Bakery items and desserts</li>
               <li>• Salads, soups, and light meals</li>
               <li>• Healthy low-carb/no-sugar/no-oil meals</li>
               <li>• Kienyeji (traditional) dishes</li>
               <li>• Breakfast options and more</li>
             </ul>
           </div>
+        </div>
 
-          <div>
-            <h2 className="font-serif font-bold text-xl text-[#000000] mb-3">
+        {/* Delivery & Contact */}
+        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+          <div className="bg-white rounded-2xl border border-[#e6d3c2] p-6 sm:p-8 shadow-sm">
+            <h3 className="font-serif font-bold text-lg text-[#1a120b] mb-3">
               Delivery
-            </h2>
-            <p className="text-sm text-[#000000]/80 leading-relaxed">
-              Delivery is available via Glovo. Search for "Bakemart Coffee House Nakuru" on Glovo to order your favorites from the comfort of your home or office.
+            </h3>
+            <p className="text-sm text-[#5c4b3f] leading-relaxed">
+              Delivery is available via Glovo. Search for &quot;Bakemart Coffee House Nakuru&quot; on Glovo to order your favorites.
             </p>
           </div>
 
-          <div>
-            <h2 className="font-serif font-bold text-xl text-[#000000] mb-3">
-              Follow Us
-            </h2>
-            <div className="flex flex-wrap items-center gap-3">
+          <div className="bg-white rounded-2xl border border-[#e6d3c2] p-6 sm:p-8 shadow-sm">
+            <h3 className="font-serif font-bold text-lg text-[#1a120b] mb-3">
+              Visit Us
+            </h3>
+            <p className="text-sm text-[#5c4b3f] leading-relaxed">
+              Moi Road, Tropical House, Nakuru (behind Gilanis Supermarket and besides Nakuru GPO). We&apos;re open daily until 8:00 PM.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 mt-4">
               <a
-                href="https://www.tiktok.com/@bakemartcoffeehou"
+                href="https://www.instagram.com/bakemartcoffeehouse/"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 bg-[#000000] text-white text-sm font-bold px-4 py-2.5 rounded-full hover:bg-[#000000]/80 transition-colors"
+                className="inline-flex items-center gap-2 bg-[#1a120b] text-white text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#2b1b12] transition-colors"
               >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43V8.87a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
-                TikTok
+                Instagram
               </a>
               <a
-                href="https://youtube.com/@bakemartcoffeehouse6638?si=7xNnnCC7len5cIyc"
+                href="https://www.facebook.com/BakemartCoffeeHouse/"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 bg-red-600 text-white text-sm font-bold px-4 py-2.5 rounded-full hover:bg-red-700 transition-colors"
+                className="inline-flex items-center gap-2 bg-[#1a120b] text-white text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#2b1b12] transition-colors"
               >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3.02 3.02 0 00-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.56A3.02 3.02 0 00.5 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.5 5.8 3.02 3.02 0 002.12 2.14c1.88.56 9.38.56 9.38.56s7.5 0 9.38-.56a3.02 3.02 0 002.12-2.14A31.6 31.6 0 0024 12a31.6 31.6 0 00-.5-5.8zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/></svg>
-                YouTube
+                Facebook
               </a>
               <a
                 href="mailto:Salesbakemart.co.ke@gmail.com"
-                className="inline-flex items-center gap-2 bg-[#FAF3E7] text-[#000000] border border-[#D8C7B0] text-sm font-bold px-4 py-2.5 rounded-full hover:bg-[#EADECB] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#f8f1e5] text-[#1a120b] border border-[#e6d3c2] text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#f5efe7] transition-colors"
               >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16v16H4z"/><path d="M4 4l8 8 8-8"/></svg>
-                Sales@bakemart.co.ke
+                Email Us
               </a>
             </div>
-          </div>
-
-          <div>
-            <h2 className="font-serif font-bold text-xl text-[#000000] mb-3">
-              Visit Us
-            </h2>
-            <p className="text-sm text-[#000000]/80 leading-relaxed">
-              Moi Road, Tropical House, Nakuru (behind Gilanis Supermarket and besides Nakuru GPO). We're open daily until 8:00 PM. Follow us on Instagram @bakemartcoffeehouse and Facebook Bakemart Coffee House / NakuruBakemartPlusShop for the latest menu, promotions, and updates.
-            </p>
           </div>
         </div>
       </div>

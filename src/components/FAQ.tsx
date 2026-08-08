@@ -37,29 +37,34 @@ export const FAQ: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAF3E7] pb-20">
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <span className="text-xs uppercase font-extrabold tracking-widest text-[#000000]">
+    <div className="min-h-screen bg-[#fdfaf3] pb-20">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14">
+        <div className="mb-8 sm:mb-10">
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             FAQ
           </span>
-          <h1 className="font-serif font-black text-3xl md:text-4xl text-[#000000] mt-1">
+          <h1 className="font-serif font-black text-3xl sm:text-4xl text-[#1a120b] mt-4 leading-tight">
             Frequently Asked Questions
           </h1>
+          <p className="text-sm text-[#5c4b3f] mt-3 max-w-xl">
+            Everything you need to know about visiting and ordering from BakeMart Coffee House.
+          </p>
         </div>
 
         <div className="space-y-3">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl p-5 border border-[#000000]/10 shadow-sm"
+              className="bg-white rounded-2xl border border-[#e6d3c2] overflow-hidden"
             >
-              <h3 className="font-serif font-bold text-base text-[#000000] mb-2">
-                {faq.question}
-              </h3>
-              <p className="text-sm text-[#000000]/80 leading-relaxed">
-                {faq.answer}
-              </p>
+              <div className="p-5 sm:p-6">
+                <h3 className="font-serif font-bold text-base sm:text-lg text-[#1a120b] mb-2">
+                  {faq.question}
+                </h3>
+                <p className="text-sm text-[#5c4b3f] leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
             </div>
           ))}
         </div>

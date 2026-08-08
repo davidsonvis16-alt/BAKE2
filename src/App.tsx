@@ -340,34 +340,34 @@ export default function App() {
                onScrollToMenu={() => navigate('/menu')}
              />
 
-             {/* Homepage Search Bar */}
-             <section className="max-w-7xl mx-auto px-4 -mt-4 mb-8">
-               <div className="bg-white rounded-2xl p-2 border border-[#EADECB] shadow-sm">
-                 <div className="relative">
-                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#000000]/50" />
-                   <input
-                     type="text"
-                     placeholder="Search for pizza, coffee, burgers, juices..."
-                     value={searchQuery}
-                     onChange={(e) => setSearchQuery(e.target.value)}
-                     onKeyDown={(e) => {
-                       if (e.key === 'Enter' && searchQuery.trim()) {
-                         navigate('/menu');
-                       }
-                     }}
-                     className="w-full bg-[#FAF3E7] border border-[#E1D4C0] focus:border-[#000000] text-sm text-[#000000] placeholder-[#000000]/60 rounded-xl pl-12 pr-10 py-3.5 outline-none transition-colors"
-                   />
-                   {searchQuery && (
-                     <button
-                       onClick={() => setSearchQuery('')}
-                       className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-[#EADECB] hover:bg-[#D8C7B0] text-[#000000] transition-colors"
-                     >
-                       <X className="w-3.5 h-3.5" />
-                     </button>
-                   )}
-                 </div>
-               </div>
-             </section>
+              {/* Homepage Search Bar */}
+              <section className="max-w-7xl mx-auto px-4 -mt-8 sm:-mt-10 mb-8">
+                <div className="bg-white rounded-2xl p-3 border border-[#e6d3c2] shadow-sm">
+                  <div className="relative">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8c7a6c]" />
+                    <input
+                      type="text"
+                      placeholder="Search for pizza, coffee, burgers, juices..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && searchQuery.trim()) {
+                          navigate('/menu');
+                        }
+                      }}
+                      className="w-full bg-[#fdfaf3] border border-[#e6d3c2] focus:border-[#1a120b] text-sm text-[#1a120b] placeholder-[#8c7a6c] rounded-xl pl-12 pr-10 py-3.5 outline-none transition-colors"
+                    />
+                    {searchQuery && (
+                      <button
+                        onClick={() => setSearchQuery('')}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-[#e6d3c2] hover:bg-[#d8c7b0] text-[#2b1b12] transition-colors"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </section>
 
              {/* Feature Cards */}
              <FeatureCards onNavigateReservation={handleOpenReservation} />
@@ -391,24 +391,24 @@ export default function App() {
 
             {/* Full Menu Page Callout Banner */}
             <section className="max-w-7xl mx-auto px-4 py-8">
-              <div className="bg-[#000000] text-[#FAF3E7] p-8 rounded-3xl border border-neutral-800 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+              <div className="bg-[#1a120b] text-[#fdfaf3] p-8 rounded-3xl border border-[#2b1b12] flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
                 <div className="space-y-2 text-center md:text-left">
-                  <span className="text-xs uppercase font-extrabold tracking-widest text-orange-400">
+                  <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#d4a35a]">
                     COMPLETE LISTINGS
                   </span>
                   <h3 className="font-serif font-bold text-2xl sm:text-3xl">
                     Prefer to view our full menu on a single page?
                   </h3>
-                  <p className="text-xs sm:text-sm text-orange-300/80 max-w-xl">
+                  <p className="text-xs sm:text-sm text-[#d4a35a]/80 max-w-xl">
                     Explore all 12 food categories with live instant search, dietary tags, portion selection, and clean list layouts.
                   </p>
                 </div>
 
                 <button
                   onClick={() => navigate('/menu')}
-                  className="bg-black hover:bg-neutral-800 text-white font-bold text-sm px-6 py-3 rounded-full transition-colors shrink-0 shadow-sm"
+                  className="bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] font-bold text-sm px-6 py-3 rounded-full transition-all flex items-center gap-2 shadow-sm"
                 >
-                  Open Full Menu Page →
+                  <span>Open Full Menu Page →</span>
                 </button>
               </div>
             </section>
@@ -449,18 +449,18 @@ export default function App() {
       />
 
       {/* Sticky Bottom Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#EADECB] shadow-lg md:hidden safe-bottom">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#e6d3c2] shadow-lg md:hidden safe-bottom">
         <div className="flex items-center justify-between gap-2 px-4 py-2.5">
           <button
             onClick={() => setIsCartOpen(true)}
-            className="flex items-center gap-1.5 bg-[#000000] text-white px-3 py-2 rounded-full font-bold text-xs shadow-md flex-1 justify-center"
+            className="flex items-center gap-1.5 bg-[#1a120b] text-white px-3 py-2 rounded-full font-bold text-xs shadow-md flex-1 justify-center"
           >
-            <ShoppingBag className="w-4 h-4 text-orange-300" />
+            <ShoppingBag className="w-4 h-4 text-[#d4a35a]" />
             <span>View Cart ({totalCartCount})</span>
           </button>
           <button
             onClick={() => navigate('/reservation')}
-            className="flex items-center justify-center bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] border border-[#D8C7B0] px-3 py-2 rounded-full shadow-xs"
+            className="flex items-center justify-center bg-[#fdfaf3] hover:bg-[#f8f1e5] text-[#1a120b] border border-[#e6d3c2] px-3 py-2 rounded-full shadow-xs"
             title="Reserve a Table"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -485,7 +485,7 @@ export default function App() {
               }).join('\n')}\n----------------------------------\n*GRAND TOTAL:* KSh ${total.toLocaleString()}\n\n*Location:* BakeMart Coffee House, Tropical House, Watalii Rd, Nakuru City`;
               window.open(`https://wa.me/254725009708?text=${encodeURIComponent(message)}`, '_blank');
             }}
-            className={`font-bold text-sm py-2 px-4 rounded-full shadow-md flex items-center gap-2 ${cartItems.length > 0 ? 'bg-[#000000] hover:bg-[#000000] text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
+            className={`font-bold text-sm py-2 px-4 rounded-full shadow-md flex items-center gap-2 ${cartItems.length > 0 ? 'bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b]' : 'bg-[#e6d3c2] text-[#8c7a6c] cursor-not-allowed'}`}
           >
             <Send className="w-4 h-4" />
             <span>Checkout</span>
