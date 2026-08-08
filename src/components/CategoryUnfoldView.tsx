@@ -116,7 +116,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
   const nextCategory = CATEGORIES[(currentIndex + 1) % CATEGORIES.length];
 
   return (
-    <div className="min-h-screen bg-[#fdfaf3] pt-4 pb-16">
+    <div className="min-h-screen bg-[#fdfaf3] pt-4 pb-16 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb & Back */}
         <div className="flex items-center justify-between gap-2 mb-4">
@@ -142,9 +142,9 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
           </button>
         </div>
 
-        <div className="grid gap-6 md:gap-8 md:grid-cols-[280px_1fr] items-start">
+        <div className="grid gap-6 md:gap-8 md:grid-cols-[280px_1fr] items-start min-w-0">
           {/* Desktop Sidebar */}
-          <aside className="hidden md:block self-start">
+          <aside className="hidden md:block self-start min-w-0">
             <div className="sticky top-24 rounded-2xl border border-[#e6d3c2] bg-white p-5 shadow-sm">
               <div className="mb-4">
                 <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
@@ -158,13 +158,13 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                     setSelectedSubFilter('all');
                     setCategorySearch('');
                   }}
-                  className={`flex items-center gap-3 w-full text-left rounded-xl border px-3.5 py-2.5 text-sm font-semibold transition ${
+                  className={`flex items-center gap-3 w-full text-left rounded-xl border px-3.5 py-2.5 text-sm font-semibold transition min-w-0 ${
                     categoryId === 'all'
                       ? 'border-[#1a120b] bg-[#1a120b] text-white'
                       : 'border-[#e6d3c2] bg-[#fdfaf3] text-[#2b1b12] hover:border-[#1a120b]'
                   }`}
                 >
-                  <Utensils className="w-4 h-4" />
+                  <Utensils className="w-4 h-4 shrink-0" />
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm truncate">All Items</span>
                     <span className={`block text-[11px] ${categoryId === 'all' ? 'text-white/70' : 'text-[#8c7a6c]'}`}>
@@ -186,13 +186,13 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                         setSelectedSubFilter('all');
                         setCategorySearch('');
                       }}
-                      className={`flex items-center gap-3 w-full text-left rounded-xl border px-3.5 py-2.5 text-sm font-semibold transition ${
+                      className={`flex items-center gap-3 w-full text-left rounded-xl border px-3.5 py-2.5 text-sm font-semibold transition min-w-0 ${
                         isActive
                           ? 'border-[#1a120b] bg-[#1a120b] text-white'
                           : 'border-[#e6d3c2] bg-[#fdfaf3] text-[#2b1b12] hover:border-[#1a120b]'
                       }`}
                     >
-                      <span className={isActive ? 'text-[#d4a35a]' : 'text-[#8c7a6c]'}>
+                      <span className={`shrink-0 ${isActive ? 'text-[#d4a35a]' : 'text-[#8c7a6c]'}`}>
                         {icon}
                       </span>
                       <span className="flex-1 min-w-0">
@@ -209,10 +209,10 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
           </aside>
 
           {/* Main Content */}
-          <div className="space-y-6">
+          <div className="space-y-6 min-w-0">
             {/* Category Header Banner */}
             <div className="rounded-2xl border border-[#e6d3c2] bg-[#1a120b] text-white overflow-hidden">
-              <div className="grid gap-6 p-5 sm:gap-8 sm:p-6 lg:grid-cols-[1.6fr_1fr] lg:p-8 grid-cols-1">
+              <div className="grid gap-6 p-5 sm:gap-8 sm:p-6 lg:grid-cols-[1.6fr_1fr] lg:p-8 grid-cols-1 min-w-0">
                 <div className="space-y-4 min-w-0">
                   <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-widest text-[#d4a35a] font-bold">
                     {getCategoryIcon(currentCategory.id)}
@@ -237,7 +237,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                   </div>
                 </div>
 
-                <div className="hidden lg:block relative overflow-hidden rounded-xl border border-white/10 bg-[#0f0a05]">
+                <div className="hidden lg:block min-w-0 relative overflow-hidden rounded-xl border border-white/10 bg-[#0f0a05]">
                   <ImageWithSkeleton
                     src={getCategoryHeroImage(currentCategory.id)}
                     alt={currentCategory.name}
@@ -276,8 +276,8 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                             : 'border-[#e6d3c2] text-[#2b1b12] hover:border-[#1a120b]'
                         }`}
                       >
-                        <div className="flex items-center gap-2.5">
-                          <span className={`grid h-8 w-8 place-items-center rounded-lg ${isActive ? 'bg-[#d4a35a] text-white' : 'bg-[#f8f1e5] text-[#8c7a6c]'}`}>
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${isActive ? 'bg-[#d4a35a] text-white' : 'bg-[#f8f1e5] text-[#8c7a6c]'}`}>
                             {getCategoryIcon(cat.id)}
                           </span>
                           <div className="min-w-0">
@@ -297,8 +297,8 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
             </div>
 
             {/* Controls Bar: Search & Sub-filters */}
-            <div className="grid gap-4 rounded-2xl border border-[#e6d3c2] bg-white p-4 shadow-sm sm:grid-cols-[1fr_auto]">
-              <div className="relative w-full sm:w-auto">
+            <div className="grid gap-4 rounded-2xl border border-[#e6d3c2] bg-white p-4 shadow-sm sm:grid-cols-[1fr_auto] min-w-0">
+              <div className="relative w-full sm:w-auto min-w-0">
                 <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8c7a6c]" />
                 <input
                   type="text"
@@ -309,7 +309,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                 />
               </div>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 min-w-0">
                 {subFilters.map((sf) => (
                   <button
                     key={sf.id}
@@ -345,7 +345,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                 </button>
               </div>
             ) : viewMode === 'grid' ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6 min-w-0">
                 {categoryItems.map((item) => (
                   <ProductCard
                     key={item.id}
@@ -362,7 +362,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                   {categoryItems.map((item) => (
                     <div
                       key={item.id}
-                      className="py-3 flex flex-col xs:flex-row xs:items-center justify-between gap-2 hover:bg-[#fdfaf3] px-2 rounded-lg transition-colors"
+                      className="py-3 flex flex-col xs:flex-row xs:items-center justify-between gap-2 hover:bg-[#fdfaf3] px-2 rounded-lg transition-colors min-w-0"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -396,8 +396,8 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
         </div>
 
         {/* Up Next Category Switcher Footer */}
-        <div className="mt-10 pt-6 border-t border-[#e6d3c2] flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-6 rounded-2xl border">
-          <div>
+        <div className="mt-10 pt-6 border-t border-[#e6d3c2] flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-6 rounded-2xl border min-w-0">
+          <div className="min-w-0">
             <span className="text-[10px] uppercase font-bold text-[#8c7a6c] tracking-wider">
               Explore Next Category
             </span>
