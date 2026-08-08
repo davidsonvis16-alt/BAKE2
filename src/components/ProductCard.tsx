@@ -1,9 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { Plus, Heart, Check, Upload } from 'lucide-react';
+import React, { useState } from 'react';
+import { Heart, Check } from 'lucide-react';
 import { MenuItem, MenuItemOption } from '../types';
-import { uploadMenuItemImage, validateImageFile } from '../lib/supabase';
-import { supabase } from '../lib/supabase';
-import { useAuth } from './AuthContext';
 
 interface ProductCardProps {
   item: MenuItem;
@@ -24,10 +21,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [addedAnimation, setAddedAnimation] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
-  const [uploadingImage, setUploadingImage] = useState(false);
-  const [showUpload, setShowUpload] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const { session, isAdmin } = useAuth();
 
   const currentPrice = selectedOption ? selectedOption.price : item.price;
   const safeImageSrc = item.image;
@@ -36,33 +29,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     onAddToCart(item, selectedOption);
     setAddedAnimation(true);
     setTimeout(() => setAddedAnimation(false), 1200);
-  };
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const validationError = validateImageFile(file);
-    if (validationError) {
-      alert(validationError);
-      setShowUpload(false);
-      if (fileInputRef.current) fileInputRef.current.value = '';
-      return;
-    }
-    setUploadingImage(true);
-    try {
-      const url = await uploadMenuItemImage(file, item.id);
-      if (url) {
-        await supabase.from('menu_items').update({ image: url }).eq('id', item.id);
-        setImageLoaded(false);
-        setImageFailed(false);
-      }
-    } catch (err) {
-      console.error('Image upload error:', err);
-    } finally {
-      setUploadingImage(false);
-      setShowUpload(false);
-      if (fileInputRef.current) fileInputRef.current.value = '';
-    }
   };
 
   const showImage = item.image && !imageFailed;
@@ -89,25 +55,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             }`}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            {isAdmin ? (
-              <button
-                onClick={() => setShowUpload(true)}
-                className="flex flex-col items-center gap-1 text-[#000000]/40 hover:text-[#000000] transition-colors"
-                title="Add image"
-              >
-                <Upload className="w-8 h-8" />
-                <span className="text-[10px] font-bold uppercase tracking-wider">
-                  {item.image && imageFailed ? 'Image Failed to Load' : 'Add Image'}
-                </span>
-              </button>
-            ) : (
-              <div className="flex flex-col items-center gap-1 text-[#000000]/30">
-                <Upload className="w-8 h-8" />
-                <span className="text-[10px] font-bold uppercase tracking-wider">No Image</span>
-              </div>
-            )}
-          </div>
+          <div className="w-full h-full bg-[#FAF3E7]" />
         )}
 
         {/* Favourite Heart Icon */}
@@ -122,42 +70,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         >
           <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-red-500' : ''}`} />
         </button>
-
-        {/* Admin upload overlay button */}
-        {isAdmin && (
-          <>
-            <button
-              onClick={() => setShowUpload(true)}
-              className="absolute top-2 left-2 bg-black/70 hover:bg-black text-white p-1.5 rounded-lg z-20 transition-colors"
-              title="Change image"
-            >
-              <Plus className="w-4 h-4" />
-            </button>
-            {showUpload && (
-              <div className="absolute inset-0 bg-black/60 z-30 flex items-center justify-center">
-                <div className="bg-white rounded-xl p-4 mx-4 w-full max-w-xs space-y-3">
-                  <p className="text-xs font-bold text-[#000000] text-center">Upload image for {item.name}</p>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    ref={fileInputRef}
-                    onChange={handleImageUpload}
-                    className="w-full text-xs"
-                  />
-                  <button
-                    onClick={() => {
-                      setShowUpload(false);
-                      if (fileInputRef.current) fileInputRef.current.value = '';
-                    }}
-                    className="w-full bg-gray-200 text-[#000000] text-xs font-bold py-2 rounded-lg"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            )}
-          </>
-        )}
       </div>
 
       {/* Content */}
@@ -236,7 +148,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </>
           ) : (
             <>
-              <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>Add</span>
             </>
           )}

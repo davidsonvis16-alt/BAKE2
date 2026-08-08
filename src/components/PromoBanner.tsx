@@ -1,6 +1,6 @@
 import React from 'react';
 import { ShoppingBag, ArrowRight } from 'lucide-react';
-import { CATEGORIES } from '../data/menuData';
+import { CATEGORIES, MENU_ITEMS } from '../data/menuData';
 import { useMenuData } from '../hooks/useMenuData';
 
 interface PromoBannerProps {
@@ -11,7 +11,7 @@ interface PromoBannerProps {
 export const PromoBanner: React.FC<PromoBannerProps> = ({ onAddToCart, onScrollToMenu }) => {
   const { menuItems } = useMenuData();
   const bbqCategory = CATEGORIES.find((c) => c.id === 'bbq-platters') || CATEGORIES[0];
-  const bbqPlatter = menuItems.find((i) => i.id === 'bbq1') || menuItems[0];
+  const bbqPlatter = menuItems.find((i) => i.id === 'bbq1') || MENU_ITEMS.find((i) => i.id === 'bbq1') || menuItems[0];
 
   return (
     <section className="py-6 px-4 max-w-7xl mx-auto smooth-slide-up">
