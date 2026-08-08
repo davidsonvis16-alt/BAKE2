@@ -25,7 +25,7 @@ export function useMenuData() {
       try {
         const { data, error } = await supabase
           .from('menu_items')
-          .select('id, image');
+          .select('id, name, price, description, badge, category, available, image');
 
         if (cancelled) return;
         if (error || !data) {
@@ -34,17 +34,26 @@ export function useMenuData() {
           return;
         }
 
-        const remoteImages: Record<string, string> = {};
+        const remoteMap: Record<string, Record<string, unknown>> = {};
         for (const row of data) {
-          if (row.id && row.image) {
-            remoteImages[row.id] = row.image;
+          if (row.id) {
+            remoteMap[row.id] = row;
           }
         }
 
         const merged: MenuItem[] = base.map((item) => {
-          const remote = remoteImages[item.id];
+          const remote = remoteMap[item.id];
           if (remote) {
-            return { ...item, image: remote };
+            return {
+              ...item,
+              name: (remote.name as string) || item.name,
+              price: (remote.price as number) || item.price,
+              description: (remote.description as string) ?? item.description,
+              badge: (remote.badge as string) || item.badge || null,
+              category: (remote.category as string) || item.category,
+              available: (remote.available as boolean) ?? item.available,
+              image: (remote.image as string) || item.image,
+            };
           }
           return item;
         });
