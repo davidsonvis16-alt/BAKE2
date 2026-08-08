@@ -335,7 +335,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
               />
             </div>
 
-            <div className="flex overflow-x-auto pb-2 no-scrollbar gap-3 min-w-max md:flex-wrap md:overflow-visible md:pb-0">
+            <div className="flex overflow-x-auto pb-2 no-scrollbar gap-3 md:flex-wrap md:overflow-visible md:pb-0">
               {subFilters.map((sf) => (
                 <button
                   key={sf.id}
