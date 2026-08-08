@@ -11,19 +11,15 @@ export const Gallery: React.FC = () => {
     { src: '/kienyeji-traditional.jpeg', alt: 'Kienyeji Specials' },
     { src: '/mains-meal.jpeg', alt: 'Main Meals' },
     { src: '/gallery-1.jpg', alt: 'Gallery Image 1' },
-    { src: '/gallery-2.jpg', alt: 'Gallery Image 2' },
-    { src: '/gallery-3.jpg', alt: 'Gallery Image 3' },
     { src: '/gallery-4.jpg', alt: 'Gallery Image 4' },
     { src: '/gallery-5.jpg', alt: 'Gallery Image 5' },
-    { src: '/gallery-6.jpg', alt: 'Gallery Image 6' },
-    { src: '/gallery-7.jpg', alt: 'Gallery Image 7' },
-    { src: '/gallery-8.jpg', alt: 'Gallery Image 8' },
     { src: '/gallery-9.jpg', alt: 'Gallery Image 9' },
     { src: '/gallery-10.jpg', alt: 'Gallery Image 10' },
     { src: '/gallery-11.jpg', alt: 'Gallery Image 11' },
     { src: '/gallery-12.jpg', alt: 'Gallery Image 12' },
     { src: '/gallery-13.jpg', alt: 'Gallery Image 13' },
     { src: '/gallery-14.jpg', alt: 'Gallery Image 14' },
+    { src: '/gallery-15.jpg', alt: 'Gallery Image 15' },
   ];
 
   return (
