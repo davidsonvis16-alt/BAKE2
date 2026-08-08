@@ -34,128 +34,84 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const showImage = item.image && !imageFailed;
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden border border-[#EADECB] hover:border-[#000000]/40 hover:shadow-lg transition-all duration-300 flex flex-col group">
-      {/* Item Image */}
-      <div className="relative w-full h-52 sm:h-48 md:h-56 bg-white">
-        {!imageLoaded && showImage && (
-          <div className="absolute inset-0 bg-gradient-to-r from-[#E6D8C5] via-[#F3E8D8] to-[#E6D8C5] animate-pulse z-10" />
-        )}
+    <div className="group overflow-hidden rounded-[28px] border border-[#E6D3C2] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+      <div className="relative h-64 overflow-hidden bg-[#F5EFE7]">
         {showImage ? (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <img
-              src={safeImageSrc}
-              alt={item.name}
-              loading="lazy"
-              onLoad={() => setImageLoaded(true)}
-              onError={() => {
-                setImageFailed(true);
-                setImageLoaded(true);
-              }}
-              className={`max-w-[85%] max-h-[85%] object-contain transition-all duration-500 group-hover:scale-105 ${
-                imageLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
-          </div>
+          <img
+            src={safeImageSrc}
+            alt={item.name}
+            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
+            onError={() => {
+              setImageFailed(true);
+              setImageLoaded(true);
+            }}
+            className={`w-full h-full object-cover transition duration-500 ${
+              imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+            }`}
+          />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-[#FAF3E7] flex items-center justify-center">
-              <span className="text-2xl">🍽️</span>
-            </div>
+          <div className="flex h-full items-center justify-center bg-[#F5EFE7]">
+            <span className="text-3xl">🍽️</span>
           </div>
         )}
 
-        {/* Subtle shadow beneath food for floating effect */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-3/4 h-3 bg-black/5 rounded-full blur-md pointer-events-none" />
-
-        {/* Favourite Heart Icon */}
         <button
           onClick={() => onToggleWishlist(item)}
-          className={`absolute top-2 right-2 p-2 rounded-full transition-colors z-20 ${
-            isWishlisted
-              ? 'text-red-500 bg-red-50'
-              : 'text-black/40 hover:text-black bg-white/80 hover:bg-white'
+          className={`absolute top-4 right-4 z-20 rounded-full border border-white/90 bg-white/90 p-2 text-sm shadow-sm transition hover:bg-white ${
+            isWishlisted ? 'text-red-500' : 'text-[#111]'
           }`}
           title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
+          type="button"
         >
-          <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-red-500' : ''}`} />
+          <Heart className="w-4 h-4" />
         </button>
       </div>
 
-      {/* Content */}
-      <div className="p-4 flex flex-col flex-grow">
-        <div className="flex items-start justify-between gap-2 mb-1.5">
-          <h3 className="font-bold text-sm text-[#000000] leading-snug">
+      <div className="space-y-3 p-5">
+        <div className="space-y-2">
+          <h3 className="font-serif text-lg font-bold text-[#111] leading-tight">
             {item.name}
           </h3>
-          {item.badge && (
-            <span
-              className={`text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0 ${
-                item.badge === 'Chef Special'
-                  ? 'bg-[#000000] text-orange-300'
-                  : item.badge === 'Popular'
-                  ? 'bg-[#000000] text-white'
-                  : item.badge === 'Healthy'
-                  ? 'bg-[#000000] text-white'
-                  : 'bg-orange-100 text-[#000000]'
-              }`}
-            >
-              {item.badge}
-            </span>
+          {item.description && (
+            <p className="text-sm leading-relaxed text-[#5C4B3F] line-clamp-2">
+              {item.description}
+            </p>
           )}
         </div>
 
-        {item.description && (
-          <p className="text-xs text-[#000000]/60 leading-relaxed line-clamp-2 mb-3">
-            {item.description}
-          </p>
-        )}
-
-        {/* Portion / Size Option Selector */}
         {item.options && item.options.length > 0 && (
-          <div className="mt-auto pt-2">
-            <div className="flex items-center gap-1.5 bg-[#FAF3E7] p-1 rounded-xl border border-[#EADECB]">
-              {item.options.map((opt) => (
-                <button
-                  key={opt.name}
-                  type="button"
-                  onClick={() => setSelectedOption(opt)}
-                  className={`flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg transition-all ${
-                    selectedOption?.name === opt.name
-                      ? 'bg-[#000000] text-white'
-                      : 'text-[#000000] hover:bg-[#EADECB]'
-                  }`}
-                >
-                  {opt.name}
-                </button>
-              ))}
-            </div>
+          <div className="flex flex-wrap gap-2">
+            {item.options.map((opt) => (
+              <button
+                key={opt.name}
+                type="button"
+                onClick={() => setSelectedOption(opt)}
+                className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition ${
+                  selectedOption?.name === opt.name
+                    ? 'border-[#111] bg-[#111] text-white'
+                    : 'border-[#E6D3C2] bg-[#F7F1E8] text-[#111] hover:border-[#111]'
+                }`}
+              >
+                {opt.name}
+              </button>
+            ))}
           </div>
         )}
 
-        {/* Price & Add */}
-        <div className="mt-3 flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
-          <span className="font-mono font-bold text-sm text-[#000000]">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <span className="font-mono text-base font-bold text-[#111]">
             KSh {currentPrice.toLocaleString()}
           </span>
-
           <button
             onClick={handleAdd}
             disabled={addedAnimation}
-            className={`flex items-center justify-center gap-1.5 font-bold text-xs px-3.5 py-2 rounded-full transition-all active:scale-95 w-full xs:w-auto ${
-              addedAnimation
-                ? 'bg-[#000000] text-white'
-                : 'bg-[#000000] hover:bg-[#000000] text-white'
+            className={`rounded-full bg-[#111] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#000] ${
+              addedAnimation ? 'opacity-80' : ''
             }`}
-            title="Add to cart"
+            type="button"
           >
-            {addedAnimation ? (
-              <>
-                <Check className="w-4 h-4 text-white" />
-                <span>Added</span>
-              </>
-            ) : (
-              <span>Add</span>
-            )}
+            {addedAnimation ? 'Added' : 'Add'}
           </button>
         </div>
       </div>

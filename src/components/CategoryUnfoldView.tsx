@@ -170,7 +170,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
       </div>
 
       {/* 2. Category Switcher Bar (Quick Horizontal Scroll on Phone) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar">
+      <div className="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar md:hidden">
         <span className="text-[10px] font-bold uppercase tracking-wider text-[#000000] shrink-0 pr-1">
           Categories:
         </span>
@@ -196,108 +196,143 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
         })}
       </div>
 
-      {/* 3. Category Header Banner Card */}
-      <div className="relative rounded-3xl bg-[#000000] text-white overflow-hidden p-6 sm:p-8 mb-6 shadow-md border border-neutral-800">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
-          
-          <div className="lg:col-span-8 space-y-3">
-            <div className="inline-flex items-center gap-2 bg-[#000000] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-              {getCategoryIcon(currentCategory.id)}
-              <span>Open Kitchen Specialty</span>
+      <div className="hidden md:grid md:grid-cols-[300px_1fr] gap-8 items-start">
+        <aside className="self-start">
+          <div className="sticky top-24 rounded-[32px] border border-[#E6D3C2] bg-white/95 p-4 shadow-[0_24px_60px_rgba(0,0,0,0.08)]">
+            <div className="mb-4">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[#8C7A6C]">
+                Categories
+              </span>
             </div>
+            <div className="space-y-2">
+              <button
+                onClick={() => {
+                  onSelectCategory('all');
+                  setSelectedSubFilter('all');
+                  setCategorySearch('');
+                }}
+                className={`flex items-center gap-3 w-full text-left rounded-[20px] border px-3.5 py-3 text-sm font-semibold transition ${
+                  categoryId === 'all'
+                    ? 'border-[#111] bg-[#111] text-white shadow-sm'
+                    : 'border-[#F1E7DC] bg-[#FCF6EF] text-[#111] hover:border-[#111] hover:bg-[#F7EFE4]'
+                }`}
+              >
+                <span className={categoryId === 'all' ? 'text-orange-300' : 'text-[#000000]/60'}>
+                  <Utensils className="w-4 h-4" />
+                </span>
+                <span className="flex-1 min-w-0">
+                  <span className="block text-sm truncate">All Items</span>
+                  <span className={`block text-[11px] ${categoryId === 'all' ? 'text-white/70' : 'text-[#000000]/50'}`}>
+                    {menuItems.length} items
+                  </span>
+                </span>
+              </button>
 
-            <h1 className="font-serif font-black text-2xl sm:text-4xl text-[#FAF3E7] tracking-tight">
-              {currentCategory.name}
-            </h1>
+              {CATEGORIES.map((cat) => {
+                const isActive = cat.id === categoryId;
+                const icon = getCategoryIcon(cat.id);
+                const itemCount = menuItems.filter((i) => i.category === cat.id).length;
 
-            <p className="text-orange-200/90 text-xs sm:text-sm leading-relaxed max-w-xl">
-              {currentCategory.description}. All items freshly prepared upon order in our open kitchen in Nakuru City.
-            </p>
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => {
+                      onSelectCategory(cat.id);
+                      setSelectedSubFilter('all');
+                      setCategorySearch('');
+                    }}
+                    className={`flex items-center gap-3 w-full text-left rounded-[20px] border px-3.5 py-3 text-sm font-semibold transition ${
+                      isActive
+                        ? 'border-[#111] bg-[#111] text-white shadow-sm'
+                        : 'border-[#F1E7DC] bg-[#FCF6EF] text-[#111] hover:border-[#111] hover:bg-[#F7EFE4]'
+                    }`}
+                  >
+                    <span className={isActive ? 'text-orange-300' : 'text-[#000000]/60'}>
+                      {icon}
+                    </span>
+                    <span className="flex-1 min-w-0">
+                      <span className="block truncate">{cat.name}</span>
+                      <span className={`block text-[11px] ${isActive ? 'text-white/70' : 'text-[#000000]/50'}`}>
+                        {itemCount} {itemCount === 1 ? 'item' : 'items'}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </aside>
 
-            <div className="pt-1 flex items-center gap-3 text-xs text-orange-300 font-bold">
-              <span className="bg-[#000000] px-3 py-1 rounded-lg border border-neutral-700/60">
-                {menuItems.filter((i) => i.category === categoryId).length} Available Items
-              </span>
-              <span className="text-orange-400">
-                Freshly Prepared Daily
-              </span>
+        <div className="space-y-6">
+          {/* 3. Category Header Banner Card */}
+          <div className="overflow-hidden rounded-[36px] bg-[#111] text-white shadow-[0_40px_90px_rgba(0,0,0,0.18)] border border-[#2A2A2A]">
+            <div className="grid gap-8 p-8 lg:grid-cols-[1.6fr_1fr] lg:p-10">
+              <div className="space-y-5">
+                <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.32em] text-[#F9E7D6]">
+                  {getCategoryIcon(currentCategory.id)}
+                  <span>Open Kitchen Specialty</span>
+                </div>
+
+                <h1 className="font-display text-4xl font-black leading-tight text-[#F9F3EC] sm:text-5xl">
+                  {currentCategory.name}
+                </h1>
+
+                <p className="max-w-2xl text-sm leading-relaxed text-[#F0D2A8] sm:text-base">
+                  {currentCategory.description}. All items freshly prepared upon order in our open kitchen in Nakuru City.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#F9E7D6]">
+                  <span className="rounded-full bg-white/8 px-3 py-2 border border-white/10">
+                    {menuItems.filter((i) => i.category === categoryId).length} Available Items
+                  </span>
+                  <span className="rounded-full bg-white/8 px-3 py-2 border border-white/10">
+                    Freshly Prepared Daily
+                  </span>
+                </div>
+              </div>
+
+              <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#1a1a1a] shadow-2xl h-72 sm:h-80">
+                <ImageWithSkeleton
+                  src={getCategoryHeroImage(currentCategory.id)}
+                  alt={currentCategory.name}
+                  referrerPolicy="no-referrer"
+                  containerClassName="w-full h-full"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-transparent to-transparent" />
+              </div>
             </div>
           </div>
 
-          <div className="lg:col-span-4 relative">
-            <div className="relative rounded-2xl overflow-hidden border-2 border-neutral-700/40 shadow-lg h-44 sm:h-52 bg-[#000000]">
-              <ImageWithSkeleton
-                src={getCategoryHeroImage(currentCategory.id)}
-                alt={currentCategory.name}
-                referrerPolicy="no-referrer"
-                containerClassName="w-full h-full"
-                className="w-full h-full object-cover"
+          {/* 4. Controls Bar: Sub-filters & View Toggles */}
+          <div className="grid gap-4 rounded-[32px] border border-[#E6D3C2] bg-white p-4 shadow-[0_24px_60px_rgba(0,0,0,0.06)] sm:grid-cols-[1fr_auto]">
+            <div className="flex flex-wrap gap-3 items-center">
+              {subFilters.map((sf) => (
+                <button
+                  key={sf.id}
+                  onClick={() => setSelectedSubFilter(sf.id)}
+                  className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] transition ${
+                    selectedSubFilter === sf.id
+                      ? 'bg-[#111] text-white shadow-sm'
+                      : 'bg-[#F5EFE7] text-[#111] hover:bg-[#E9DDD0]'
+                  }`}
+                >
+                  {sf.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="relative w-full sm:w-auto">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A49787]" />
+              <input
+                type="text"
+                placeholder={`Search ${currentCategory.name}...`}
+                value={categorySearch}
+                onChange={(e) => setCategorySearch(e.target.value)}
+                className="w-full rounded-[30px] border border-[#E6D3C2] bg-[#F5EFE7] px-12 py-3 text-sm font-semibold text-[#111] outline-none transition focus:border-[#111] focus:ring-4 focus:ring-[#F0D5B6]/30"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-transparent to-transparent z-10" />
             </div>
           </div>
-
-        </div>
-      </div>
-
-      {/* 4. Controls Bar: Sub-filters & View Toggles */}
-      <div className="bg-white p-3.5 rounded-2xl border border-[#EADECB] shadow-xs mb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-        
-        {/* Sub-filter Tags */}
-        <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto no-scrollbar">
-          {subFilters.map((sf) => (
-            <button
-              key={sf.id}
-              onClick={() => setSelectedSubFilter(sf.id)}
-              className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${
-                selectedSubFilter === sf.id
-                  ? 'bg-[#000000] text-white shadow-xs'
-                  : 'bg-[#FAF3E7] text-[#000000] hover:bg-[#EADECB]'
-              }`}
-            >
-              {sf.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Search & View Mode Toggle */}
-        <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
-          {/* Category Search Input */}
-          <div className="relative flex-1 sm:w-56">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#000000]" />
-            <input
-              type="text"
-              placeholder={`Search ${currentCategory.name}...`}
-              value={categorySearch}
-              onChange={(e) => setCategorySearch(e.target.value)}
-              className="w-full bg-[#FAF3E7] border border-[#E1D4C0] focus:border-[#000000] text-xs text-[#000000] placeholder-[#000000] rounded-xl pl-8 pr-3 py-1.5 outline-none"
-            />
-          </div>
-
-          {/* Grid/List Toggle */}
-          <div className="flex items-center gap-1 bg-[#FAF3E7] p-1 rounded-xl border border-[#EADECB] shrink-0">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg text-xs font-semibold ${
-                viewMode === 'grid' ? 'bg-[#000000] text-white' : 'text-[#000000]'
-              }`}
-              title="Grid View"
-            >
-              <LayoutGrid className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setViewMode('ticket')}
-              className={`p-1.5 rounded-lg text-xs font-semibold ${
-                viewMode === 'ticket' ? 'bg-[#000000] text-white' : 'text-[#000000]'
-              }`}
-              title="List Ticket View"
-            >
-              <List className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-      </div>
 
       {/* 5. Products Unfolded Display */}
       {categoryItems.length === 0 ? (
@@ -371,6 +406,8 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
           </div>
         </div>
       )}
+      </div>
+    </div>
 
       {/* 6. Up Next Category Switcher Footer */}
       <div className="mt-10 pt-6 border-t border-[#EADECB] flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-6 rounded-2xl border">
