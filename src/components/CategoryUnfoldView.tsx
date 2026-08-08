@@ -147,7 +147,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
       
       {/* 1. Breadcrumbs Navigation */}
       <div className="flex items-center justify-between gap-2 mb-4">
-        <div className="flex items-center gap-2 text-xs text-[#000000]">
+        <div className="hidden xs:flex items-center gap-2 text-xs text-[#000000]">
           <button
             onClick={onBackToHome}
             className="hover:text-[#000000] font-semibold transition-colors flex items-center gap-1"
@@ -162,10 +162,10 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
 
         <button
           onClick={onBackToHome}
-          className="bg-white hover:bg-[#FAF3E7] text-[#000000] border border-[#EADECB] text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-colors shadow-2xs"
+          className="bg-white hover:bg-[#FAF3E7] text-[#000000] border border-[#EADECB] text-xs font-bold px-3.5 py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
         >
           <ArrowLeft className="w-3.5 h-3.5 text-[#000000]" />
-          <span>Back to Overview</span>
+          <span>Back</span>
         </button>
       </div>
 
@@ -331,7 +331,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
         </div>
       ) : (
         /* Ticket List View */
-        <div className="bg-white rounded-2xl p-6 border border-[#EADECB] shadow-sm space-y-3">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-[#EADECB] shadow-sm space-y-3">
           <div className="border-b border-[#EADECB] pb-2 mb-2 flex justify-between text-xs font-bold uppercase tracking-wider text-[#000000]">
             <span>Item & Description</span>
             <span>Price & Order</span>
@@ -341,11 +341,11 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
             {categoryItems.map((item) => (
               <div
                 key={item.id}
-                className="py-3 flex items-center justify-between gap-3 hover:bg-[#FAF3E7]/60 px-2 rounded-lg transition-colors"
+                className="py-3 flex flex-col xs:flex-row xs:items-center justify-between gap-2 hover:bg-[#FAF3E7]/60 px-2 rounded-lg transition-colors"
               >
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-sm text-[#000000]">{item.name}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-bold text-sm text-[#000000] line-clamp-1">{item.name}</span>
                     {item.badge && (
                       <span className="text-[9px] uppercase font-bold bg-[#000000] text-white px-1.5 py-0.2 rounded-xs">
                         {item.badge}
@@ -355,7 +355,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                   <p className="text-xs text-[#000000] line-clamp-1">{item.description}</p>
                 </div>
 
-                <div className="flex items-center gap-3 shrink-0">
+                <div className="flex items-center justify-between xs:justify-end gap-3 shrink-0">
                   <span className="font-mono font-bold text-sm text-[#000000]">
                     KSh {item.price.toLocaleString()}
                   </span>

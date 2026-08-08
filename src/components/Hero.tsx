@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, ShieldCheck, Clock } from 'lucide-react';
+import { ArrowRight, Clock } from 'lucide-react';
 
 interface HeroProps {
   onScrollToMenu: () => void;
@@ -7,58 +7,58 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
   return (
-    <div className="relative bg-[#000000] text-white pt-6 md:pt-10 pb-16 md:pb-20">
+    <div className="relative bg-[#000000] text-white pt-6 md:pt-10 pb-16 md:pb-24">
       <div className="absolute inset-0 z-0">
         <img
           src="/open-kitchen.jpeg"
           alt="Open Kitchen"
-          className="w-full h-full object-cover opacity-60"
+          className="w-full h-full object-cover opacity-50"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = 'none';
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/40" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           {/* Left Content */}
-          <div className="lg:col-span-7 space-y-4 text-center lg:text-left">
-            {/* Open Kitchen Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full border border-white/20">
-              <span>Open-Kitchen Coffee Shop in Nakuru City</span>
+          <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
+            {/* Location Badge */}
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full border border-white/20">
+              <span>Open-Kitchen Coffee Shop — Nakuru City</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-white leading-tight tracking-tight">
+            <h1 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-white leading-[0.95] tracking-tight">
               BakeMart Coffee House <br />
               <span className="text-orange-300 font-serif italic font-normal text-xl sm:text-2xl lg:text-3xl">
-                Beyond Sweetness It's Fresh and Nutritional
+                Beyond Sweetness — It's Fresh and Nutritional
               </span>
             </h1>
 
-            <p className="text-orange-200 text-sm sm:text-base max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
-              The only open-kitchen coffee shop in Nakuru City. Watch our chefs craft your meals fresh daily in a trendy, relaxing, serene, and cozy atmosphere.
+            <p className="text-orange-200 text-sm sm:text-base max-w-lg mx-auto lg:mx-0 font-normal leading-relaxed">
+              Fresh coffee, open-kitchen meals, and honest flavors — served daily in Nakuru.
             </p>
 
-            {/* Quick highlights */}
+            {/* Rating & Hours */}
             <div className="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs font-semibold text-orange-200">
               <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
-                <ShieldCheck className="w-4 h-4 text-orange-300" />
+                <span className="text-orange-300">★</span>
                 Rated 5.0 on Google
               </span>
               <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
-                <Clock className="w-4 h-4 text-orange-300" />
+                <Clock className="w-3.5 h-3.5 text-orange-300" />
                 Open Daily — Closes at 8 PM
               </span>
             </div>
 
             {/* CTA Buttons */}
-            <div className="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-3">
+            <div className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-3">
               <button
                 onClick={onScrollToMenu}
-                className="bg-white hover:bg-neutral-200 text-black font-bold text-sm px-7 py-3 rounded-full shadow-md transition-all flex items-center gap-2 group active:scale-95"
+                className="bg-white hover:bg-neutral-200 text-black font-bold text-sm px-8 py-3 rounded-full shadow-lg transition-all flex items-center gap-2 group active:scale-95"
               >
                 <span>Order Now</span>
                 <ArrowRight className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform" />
@@ -68,7 +68,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                 href="https://wa.me/254725009708"
                 target="_blank"
                 rel="noreferrer"
-                className="bg-neutral-800 hover:bg-black text-white font-bold text-sm px-6 py-3 rounded-full shadow-md transition-all flex items-center gap-2"
+                className="bg-[#000000] hover:bg-[#000000] text-white font-bold text-sm px-6 py-3 rounded-full shadow-md border border-white/20 transition-all flex items-center gap-2"
               >
                 <span>WhatsApp: 0725 009708</span>
               </a>

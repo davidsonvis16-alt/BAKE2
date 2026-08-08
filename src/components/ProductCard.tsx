@@ -34,9 +34,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const showImage = item.image && !imageFailed;
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
+    <div className="bg-white rounded-2xl overflow-hidden border border-[#EADECB] hover:border-[#000000]/40 hover:shadow-lg transition-all duration-300 flex flex-col group">
       {/* Item Image */}
-      <div className="relative w-full h-[180px] overflow-hidden bg-[#FAF3E7]">
+      <div className="relative w-full h-48 sm:h-44 md:h-48 overflow-hidden bg-[#FAF3E7]">
         {!imageLoaded && showImage && (
           <div className="absolute inset-0 bg-gradient-to-r from-[#E6D8C5] via-[#F3E8D8] to-[#E6D8C5] animate-pulse z-10" />
         )}
@@ -50,7 +50,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               setImageFailed(true);
               setImageLoaded(true);
             }}
-            className={`w-full h-full object-cover transition-opacity duration-300 ${
+            className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
           />
@@ -74,13 +74,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Content */}
       <div className="p-4 flex flex-col flex-grow">
-        <div className="flex items-start justify-between gap-2 mb-1">
-          <h3 className="font-bold text-sm text-[#000000] line-clamp-2 leading-snug">
+        <div className="flex items-start justify-between gap-2 mb-1.5">
+          <h3 className="font-bold text-sm text-[#000000] leading-snug">
             {item.name}
           </h3>
           {item.badge && (
             <span
-              className={`text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-xs shrink-0 ${
+              className={`text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0 ${
                 item.badge === 'Chef Special'
                   ? 'bg-[#000000] text-orange-300'
                   : item.badge === 'Popular'
@@ -96,7 +96,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {item.description && (
-          <p className="text-xs text-[#000000]/70 leading-relaxed line-clamp-2 mb-3">
+          <p className="text-xs text-[#000000]/60 leading-relaxed line-clamp-2 mb-3">
             {item.description}
           </p>
         )}
@@ -110,9 +110,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   key={opt.name}
                   type="button"
                   onClick={() => setSelectedOption(opt)}
-                  className={`flex-1 text-[11px] font-bold py-1 px-2 rounded-lg smooth-btn ${
+                  className={`flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg transition-all ${
                     selectedOption?.name === opt.name
-                      ? 'bg-[#000000] text-white shadow-xs'
+                      ? 'bg-[#000000] text-white'
                       : 'text-[#000000] hover:bg-[#EADECB]'
                   }`}
                 >
@@ -123,35 +123,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         )}
 
-        {/* Price */}
-        <div className="mt-3">
+        {/* Price & Add */}
+        <div className="mt-3 flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
           <span className="font-mono font-bold text-sm text-[#000000]">
             KSh {currentPrice.toLocaleString()}
           </span>
-        </div>
 
-        {/* Add Button */}
-        <button
-          onClick={handleAdd}
-          disabled={addedAnimation}
-          className={`w-full mt-3 py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-bold text-xs text-white smooth-btn shadow-sm ${
-            addedAnimation
-              ? 'bg-[#000000]'
-              : 'bg-[#000000] hover:bg-[#000000]'
-          }`}
-          title="Add to cart"
-        >
-          {addedAnimation ? (
-            <>
-              <Check className="w-4 h-4 text-white" />
-              <span>Added</span>
-            </>
-          ) : (
-            <>
+          <button
+            onClick={handleAdd}
+            disabled={addedAnimation}
+            className={`flex items-center justify-center gap-1.5 font-bold text-xs px-3.5 py-2 rounded-full transition-all active:scale-95 w-full xs:w-auto ${
+              addedAnimation
+                ? 'bg-[#000000] text-white'
+                : 'bg-[#000000] hover:bg-[#000000] text-white'
+            }`}
+            title="Add to cart"
+          >
+            {addedAnimation ? (
+              <>
+                <Check className="w-4 h-4 text-white" />
+                <span>Added</span>
+              </>
+            ) : (
               <span>Add</span>
-            </>
-          )}
-        </button>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
