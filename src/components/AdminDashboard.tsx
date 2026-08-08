@@ -78,17 +78,26 @@ export const AdminDashboard: React.FC = () => {
       if (editImage) {
         imageUrl = await uploadMenuItemImage(editImage, editingId);
       }
-      await supabase.from('menu_items').update({
+      const updateData: Record<string, unknown> = {
         name: editForm.name,
         price: editForm.price,
         description: editForm.description,
         badge: editForm.badge || null,
         category: editForm.category,
-        image: imageUrl,
-      }).eq('id', editingId);
+      };
+      if (imageUrl !== undefined && imageUrl !== null) {
+        updateData.image = imageUrl;
+      }
+      const { error } = await supabase.from('menu_items').update(updateData).eq('id', editingId);
+      if (error) {
+        console.error('Supabase update error:', error);
+        alert('Failed to save item: ' + error.message);
+        return;
+      }
       setEditingId(null);
       setEditImage(null);
       fetchItems();
+      window.dispatchEvent(new Event('menu-updated'));
     } catch (err) {
       console.error('Error saving item:', err);
       alert('Failed to save item');
@@ -101,6 +110,7 @@ export const AdminDashboard: React.FC = () => {
     if (!supabase) return;
     await supabase.from('menu_items').update({ available: !item.available }).eq('id', item.id);
     fetchItems();
+    window.dispatchEvent(new Event('menu-updated'));
   };
 
   const deleteItem = async (id: string) => {
@@ -108,6 +118,7 @@ export const AdminDashboard: React.FC = () => {
     if (!confirm('Delete this item permanently?')) return;
     await supabase.from('menu_items').delete().eq('id', id);
     fetchItems();
+    window.dispatchEvent(new Event('menu-updated'));
   };
 
   const addItem = async () => {
@@ -127,6 +138,7 @@ export const AdminDashboard: React.FC = () => {
       setNewItemImage(null);
       setShowAddForm(false);
       fetchItems();
+      window.dispatchEvent(new Event('menu-updated'));
     } catch (err) {
       console.error('Error adding item:', err);
       alert('Failed to add item');
@@ -258,8 +270,20 @@ export const AdminDashboard: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {groupedItems[catId].map((item) => (
                     <div key={item.id} className="bg-white rounded-xl p-4 shadow-sm border border-[#EADECB] flex flex-col">
-                      {editingId === item.id ? (
+                       {editingId === item.id ? (
                         <div className="space-y-2">
+                          {editForm.image && (
+                            <div className="relative w-full h-40 rounded-lg overflow-hidden bg-[#FAF3E7] border border-[#EADECB]">
+                              <img
+                                src={editForm.image}
+                                alt={editForm.name || 'Item'}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).style.display = 'none';
+                                }}
+                              />
+                            </div>
+                          )}
                           <input value={editForm.name || ''}
                             onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                             className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full font-semibold text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
@@ -301,8 +325,25 @@ export const AdminDashboard: React.FC = () => {
                             </button>
                           </div>
                         </div>
-                      ) : (
+                       ) : (
                         <>
+                          <div className="relative w-full h-40 rounded-lg overflow-hidden bg-[#FAF3E7] mb-3 border border-[#EADECB]">
+                            {item.image ? (
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = '';
+                                  (e.target as HTMLImageElement).style.display = 'none';
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-[#000000]/30">
+                                <span className="text-[10px] font-bold uppercase tracking-wider">No Image</span>
+                              </div>
+                            )}
+                          </div>
                           <div className="flex-1">
                             <div className="flex flex-wrap items-center gap-1.5 mb-1">
                               <span className="font-semibold text-sm text-[#000000]">{item.name}</span>

@@ -22,6 +22,8 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
     );
   }
 
+  const fallback = { price: 0 };
+
   return (
     <section className="py-6 px-4 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -43,16 +45,16 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
           </div>
 
           <div className="relative z-10 pt-5 flex items-center justify-between">
-             <div className="flex flex-col">
-               <span className="text-[10px] text-orange-400 uppercase font-bold">Only</span>
-               <span className="font-mono font-bold text-xl text-orange-300">
-                 KSh {(grandFeast?.price || 0).toLocaleString()}
-               </span>
-             </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] text-orange-400 uppercase font-bold">Only</span>
+                <span className="font-mono font-bold text-xl text-orange-300">
+                  KSh {(grandFeast?.price || fallback.price).toLocaleString()}
+                </span>
+              </div>
 
-             <button
-               onClick={() => onAddToCart(grandFeast.id)}
-                className="bg-black hover:bg-neutral-800 text-white text-xs font-bold px-4 py-2.5 rounded-full flex items-center gap-1.5 shadow-xs transition-all active:scale-95"
+              <button
+                onClick={() => onAddToCart(grandFeast.id)}
+                 className="bg-black hover:bg-neutral-800 text-white text-xs font-bold px-4 py-2.5 rounded-full flex items-center gap-1.5 shadow-xs transition-all active:scale-95"
              >
                <ShoppingBag className="w-3.5 h-3.5" />
                <span>Order Now</span>
@@ -81,7 +83,7 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
              <div className="flex flex-col">
                <span className="text-[10px] text-orange-400 uppercase font-bold">Medium / Large</span>
                <span className="font-mono font-bold text-xl text-orange-300">
-                 KSh {(tikkaPizza?.price || 0).toLocaleString()}
+                 KSh {(tikkaPizza?.price || fallback.price).toLocaleString()}
                </span>
              </div>
 
