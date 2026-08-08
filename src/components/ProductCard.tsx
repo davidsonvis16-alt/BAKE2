@@ -34,8 +34,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const showImage = item.image && !imageFailed;
 
   return (
-    <div className="group w-full min-w-0 overflow-hidden rounded-[28px] border border-[#E6D3C2] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative h-[170px] md:h-64 overflow-hidden bg-[#F5EFE7]">
+    <div className="group w-full max-w-full min-w-0 overflow-hidden rounded-[28px] border border-[#E6D3C2] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+      <div className="relative h-[160px] md:h-64 overflow-hidden bg-[#F5EFE7]">
         {showImage ? (
           <img
             src={safeImageSrc}
@@ -68,7 +68,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </button>
       </div>
 
-      <div className="space-y-3 p-4 sm:p-5">
+      <div className="space-y-3 p-3.5 sm:p-4">
         <div className="space-y-2">
           <h3 className="font-serif text-lg font-bold text-[#111] leading-tight">
             {item.name}
@@ -106,7 +106,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <button
             onClick={handleAdd}
             disabled={addedAnimation}
-            className={`flex-shrink-0 rounded-full bg-[#111] px-3.5 py-2 min-w-[60px] text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#000] ${
+            className={`shrink-0 rounded-full bg-[#111] px-3 py-1.5 min-w-[56px] text-[11px] font-bold uppercase tracking-[0.18em] text-white transition hover:bg-black ${
               addedAnimation ? 'opacity-80' : ''
             }`}
             type="button"
