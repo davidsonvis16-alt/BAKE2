@@ -212,8 +212,8 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
           <div className="space-y-6">
             {/* Category Header Banner */}
             <div className="rounded-2xl border border-[#e6d3c2] bg-[#1a120b] text-white overflow-hidden">
-              <div className="grid gap-6 p-5 sm:gap-8 sm:p-6 lg:grid-cols-[1.6fr_1fr] lg:p-8">
-                <div className="space-y-4">
+              <div className="grid gap-6 p-5 sm:gap-8 sm:p-6 lg:grid-cols-[1.6fr_1fr] lg:p-8 grid-cols-1">
+                <div className="space-y-4 min-w-0">
                   <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-widest text-[#d4a35a] font-bold">
                     {getCategoryIcon(currentCategory.id)}
                     <span>Open Kitchen Specialty</span>
@@ -227,22 +227,22 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                     {currentCategory.description}. All items freshly prepared upon order in our open kitchen in Nakuru City.
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-wider text-[#d4a35a]/80">
-                    <span className="rounded-full bg-white/8 px-3 py-2 border border-white/10">
+                  <div className="flex flex-wrap items-center gap-1 sm:gap-2 lg:gap-3 text-xs font-semibold uppercase tracking-wider text-[#d4a35a]/80">
+                    <span className="rounded-full bg-white/8 px-2 sm:px-3 py-2 border border-white/10 text-[9px] sm:text-xs">
                       {menuItems.filter((i) => i.category === categoryId).length} Available Items
                     </span>
-                    <span className="rounded-full bg-white/8 px-3 py-2 border border-white/10">
+                    <span className="rounded-full bg-white/8 px-2 sm:px-3 py-2 border border-white/10 text-[9px] sm:text-xs">
                       Freshly Prepared Daily
                     </span>
                   </div>
                 </div>
 
-                <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#0f0a05] aspect-[4/3] lg:aspect-auto">
+                <div className="hidden lg:block relative overflow-hidden rounded-xl border border-white/10 bg-[#0f0a05]">
                   <ImageWithSkeleton
                     src={getCategoryHeroImage(currentCategory.id)}
                     alt={currentCategory.name}
                     referrerPolicy="no-referrer"
-                    containerClassName="w-full h-full"
+                    containerClassName="w-full h-full aspect-[4/3]"
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
