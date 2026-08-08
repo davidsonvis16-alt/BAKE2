@@ -196,8 +196,8 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
         })}
       </div>
 
-      <div className="hidden md:grid md:grid-cols-[300px_1fr] gap-8 items-start">
-        <aside className="self-start">
+      <div className="grid gap-8 md:grid-cols-[300px_1fr] items-start">
+        <aside className="hidden md:block self-start">
           <div className="sticky top-24 rounded-[32px] border border-[#E6D3C2] bg-white/95 p-4 shadow-[0_24px_60px_rgba(0,0,0,0.08)]">
             <div className="mb-4">
               <span className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[#8C7A6C]">
