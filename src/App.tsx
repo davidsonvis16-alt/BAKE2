@@ -21,7 +21,7 @@ import { useAuth } from './components/AuthContext';
 import { CATEGORIES } from './data/menuData';
 import { useMenuData } from './hooks/useMenuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
-import { ShoppingBag, Send } from 'lucide-react';
+import { ShoppingBag, Send, Search, X } from 'lucide-react';
 import { PopularItemsPopup } from './components/PopularItemsPopup';
 
 export default function App() {
@@ -333,15 +333,44 @@ export default function App() {
         ) : activePage === 'faq' ? (
           <FAQ />
         ) : (
-          /* MAIN HOME VIEW HUB PAGE */
-          <div>
-            {/* Hero Section */}
-            <Hero
-              onScrollToMenu={() => navigate('/menu')}
-            />
+           /* MAIN HOME VIEW HUB PAGE */
+           <div>
+             {/* Hero Section */}
+             <Hero
+               onScrollToMenu={() => navigate('/menu')}
+             />
 
-            {/* Feature Cards */}
-            <FeatureCards onNavigateReservation={handleOpenReservation} />
+             {/* Homepage Search Bar */}
+             <section className="max-w-7xl mx-auto px-4 -mt-4 mb-8">
+               <div className="bg-white rounded-2xl p-2 border border-[#EADECB] shadow-sm">
+                 <div className="relative">
+                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#000000]/50" />
+                   <input
+                     type="text"
+                     placeholder="Search for pizza, coffee, burgers, juices..."
+                     value={searchQuery}
+                     onChange={(e) => setSearchQuery(e.target.value)}
+                     onKeyDown={(e) => {
+                       if (e.key === 'Enter' && searchQuery.trim()) {
+                         navigate('/menu');
+                       }
+                     }}
+                     className="w-full bg-[#FAF3E7] border border-[#E1D4C0] focus:border-[#000000] text-sm text-[#000000] placeholder-[#000000]/60 rounded-xl pl-12 pr-10 py-3.5 outline-none transition-colors"
+                   />
+                   {searchQuery && (
+                     <button
+                       onClick={() => setSearchQuery('')}
+                       className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-[#EADECB] hover:bg-[#D8C7B0] text-[#000000] transition-colors"
+                     >
+                       <X className="w-3.5 h-3.5" />
+                     </button>
+                   )}
+                 </div>
+               </div>
+             </section>
+
+             {/* Feature Cards */}
+             <FeatureCards onNavigateReservation={handleOpenReservation} />
 
             {/* Category Quick Nav Hub - 1 card per category with representative image */}
             <CategoryQuickNav
