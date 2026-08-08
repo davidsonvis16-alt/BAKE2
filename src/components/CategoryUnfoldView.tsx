@@ -239,7 +239,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
         <div className="space-y-6">
           {/* 3. Category Header Banner Card */}
           <div className="overflow-hidden rounded-[36px] bg-[#111] text-white shadow-[0_40px_90px_rgba(0,0,0,0.18)] border border-[#2A2A2A]">
-            <div className="grid gap-8 p-5 sm:p-6 lg:grid-cols-[1.6fr_1fr] lg:p-10">
+            <div className="grid gap-6 p-5 sm:gap-8 sm:p-6 lg:grid-cols-[1.6fr_1fr] lg:p-10">
               <div className="space-y-5">
                 <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.32em] text-[#F9E7D6]">
                   {getCategoryIcon(currentCategory.id)}
@@ -278,10 +278,10 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
           </div>
 
           <div className="md:hidden">
-            <div className="overflow-hidden rounded-[32px] border border-[#E6D3C2] bg-white px-3 py-3">
+            <div className="overflow-hidden rounded-[32px] border border-[#E6D3C2] bg-white p-2">
               <div
-                className="flex gap-4 overflow-x-auto pb-2 no-scrollbar scroll-smooth"
-                style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x' }}
+                className="flex flex-wrap gap-2 no-scrollbar scroll-smooth"
+                style={{ touchAction: 'pan-x' }}
               >
                 {CATEGORIES.map((cat) => {
                   const isActive = cat.id === categoryId;
@@ -296,21 +296,21 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                         setCategorySearch('');
                       }}
                       type="button"
-                      className={`shrink-0 min-w-[170px] max-w-[190px] h-[104px] rounded-[26px] border bg-white p-3 text-left transition-all duration-200 ${
+                      className={`flex-1 min-w-[120px] rounded-[20px] border bg-white p-3 text-left transition-all duration-200 ${
                         isActive
                           ? 'border-[#111] bg-[#111] text-white shadow-lg'
                           : 'border-[#E6D3C2] text-[#111] hover:border-[#111] hover:shadow-sm'
                       }`}
                     >
-                      <div className="flex items-start gap-3">
-                        <span className={`grid h-11 w-11 place-items-center rounded-2xl ${isActive ? 'bg-orange-300 text-white' : 'bg-[#F5EFE7] text-[#111]'}`}>
+                      <div className="flex items-center gap-2.5">
+                        <span className={`grid h-9 w-9 place-items-center rounded-xl ${isActive ? 'bg-orange-300 text-white' : 'bg-[#F5EFE7] text-[#111]'}`}>
                           {getCategoryIcon(cat.id)}
                         </span>
                         <div className="min-w-0">
-                          <p className="text-sm font-semibold leading-tight line-clamp-2">
+                          <p className="text-sm font-semibold leading-tight line-clamp-1">
                             {cat.name}
                           </p>
-                          <p className="text-[11px] text-[#6F5A4A]/80 mt-1">
+                          <p className="text-[10px] text-[#6F5A4A]/80 mt-0.5">
                             {itemCount} items
                           </p>
                         </div>
@@ -335,7 +335,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
               />
             </div>
 
-            <div className="flex overflow-x-auto pb-2 no-scrollbar gap-3 md:flex-wrap md:overflow-visible md:pb-0">
+            <div className="flex flex-wrap gap-3 no-scrollbar">
               {subFilters.map((sf) => (
                 <button
                   key={sf.id}
