@@ -41,6 +41,9 @@ export function useMenuData() {
           }
         }
 
+        const baseIds = new Set(base.map((item) => item.id));
+        const newRemoteItems: MenuItem[] = [];
+
         const merged: MenuItem[] = base.map((item) => {
           const remote = remoteMap[item.id];
           if (remote) {
@@ -58,7 +61,23 @@ export function useMenuData() {
           return item;
         });
 
-        setMenuItems(merged);
+        for (const row of data) {
+          if (row.id && !baseIds.has(row.id)) {
+            newRemoteItems.push({
+              id: row.id as string,
+              name: (row.name as string) || 'Untitled Item',
+              price: (row.price as number) || 0,
+              description: (row.description as string) || '',
+              badge: (row.badge as string) || null,
+              category: (row.category as string) || '',
+              available: (row.available as boolean) ?? true,
+              image: (row.image as string) || '',
+              options: [],
+            });
+          }
+        }
+
+        setMenuItems([...merged, ...newRemoteItems]);
         setLoading(false);
       } catch {
         if (cancelled) return;
