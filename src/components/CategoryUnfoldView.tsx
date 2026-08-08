@@ -169,33 +169,6 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
         </button>
       </div>
 
-      {/* 2. Category Switcher Bar (Quick Horizontal Scroll on Phone) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar md:hidden">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-[#000000] shrink-0 pr-1">
-          Categories:
-        </span>
-        {CATEGORIES.map((cat) => {
-          const isActive = cat.id === categoryId;
-          return (
-            <button
-              key={cat.id}
-              onClick={() => {
-                onSelectCategory(cat.id);
-                setSelectedSubFilter('all');
-                setCategorySearch('');
-              }}
-              className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-                isActive
-                  ? 'bg-[#000000] text-orange-300 shadow-xs'
-                  : 'bg-white text-[#000000] border border-[#EADECB] hover:border-[#000000]'
-              }`}
-            >
-              {cat.name}
-            </button>
-          );
-        })}
-      </div>
-
       <div className="grid gap-8 md:grid-cols-[300px_1fr] items-start">
         <aside className="hidden md:block self-start">
           <div className="sticky top-24 rounded-[32px] border border-[#E6D3C2] bg-white/95 p-4 shadow-[0_24px_60px_rgba(0,0,0,0.08)]">
@@ -266,7 +239,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
         <div className="space-y-6">
           {/* 3. Category Header Banner Card */}
           <div className="overflow-hidden rounded-[36px] bg-[#111] text-white shadow-[0_40px_90px_rgba(0,0,0,0.18)] border border-[#2A2A2A]">
-            <div className="grid gap-8 p-8 lg:grid-cols-[1.6fr_1fr] lg:p-10">
+            <div className="grid gap-8 p-5 sm:p-6 lg:grid-cols-[1.6fr_1fr] lg:p-10">
               <div className="space-y-5">
                 <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.32em] text-[#F9E7D6]">
                   {getCategoryIcon(currentCategory.id)}
@@ -304,9 +277,65 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
             </div>
           </div>
 
+          <div className="md:hidden">
+            <div className="overflow-hidden rounded-[32px] border border-[#E6D3C2] bg-white px-3 py-3">
+              <div
+                className="flex gap-4 overflow-x-auto pb-2 no-scrollbar scroll-smooth"
+                style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x' }}
+              >
+                {CATEGORIES.map((cat) => {
+                  const isActive = cat.id === categoryId;
+                  const itemCount = menuItems.filter((item) => item.category === cat.id).length;
+
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        onSelectCategory(cat.id);
+                        setSelectedSubFilter('all');
+                        setCategorySearch('');
+                      }}
+                      type="button"
+                      className={`shrink-0 min-w-[170px] max-w-[190px] h-[104px] rounded-[26px] border bg-white p-3 text-left transition-all duration-200 ${
+                        isActive
+                          ? 'border-[#111] bg-[#111] text-white shadow-lg'
+                          : 'border-[#E6D3C2] text-[#111] hover:border-[#111] hover:shadow-sm'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className={`grid h-11 w-11 place-items-center rounded-2xl ${isActive ? 'bg-orange-300 text-white' : 'bg-[#F5EFE7] text-[#111]'}`}>
+                          {getCategoryIcon(cat.id)}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold leading-tight line-clamp-2">
+                            {cat.name}
+                          </p>
+                          <p className="text-[11px] text-[#6F5A4A]/80 mt-1">
+                            {itemCount} items
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
           {/* 4. Controls Bar: Sub-filters & View Toggles */}
           <div className="grid gap-4 rounded-[32px] border border-[#E6D3C2] bg-white p-4 shadow-[0_24px_60px_rgba(0,0,0,0.06)] sm:grid-cols-[1fr_auto]">
-            <div className="flex flex-wrap gap-3 items-center">
+            <div className="relative w-full sm:w-auto">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A49787]" />
+              <input
+                type="text"
+                placeholder={`Search ${currentCategory.name}...`}
+                value={categorySearch}
+                onChange={(e) => setCategorySearch(e.target.value)}
+                className="w-full rounded-[30px] border border-[#E6D3C2] bg-[#F5EFE7] px-12 py-3 text-sm font-semibold text-[#111] outline-none transition focus:border-[#111] focus:ring-4 focus:ring-[#F0D5B6]/30"
+              />
+            </div>
+
+            <div className="flex overflow-x-auto pb-2 no-scrollbar gap-3 min-w-max md:flex-wrap md:overflow-visible md:pb-0">
               {subFilters.map((sf) => (
                 <button
                   key={sf.id}
@@ -320,17 +349,6 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                   {sf.label}
                 </button>
               ))}
-            </div>
-
-            <div className="relative w-full sm:w-auto">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A49787]" />
-              <input
-                type="text"
-                placeholder={`Search ${currentCategory.name}...`}
-                value={categorySearch}
-                onChange={(e) => setCategorySearch(e.target.value)}
-                className="w-full rounded-[30px] border border-[#E6D3C2] bg-[#F5EFE7] px-12 py-3 text-sm font-semibold text-[#111] outline-none transition focus:border-[#111] focus:ring-4 focus:ring-[#F0D5B6]/30"
-              />
             </div>
           </div>
 

@@ -35,7 +35,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div className="group overflow-hidden rounded-[28px] border border-[#E6D3C2] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative h-64 overflow-hidden bg-[#F5EFE7]">
+      <div className="relative h-[190px] md:h-64 overflow-hidden bg-[#F5EFE7]">
         {showImage ? (
           <img
             src={safeImageSrc}
