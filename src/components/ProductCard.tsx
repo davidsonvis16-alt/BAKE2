@@ -99,14 +99,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         )}
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center justify-between gap-3">
           <span className="font-mono text-base font-bold text-[#111]">
             KSh {currentPrice.toLocaleString()}
           </span>
           <button
             onClick={handleAdd}
             disabled={addedAnimation}
-            className={`rounded-full bg-[#111] px-3.5 py-2 min-w-[60px] text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#000] ${
+            className={`flex-shrink-0 rounded-full bg-[#111] px-3.5 py-2 min-w-[60px] text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#000] ${
               addedAnimation ? 'opacity-80' : ''
             }`}
             type="button"
