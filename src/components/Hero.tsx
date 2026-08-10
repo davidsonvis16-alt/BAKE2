@@ -32,7 +32,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
             </div>
 
             {/* Main Headline */}
-            <h1 className="font-serif font-black text-4xl sm:text-5xl lg:text-6xl text-[#1a120b] leading-[0.95] tracking-tight">
+            <h1 className="font-serif font-black text-[2.75rem] sm:text-5xl lg:text-6xl text-[#1a120b] leading-[0.95] tracking-tight">
               Where Every Corner
               <span className="block text-[#d4a35a] font-serif italic font-normal text-2xl sm:text-3xl lg:text-4xl mt-2">
                 Tells a Story
@@ -51,7 +51,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               </span>
               <span className="flex items-center gap-1.5 bg-white border border-[#e6d3c2] px-3 py-1.5 rounded-full">
                 <Clock className="w-3.5 h-3.5 text-[#d4a35a]" />
-                <span>Open Daily — Closes at 8 PM</span>
+                <span>Open Daily · 7 AM – 8 PM</span>
               </span>
             </div>
 
@@ -61,7 +61,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                 onClick={onScrollToMenu}
                 className="bg-[#1a120b] hover:bg-[#2b1b12] text-white font-bold text-sm px-8 py-3.5 rounded-full transition-all flex items-center gap-2 shadow-sm hover:shadow-md active:scale-[0.98]"
               >
-                <span>Order Now</span>
+                <span>Explore the Menu</span>
                 <ArrowRight className="w-4 h-4 text-[#d4a35a]" />
               </button>
 

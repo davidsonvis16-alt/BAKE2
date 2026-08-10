@@ -56,7 +56,7 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateReservatio
           </p>
         </div>
 
-        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-8">
           {features.map((feature, index) => {
             const isOrderNow = feature.title === 'Order Now';
             return (
@@ -66,42 +66,42 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateReservatio
                 onClick={() => {
                   if (isOrderNow && onNavigateMenu) onNavigateMenu();
                 }}
-                className={`group flex flex-col items-center text-center rounded-2xl p-6 border transition-all duration-300 text-left ${
+                className={`group flex flex-col items-center text-center rounded-2xl p-4 sm:p-6 border transition-all duration-300 text-left ${
                   feature.accent
                     ? 'bg-[#1a120b] text-white border-[#2b1b12] shadow-md hover:shadow-lg'
                     : 'bg-white text-[#1a120b] border-[#e6d3c2] hover:border-[#1a120b]/20 hover:shadow-md'
                 } ${isOrderNow ? 'cursor-pointer' : ''}`}
               >
                 <div
-                  className={`flex items-center justify-center w-12 h-12 rounded-full mb-4 transition-all ${
+                  className={`flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full mb-3 sm:mb-4 transition-all ${
                     feature.accent
                       ? 'bg-[#d4a35a] text-[#1a120b] group-hover:scale-110'
                       : 'bg-[#fdfaf3] border border-[#e6d3c2] group-hover:bg-[#f8f1e5]'
                   }`}
                 >
                   {React.cloneElement(feature.icon as React.ReactElement, {
-                    className: `w-6 h-6 transition-colors`,
+                    className: `w-5 h-5 sm:w-6 sm:h-6 transition-colors`,
                     style: feature.accent
                       ? { color: '#1a120b' }
                       : { color: '#1a120b' },
                   })}
                 </div>
                 <h3
-                  className={`font-serif font-bold text-sm sm:text-base mb-2 ${
+                  className={`font-serif font-bold text-sm sm:text-base mb-1.5 sm:mb-2 ${
                     feature.accent ? 'text-[#fdfaf3]' : 'text-[#1a120b]'
                   }`}
                 >
                   {feature.title}
                 </h3>
                 <p
-                  className={`text-xs sm:text-sm leading-relaxed flex-1 ${
+                  className={`text-[11px] sm:text-xs md:text-sm leading-relaxed flex-1 ${
                     feature.accent ? 'text-[#d4a35a]/80' : 'text-[#5c4b3f]'
                   }`}
                 >
                   {feature.description}
                 </p>
                 {isOrderNow && (
-                  <span className="mt-3 text-[10px] font-bold uppercase tracking-widest text-[#d4a35a]">
+                  <span className="mt-2 sm:mt-3 text-[10px] font-bold uppercase tracking-widest text-[#d4a35a]">
                     Tap to order →
                   </span>
                 )}

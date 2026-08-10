@@ -327,42 +327,13 @@ export default function App() {
           <FAQ />
         ) : (
            /* MAIN HOME VIEW HUB PAGE */
-           <div>
+           <div className="pb-28 md:pb-0">
              {/* Hero Section */}
-             <Hero
-               onScrollToMenu={() => navigate('/menu')}
-             />
+              <Hero
+                onScrollToMenu={() => navigate('/menu')}
+              />
 
-              {/* Homepage Search Bar */}
-              <section className="max-w-7xl mx-auto px-4 -mt-8 sm:-mt-10 mb-8">
-                <div className="bg-white rounded-2xl p-3 border border-[#e6d3c2] shadow-sm">
-                  <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8c7a6c]" />
-                    <input
-                      type="text"
-                      placeholder="Search for pizza, coffee, burgers, juices..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && searchQuery.trim()) {
-                          navigate('/menu');
-                        }
-                      }}
-                      className="w-full bg-[#fdfaf3] border border-[#e6d3c2] focus:border-[#1a120b] text-sm text-[#1a120b] placeholder-[#8c7a6c] rounded-xl pl-12 pr-10 py-3.5 outline-none transition-colors"
-                    />
-                    {searchQuery && (
-                      <button
-                        onClick={() => setSearchQuery('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-[#e6d3c2] hover:bg-[#d8c7b0] text-[#2b1b12] transition-colors"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </section>
-
-             {/* Feature Cards */}
+              {/* Feature Cards */}
              <FeatureCards onNavigateReservation={handleOpenReservation} onNavigateMenu={() => navigate('/menu')} />
 
              {/* Category Platter Nav Hub */}
@@ -435,28 +406,14 @@ export default function App() {
       />
 
       {/* Sticky Bottom Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#e6d3c2] shadow-lg md:hidden safe-bottom">
-        <div className="flex items-center justify-between gap-2 px-4 py-2.5">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#e6d3c2] shadow-[0_-4px_16px_rgba(26,18,11,0.08)] md:hidden safe-bottom">
+        <div className="flex items-center gap-3 px-4 py-3">
           <button
             onClick={() => setIsCartOpen(true)}
-            className="flex items-center gap-1.5 bg-[#1a120b] text-white px-3 py-2 rounded-full font-bold text-xs shadow-md flex-1 justify-center"
+            className="flex-1 flex items-center justify-center gap-2 bg-[#1a120b] text-white px-4 py-3 rounded-full font-bold text-sm shadow-md transition-all active:scale-[0.98]"
           >
             <ShoppingBag className="w-4 h-4 text-[#d4a35a]" />
             <span>View Cart ({totalCartCount})</span>
-          </button>
-          <button
-            onClick={() => navigate('/reservation')}
-            className="flex items-center justify-center bg-[#fdfaf3] hover:bg-[#f8f1e5] text-[#1a120b] border border-[#e6d3c2] px-3 py-2 rounded-full shadow-xs"
-            title="Reserve a Table"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 3v18" />
-              <path d="M7 16h4" />
-              <path d="M7 11h10" />
-              <path d="M17 3v6" />
-              <path d="M17 11v6" />
-              <path d="M21 16v4" />
-            </svg>
           </button>
           <button
             onClick={() => {
@@ -471,10 +428,12 @@ export default function App() {
               }).join('\n')}\n----------------------------------\n*GRAND TOTAL:* KSh ${total.toLocaleString()}\n\n*Location:* BakeMart Coffee House, Tropical House, Watalii Rd, Nakuru City`;
               window.open(`https://wa.me/254725009708?text=${encodeURIComponent(message)}`, '_blank');
             }}
-            className={`font-bold text-sm py-2 px-4 rounded-full shadow-md flex items-center gap-2 ${cartItems.length > 0 ? 'bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b]' : 'bg-[#e6d3c2] text-[#8c7a6c] cursor-not-allowed'}`}
+            className={`flex items-center justify-center gap-2 bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] px-5 py-3 rounded-full font-bold text-sm shadow-md transition-all active:scale-[0.98] ${
+              cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
             <Send className="w-4 h-4" />
-            <span>Checkout</span>
+            <span>Checkout →</span>
           </button>
         </div>
       </div>

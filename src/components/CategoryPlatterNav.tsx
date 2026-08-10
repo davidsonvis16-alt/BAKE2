@@ -51,7 +51,7 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
               <button
                 key={cat.id}
                 onClick={() => onSelectCategory(cat.id)}
-                className={`shrink-0 w-[78vw] max-w-[300px] sm:w-[220px] lg:w-[240px] group flex flex-col rounded-2xl border bg-white transition-all duration-300 ${
+                className={`shrink-0 w-[78vw] max-w-[320px] sm:w-[220px] lg:w-[240px] group flex flex-col rounded-2xl border bg-white transition-all duration-300 ${
                   isSelected
                     ? 'border-[#1a120b] shadow-lg'
                     : 'border-[#e6d3c2] hover:border-[#1a120b]/30 hover:shadow-md'
