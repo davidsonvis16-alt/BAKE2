@@ -115,9 +115,13 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
         </div>
 
         {/* Swipe indicator (mobile) */}
-        <div className="lg:hidden pointer-events-none absolute bottom-0 right-4 flex items-center gap-1 text-[#8c7a6c]">
-          <span className="text-[10px] font-bold uppercase tracking-widest">Swipe</span>
-          <ChevronRight className="w-4 h-4 animate-pulse" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#fdfaf3] via-[#fdfaf3]/60 to-transparent lg:hidden flex items-center justify-end pr-3">
+          <div className="flex items-center gap-1 text-[#1a120b]">
+            <span className="text-[10px] font-black uppercase tracking-widest">Swipe</span>
+            <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
         </div>
       </div>
     </section>
