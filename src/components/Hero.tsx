@@ -66,7 +66,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               </button>
 
               <a
-                href="https://wa.me/254725009708"
+                href="https://www.google.com/maps/search/?api=1&query=BakeMart+Coffee+House,Tropical+House,Moi+Road,Nakuru"
                 target="_blank"
                 rel="noreferrer"
                 className="bg-white hover:bg-[#f8f1e5] text-[#1a120b] border border-[#e6d3c2] font-bold text-sm px-6 py-3.5 rounded-full transition-all flex items-center gap-2"
