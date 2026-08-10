@@ -252,7 +252,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
 
             {/* Mobile Category Switcher */}
             <div className="md:hidden">
-              <div className="overflow-hidden rounded-2xl border border-[#e6d3c2] bg-white p-2">
+              <div className="relative overflow-hidden rounded-2xl border border-[#e6d3c2] bg-white p-2">
                 <div
                   className="flex gap-2 overflow-x-auto no-scrollbar scroll-smooth"
                   style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x' }}
@@ -292,6 +292,14 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                       </button>
                     );
                   })}
+                </div>
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white via-white/60 to-transparent flex items-center justify-end pr-3">
+                  <div className="flex items-center gap-1 text-[#1a120b]">
+                    <span className="text-[10px] font-black uppercase tracking-widest">Swipe</span>
+                    <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>

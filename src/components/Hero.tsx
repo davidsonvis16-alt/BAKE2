@@ -7,27 +7,37 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
   return (
-    <section className="relative overflow-hidden bg-[#fdfaf3] lg:min-h-[460px] flex items-center pt-6 md:pt-10 pb-12 md:pb-16">
-      {/* Desktop hero background image */}
+    <section className="relative overflow-hidden bg-[#fdfaf3] min-h-[560px] lg:min-h-[620px] flex items-center pt-6 md:pt-10 pb-12 md:pb-16">
+      {/* Background image — shown on all breakpoints now, not just desktop */}
       <img
         src="/gallery-16.jpg"
         alt="BakeMart café interior"
-        className="hidden lg:block absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover"
         onError={(e) => {
           (e.target as HTMLImageElement).style.display = 'none';
         }}
       />
-      {/* Left cream gradient overlay for desktop readability */}
-      <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#fdfaf3] via-[#fdfaf3]/70 to-transparent" />
+
+      {/* Mobile/tablet: bottom-up gradient so text sits on a solid cream footer */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#fdfaf3] via-[#fdfaf3]/85 to-[#fdfaf3]/10 lg:hidden" />
+
+      {/* Desktop: left-to-right gradient, tightened so it doesn't wash the whole photo */}
+      <div
+        className="hidden lg:block absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(to right, #fdfaf3 0%, #fdfaf3 32%, rgba(253,250,243,0.75) 42%, rgba(253,250,243,0) 58%)',
+        }}
+      />
 
       <div className="relative z-10 max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
           <div className="lg:col-span-5 space-y-5 text-center lg:text-left">
             {/* Location Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/90 lg:bg-white border border-[#e6d3c2] text-[#1a120b] text-[10px] font-bold px-3.5 py-1.5 rounded-full">
+            <div className="inline-flex items-center gap-2 bg-white/95 border border-[#e6d3c2] text-[#1a120b] text-[10px] font-bold px-3.5 py-1.5 rounded-full">
               <span className="text-[#d4a35a]">●</span>
-              <span>Nakuru’s Cozy Open-Kitchen Café</span>
+              <span>Nakuru's Cozy Open-Kitchen Café</span>
             </div>
 
             {/* Main Headline */}
@@ -44,11 +54,11 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
 
             {/* Rating & Hours */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs font-semibold text-[#5c4b3f]">
-              <span className="flex items-center gap-1.5 bg-white/90 lg:bg-white border border-[#e6d3c2] px-3 py-1.5 rounded-full">
+              <span className="flex items-center gap-1.5 bg-white/95 border border-[#e6d3c2] px-3 py-1.5 rounded-full">
                 <span className="text-[#d4a35a]">★</span>
                 <span>Rated 5.0 on Google</span>
               </span>
-              <span className="flex items-center gap-1.5 bg-white/90 lg:bg-white border border-[#e6d3c2] px-3 py-1.5 rounded-full">
+              <span className="flex items-center gap-1.5 bg-white/95 border border-[#e6d3c2] px-3 py-1.5 rounded-full">
                 <Clock className="w-3.5 h-3.5 text-[#d4a35a]" />
                 <span>Open Daily · 7 AM – 8 PM</span>
               </span>
@@ -75,19 +85,8 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
             </div>
           </div>
 
-          {/* Right Image Feature (mobile only — desktop uses background) */}
-          <div className="lg:col-span-7 lg:hidden">
-            <div className="relative rounded-2xl overflow-hidden border border-[#e6d3c2] shadow-lg bg-[#f8f1e5] aspect-[4/3]">
-              <img
-                src="/gallery-16.jpg"
-                alt="BakeMart café interior"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
-              />
-            </div>
-          </div>
+          {/* lg:col-span-7 spacer — photo shows through the background image above, no separate card needed */}
+          <div className="hidden lg:block lg:col-span-7" />
         </div>
       </div>
     </section>

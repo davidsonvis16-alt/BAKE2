@@ -200,11 +200,6 @@ export default function App() {
     );
   };
 
-  // Scroll or navigate to reservation
-  const handleOpenReservation = () => {
-    navigate('/reservation');
-  };
-
   const wishlistItems = menuItems.filter((i) => wishlistIds.includes(i.id));
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -259,8 +254,7 @@ export default function App() {
         onNavigateGallery={() => navigate('/gallery')}
         onNavigateAbout={() => navigate('/about')}
         onNavigateFAQ={() => navigate('/faq')}
-        onNavigateReservation={handleOpenReservation}
-       />
+        />
 
       {/* Main Page Content */}
       <main className="flex-1">
@@ -482,6 +476,20 @@ export default function App() {
           >
             <ShoppingBag className="w-4 h-4 text-[#d4a35a]" />
             <span>View Cart ({totalCartCount})</span>
+          </button>
+          <button
+            onClick={() => navigate('/reservation')}
+            className="flex items-center justify-center bg-[#fdfaf3] hover:bg-[#f8f1e5] text-[#1a120b] border border-[#e6d3c2] px-3 py-3 rounded-full shadow-xs"
+            title="Reserve a Table"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 3v18" />
+              <path d="M7 16h4" />
+              <path d="M7 11h10" />
+              <path d="M17 3v6" />
+              <path d="M17 11v6" />
+              <path d="M21 16v4" />
+            </svg>
           </button>
           <button
             onClick={() => {

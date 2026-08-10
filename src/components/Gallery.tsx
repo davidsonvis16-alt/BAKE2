@@ -1,5 +1,6 @@
-import React, { useMemo, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useReducedMotion, AnimatePresence } from 'motion/react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageWithSkeleton } from './Skeletons';
 
 const galleryCategories = [
@@ -12,83 +13,120 @@ const galleryCategories = [
 ];
 
 const galleryImages = [
-  { src: '/gallery-16.jpg', alt: 'Cozy dining booths decked out with balloons and roses', category: 'space', label: 'Space' },
-  { src: '/open-kitchen.jpeg', alt: 'Open kitchen coffee bar', category: 'coffee', label: 'Coffee Shop' },
-  { src: '/pizza-pasta.jpeg', alt: 'Wood-fired pizza and pasta plate', category: 'pizza-pasta', label: 'Pizza & Pasta' },
-  { src: '/happy-hour_1.jpg', alt: 'Bakemart serves happy hour food', category: 'food', label: 'Happy Hour' },
-  { src: '/bakery-desserts.jpeg', alt: 'Assorted bakery desserts and pastries', category: 'food', label: 'Bakery & Desserts' },
-  { src: '/breakfast.jpeg', alt: 'Breakfast spread with coffee and pastries', category: 'food', label: 'Breakfast' },
-  { src: '/juices-cocktails.jpeg', alt: 'Fresh juices and cocktails served cold', category: 'coffee', label: 'Beverages' },
-  { src: '/kienyeji-traditional.jpeg', alt: 'Traditional Kenyan specialty dish', category: 'food', label: 'Kienyeji Special' },
-  { src: '/mains-meal.jpeg', alt: 'Hearty main meal plated with care', category: 'food', label: 'Main Meals' },
-  { src: '/gallery-1.jpg', alt: 'A warm café moment at BakeMart', category: 'moments', label: 'Moments' },
-  { src: '/gallery-4.jpg', alt: 'Soft interior lighting and ceramic tableware', category: 'space', label: 'Space' },
-  { src: '/gallery-5.jpg', alt: 'Intimate dining corner with warm textures', category: 'space', label: 'Space' },
-  { src: '/gallery-9.jpg', alt: 'Chef plating a fresh dish in the kitchen', category: 'moments', label: 'Kitchen Moment' },
-  { src: '/gallery-10.jpg', alt: 'Interior view with curated seating and warmth', category: 'space', label: 'Space' },
-  { src: '/gallery-11.jpg', alt: 'Coffee cup and pastry with a premium finish', category: 'coffee', label: 'Coffee Moment' },
-  { src: '/gallery-12.jpg', alt: 'Golden morning light on a café table', category: 'space', label: 'Space' },
-  { src: '/gallery-13.jpg', alt: 'Friends enjoying a meal in the café', category: 'moments', label: 'Moments' },
-  { src: '/gallery-14.jpg', alt: 'Café interior with premium materials', category: 'space', label: 'Space' },
-  { src: '/gallery-15.jpg', alt: 'Close-up of a plated dish and drink', category: 'moments', label: 'Moments' },
+  { src: '/gallery-16.jpg', alt: 'Cozy dining booths decked out with balloons and roses', category: 'space', label: 'Balloon corner' },
+  { src: '/open-kitchen.jpeg', alt: 'Open kitchen coffee bar', category: 'coffee', label: 'The coffee bar' },
+  { src: '/pizza-pasta.jpeg', alt: 'Wood-fired pizza and pasta plate', category: 'pizza-pasta', label: 'Fresh off the fire' },
+  { src: '/happy-hour_1.jpg', alt: 'Bakemart serves happy hour food', category: 'food', label: 'Happy hour!' },
+  { src: '/bakery-desserts.jpeg', alt: 'Assorted bakery desserts and pastries', category: 'food', label: 'Bakery haul' },
+  { src: '/breakfast.jpeg', alt: 'Breakfast spread with coffee and pastries', category: 'food', label: 'Morning spread' },
+  { src: '/juices-cocktails.jpeg', alt: 'Fresh juices and cocktails served cold', category: 'coffee', label: 'Cold + fresh' },
+  { src: '/kienyeji-traditional.jpeg', alt: 'Traditional Kenyan specialty dish', category: 'food', label: 'Kienyeji special' },
+  { src: '/mains-meal.jpeg', alt: 'Hearty main meal plated with care', category: 'food', label: 'Sunday mains' },
+  { src: '/gallery-1.jpg', alt: 'A warm café moment at BakeMart', category: 'moments', label: 'A good moment' },
+  { src: '/gallery-4.jpg', alt: 'Soft interior lighting and ceramic tableware', category: 'space', label: 'Table setting' },
+  { src: '/gallery-5.jpg', alt: 'Intimate dining corner with warm textures', category: 'space', label: 'Quiet corner' },
+  { src: '/gallery-9.jpg', alt: 'Chef plating a fresh dish in the kitchen', category: 'moments', label: 'Plating up' },
+  { src: '/gallery-10.jpg', alt: 'Interior view with curated seating and warmth', category: 'space', label: 'Where to sit' },
+  { src: '/gallery-11.jpg', alt: 'Coffee cup and pastry with a premium finish', category: 'coffee', label: 'Coffee + pastry' },
+  { src: '/gallery-12.jpg', alt: 'Golden morning light on a café table', category: 'space', label: 'Golden hour' },
+  { src: '/gallery-13.jpg', alt: 'Friends enjoying a meal in the café', category: 'moments', label: 'Good company' },
+  { src: '/gallery-14.jpg', alt: 'Café interior with premium materials', category: 'space', label: 'The space' },
+  { src: '/gallery-15.jpg', alt: 'Close-up of a plated dish and drink', category: 'moments', label: 'Close-up' },
 ];
 
-// Curated set + placement for the scattered "sticky note" hero stack.
-// The space shot leads (largest, topmost, front-and-center).
+// Curated set + placement for the scattered "pinned to the corkboard" hero stack.
 const heroStack = [
   {
     src: '/gallery-16.jpg',
     alt: 'Cozy dining booths decked out with balloons and roses',
+    label: 'Balloon corner',
     style: { top: '4%', left: '50%', width: '58%', rotate: -3, z: 50 },
   },
   {
     src: '/breakfast.jpeg',
     alt: 'Breakfast spread with coffee and pastries',
+    label: 'Morning spread',
     style: { top: '2%', left: '10%', width: '40%', rotate: -9, z: 30 },
   },
   {
     src: '/happy-hour_1.jpg',
     alt: 'Bakemart serves happy hour food',
+    label: 'Happy hour!',
     style: { top: '30%', left: '78%', width: '38%', rotate: 8, z: 20 },
   },
   {
     src: '/kienyeji-traditional.jpeg',
     alt: 'Traditional Kenyan specialty dish',
+    label: 'Kienyeji special',
     style: { top: '46%', left: '6%', width: '42%', rotate: -6, z: 25 },
   },
   {
     src: '/bakery-desserts.jpeg',
     alt: 'Assorted bakery desserts and pastries',
+    label: 'Bakery haul',
     style: { top: '62%', left: '58%', width: '40%', rotate: 5, z: 15 },
   },
   {
     src: '/pizza-pasta.jpeg',
     alt: 'Wood-fired pizza and pasta plate',
+    label: 'Fresh off the fire',
     style: { top: '78%', left: '14%', width: '36%', rotate: -4, z: 10 },
   },
 ] as const;
 
+// Washi tape colorways pulled from the brand palette — cycled deterministically per card.
+const tapeStyles = [
+  'linear-gradient(135deg, rgba(212,163,90,0.9), rgba(212,163,90,0.65))', // gold
+  'linear-gradient(135deg, rgba(140,74,26,0.75), rgba(140,74,26,0.55))', // rust
+  'linear-gradient(135deg, rgba(230,211,194,0.95), rgba(230,211,194,0.75))', // kraft cream
+];
+
+// Deterministic pseudo-random tilt so layout doesn't jitter between renders.
+const tiltFor = (i: number) => {
+  const pattern = [-3, 2.5, -1.5, 3.5, -2.5, 1.5, -4, 2];
+  return pattern[i % pattern.length];
+};
+const tapeFor = (i: number) => tapeStyles[i % tapeStyles.length];
+const tapeRotateFor = (i: number) => (i % 2 === 0 ? -6 : 7);
+
+const Washi: React.FC<{ index: number }> = ({ index }) => (
+  <span
+    aria-hidden
+    className="absolute -top-3 left-1/2 h-6 w-14 -translate-x-1/2 rounded-[2px] shadow-sm"
+    style={{
+      background: tapeFor(index),
+      transform: `translateX(-50%) rotate(${tapeRotateFor(index)}deg)`,
+    }}
+  />
+);
+
 const StickyNoteCard: React.FC<{
   src: string;
   alt: string;
+  label: string;
   top: string;
   left: string;
   width: string;
   rotate: number;
   z: number;
   delay?: number;
-}> = ({ src, alt, top, left, width, rotate, z, delay = 0 }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 24, rotate: rotate * 1.6 }}
+  index: number;
+  reduceMotion: boolean;
+  onClick: () => void;
+}> = ({ src, alt, label, top, left, width, rotate, z, delay = 0, index, reduceMotion, onClick }) => (
+  <motion.button
+    type="button"
+    onClick={onClick}
+    initial={reduceMotion ? false : { opacity: 0, y: 24, rotate: rotate * 1.6 }}
     animate={{ opacity: 1, y: 0, rotate }}
-    transition={{ duration: 0.5, ease: 'easeOut', delay }}
-    whileHover={{ rotate: 0, scale: 1.05, zIndex: 60 }}
-    className="absolute -translate-x-1/2 rounded-xl bg-white p-2 pb-6 shadow-[0_10px_30px_rgba(26,18,11,0.25)] border border-[#e6d3c2] cursor-default"
+    transition={{ duration: 0.5, ease: 'easeOut', delay: reduceMotion ? 0 : delay }}
+    whileHover={reduceMotion ? undefined : { rotate: 0, scale: 1.06, zIndex: 60 }}
+    className="absolute -translate-x-1/2 rounded-sm bg-white p-2 pb-7 shadow-[0_10px_30px_rgba(26,18,11,0.25)] border border-[#e6d3c2] text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a120b]"
     style={{ top, left, width, zIndex: z }}
+    aria-label={`Open photo: ${label}`}
   >
-    {/* pin */}
-    <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 h-4 w-4 rounded-full bg-gradient-to-br from-[#d4822a] to-[#8c4a1a] shadow-md border border-white/60 z-10" />
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md bg-[#f8f1e5]">
+    <Washi index={index} />
+    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2px] bg-[#f8f1e5]">
       <ImageWithSkeleton
         src={src}
         alt={alt}
@@ -98,40 +136,15 @@ const StickyNoteCard: React.FC<{
         className="h-full w-full object-cover"
       />
     </div>
-  </motion.div>
+    <p className="mt-2 text-center text-[15px] leading-none text-[#2b1b12]" style={{ fontFamily: "'Caveat', cursive" }}>
+      {label}
+    </p>
+  </motion.button>
 );
 
-const GalleryCard: React.FC<{
-  src: string;
-  alt: string;
-  label?: string;
-  className?: string;
-}> = ({ src, alt, label, className = '' }) => (
-  <div className={`group relative overflow-hidden rounded-2xl border border-[#e6d3c2] ${className}`}>
-    <ImageWithSkeleton
-      src={src}
-      alt={alt}
-      loading="lazy"
-      decoding="async"
-      containerClassName="relative overflow-hidden bg-[#f8f1e5] h-full w-full"
-      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-    />
-    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 sm:from-black/30 via-transparent to-transparent" />
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 sm:p-5">
-      <div className="transform translate-y-0 opacity-100 transition duration-300 sm:translate-y-2 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
-        {label && (
-          <span className="inline-flex rounded-full bg-white/95 px-3 py-1 text-[10px] uppercase tracking-widest text-[#1a120b] font-bold border border-[#e6d3c2]">
-            {label}
-          </span>
-        )}
-        <p className="mt-2 text-sm font-semibold text-white leading-tight">{alt}</p>
-      </div>
-    </div>
-  </div>
-);
-
-const StickyNoteHero: React.FC = () => {
+const StickyNoteHero: React.FC<{ onOpen: (src: string) => void }> = ({ onOpen }) => {
   const heroRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = !!useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
@@ -146,32 +159,33 @@ const StickyNoteHero: React.FC = () => {
   return (
     <div ref={heroRef} className="relative h-[130vh]">
       <div className="sticky top-0 h-[85vh] sm:h-[80vh] overflow-hidden bg-[#fdfaf3]">
+        {/* corkboard texture */}
         <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          className="absolute inset-0 opacity-[0.05] pointer-events-none"
           style={{
-            backgroundImage:
-              'radial-gradient(circle at 1px 1px, #1a120b 1px, transparent 0)',
-            backgroundSize: '22px 22px',
+            backgroundImage: 'radial-gradient(circle at 1px 1px, #8c4a1a 1px, transparent 0)',
+            backgroundSize: '20px 20px',
           }}
         />
+        <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 120px rgba(92,74,52,0.12)' }} />
 
         <motion.div
-          style={{ opacity: headingOpacity, y: headingY }}
+          style={reduceMotion ? undefined : { opacity: headingOpacity, y: headingY }}
           className="relative z-40 pt-8 sm:pt-10 text-center px-6"
         >
           <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             GALLERY
           </span>
           <h1 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-[#1a120b] mt-3 leading-tight">
-            Inside BakeMart
+            The Wall Behind the Counter
           </h1>
           <p className="mt-3 max-w-md mx-auto text-sm sm:text-base text-[#5c4b3f] leading-relaxed">
-            A glimpse into our open-kitchen coffee shop — pinned up, just like the good moments.
+            Every photo we've pinned up — the mornings, the plates, the regulars. Tap one to look closer.
           </p>
         </motion.div>
 
         <motion.div
-          style={{ y: stackY, scale: stackScale, opacity: stackOpacity }}
+          style={reduceMotion ? undefined : { y: stackY, scale: stackScale, opacity: stackOpacity }}
           className="relative mx-auto mt-4 h-[48vh] sm:h-[52vh] max-w-sm sm:max-w-lg"
         >
           {heroStack.map((card, i) => (
@@ -179,18 +193,22 @@ const StickyNoteHero: React.FC = () => {
               key={card.src}
               src={card.src}
               alt={card.alt}
+              label={card.label}
               top={card.style.top}
               left={card.style.left}
               width={card.style.width}
               rotate={card.style.rotate}
               z={card.style.z}
               delay={i * 0.08}
+              index={i}
+              reduceMotion={reduceMotion}
+              onClick={() => onOpen(card.src)}
             />
           ))}
         </motion.div>
 
         <motion.div
-          style={{ opacity: headingOpacity }}
+          style={reduceMotion ? undefined : { opacity: headingOpacity }}
           className="absolute bottom-4 sm:bottom-6 inset-x-0 flex justify-center z-40"
         >
           <span className="inline-flex items-center gap-2 rounded-full bg-[#1a120b] text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest shadow-lg">
@@ -202,22 +220,163 @@ const StickyNoteHero: React.FC = () => {
   );
 };
 
+const CorkCard: React.FC<{
+  src: string;
+  alt: string;
+  label: string;
+  index: number;
+  onClick: () => void;
+}> = ({ src, alt, label, index, onClick }) => (
+  <motion.button
+    type="button"
+    onClick={onClick}
+    initial={{ opacity: 0, y: 16 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-40px' }}
+    transition={{ duration: 0.4, ease: 'easeOut' }}
+    whileHover={{ rotate: 0, scale: 1.03, zIndex: 20 }}
+    className="group relative mb-4 sm:mb-6 w-full break-inside-avoid rounded-sm bg-white p-2.5 pb-8 shadow-[0_8px_20px_rgba(26,18,11,0.15)] border border-[#e6d3c2] text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a120b]"
+    style={{ transform: `rotate(${tiltFor(index)}deg)` }}
+    aria-label={`Open photo: ${label}`}
+  >
+    <Washi index={index} />
+    <div className="relative overflow-hidden rounded-[2px] bg-[#f8f1e5]">
+      <ImageWithSkeleton
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        containerClassName="w-full overflow-hidden bg-[#f8f1e5]"
+        className="w-full h-auto object-cover transition duration-500 group-hover:scale-105"
+      />
+    </div>
+    <p
+      className="mt-2.5 text-center text-lg leading-none text-[#2b1b12]"
+      style={{ fontFamily: "'Caveat', cursive" }}
+    >
+      {label}
+    </p>
+  </motion.button>
+);
+
+const Lightbox: React.FC<{
+  images: { src: string; alt: string; label: string }[];
+  index: number;
+  onClose: () => void;
+  onNavigate: (nextIndex: number) => void;
+}> = ({ images, index, onClose, onNavigate }) => {
+  const current = images[index];
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') onNavigate((index + 1) % images.length);
+      if (e.key === 'ArrowLeft') onNavigate((index - 1 + images.length) % images.length);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [index, images.length, onClose, onNavigate]);
+
+  if (!current) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#1a120b]/95 backdrop-blur-sm px-4"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={current.label}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 rounded-full bg-white/10 hover:bg-white/20 text-white p-2.5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+        aria-label="Close"
+      >
+        <X className="w-5 h-5" />
+      </button>
+
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onNavigate((index - 1 + images.length) % images.length);
+        }}
+        className="absolute left-2 sm:left-6 z-10 rounded-full bg-white/10 hover:bg-white/20 text-white p-2.5 sm:p-3 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+        aria-label="Previous photo"
+      >
+        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+      </button>
+
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onNavigate((index + 1) % images.length);
+        }}
+        className="absolute right-2 sm:right-6 z-10 rounded-full bg-white/10 hover:bg-white/20 text-white p-2.5 sm:p-3 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+        aria-label="Next photo"
+      >
+        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+      </button>
+
+      <motion.div
+        key={current.src}
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.25 }}
+        className="relative max-w-3xl w-full flex flex-col items-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="max-h-[75vh] w-full overflow-hidden rounded-md border border-white/10 bg-[#0f0a06]">
+          <img src={current.src} alt={current.alt} className="w-full h-full max-h-[75vh] object-contain" />
+        </div>
+        <p
+          className="mt-4 text-2xl text-white/90"
+          style={{ fontFamily: "'Caveat', cursive" }}
+        >
+          {current.label}
+        </p>
+        <p className="mt-1 text-xs text-white/50">
+          {index + 1} / {images.length}
+        </p>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 export const Gallery: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   const filteredImages = useMemo(() => {
     if (selectedCategory === 'all') return galleryImages;
     return galleryImages.filter((image) => image.category === selectedCategory);
   }, [selectedCategory]);
 
-  const heroImages = filteredImages.slice(0, 2);
-  const editorialImages = filteredImages.slice(2, 7);
-  const featureImage = filteredImages[7] ?? null;
-  const remainingImages = filteredImages.slice(featureImage ? 8 : 7);
+  // Lightbox can be opened from the hero (which may show images outside the
+  // current filter), so build its navigation list from whichever set is relevant.
+  const lightboxSource = useMemo(() => {
+    if (!lightboxSrc) return filteredImages;
+    const inFiltered = filteredImages.some((img) => img.src === lightboxSrc);
+    return inFiltered ? filteredImages : galleryImages;
+  }, [lightboxSrc, filteredImages]);
+
+  const lightboxIndex = useMemo(
+    () => lightboxSource.findIndex((img) => img.src === lightboxSrc),
+    [lightboxSource, lightboxSrc]
+  );
 
   return (
     <div className="min-h-screen bg-[#fdfaf3] pb-20">
-      <StickyNoteHero />
+      <StickyNoteHero onOpen={setLightboxSrc} />
 
       {/* This section's opaque background is what makes the pinned stack
           above appear to slide away and disappear behind it while scrolling. */}
@@ -246,73 +405,25 @@ export const Gallery: React.FC = () => {
             </div>
           </div>
 
-          {/* Gallery Grid */}
-          <div className="mt-8 space-y-6">
-            {/* Hero Images */}
-            {heroImages.length > 0 && (
-              <div className="grid gap-6 lg:grid-cols-2">
-                {heroImages.map((image) => (
-                  <GalleryCard
-                    key={image.src}
-                    src={image.src}
-                    alt={image.alt}
-                    label={image.label}
-                    className="min-h-[300px] sm:min-h-[400px]"
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Editorial Grid */}
-            {editorialImages.length > 0 && (
-              <div className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-3">
-                {editorialImages.map((image) => (
-                  <GalleryCard
-                    key={image.src}
-                    src={image.src}
-                    alt={image.alt}
-                    label={image.label}
-                    className="min-h-[200px] sm:min-h-[280px]"
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Feature Image */}
-            {featureImage && (
-              <div className="relative overflow-hidden rounded-2xl border border-[#e6d3c2] min-h-[300px] sm:min-h-[400px]">
-                <ImageWithSkeleton
-                  src={featureImage.src}
-                  alt={featureImage.alt}
-                  loading="lazy"
-                  decoding="async"
-                  containerClassName="h-full w-full overflow-hidden bg-[#f8f1e5]"
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/20" />
-                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-                  <p className="max-w-xl text-lg sm:text-xl font-serif font-bold text-white tracking-wide">
-                    Good food brings people together.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Remaining Images */}
-            {remainingImages.length > 0 && (
-              <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {remainingImages.map((image) => (
-                  <GalleryCard
-                    key={image.src}
-                    src={image.src}
-                    alt={image.alt}
-                    label={image.label}
-                    className="min-h-[200px] sm:min-h-[240px]"
-                  />
-                ))}
-              </div>
-            )}
+          {/* Corkboard Wall */}
+          <div className="mt-10 columns-2 sm:columns-3 lg:columns-4 gap-4 sm:gap-6">
+            {filteredImages.map((image, i) => (
+              <CorkCard
+                key={image.src}
+                src={image.src}
+                alt={image.alt}
+                label={image.label}
+                index={i}
+                onClick={() => setLightboxSrc(image.src)}
+              />
+            ))}
           </div>
+
+          {filteredImages.length === 0 && (
+            <p className="mt-10 text-center text-sm text-[#8c7a6c]">
+              Nothing pinned here yet — try another category.
+            </p>
+          )}
 
           {/* Closing Statement */}
           <div className="mt-16 pt-12 border-t border-[#e6d3c2]">
@@ -330,6 +441,17 @@ export const Gallery: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {lightboxSrc && lightboxIndex >= 0 && (
+          <Lightbox
+            images={lightboxSource}
+            index={lightboxIndex}
+            onClose={() => setLightboxSrc(null)}
+            onNavigate={(nextIndex) => setLightboxSrc(lightboxSource[nextIndex].src)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
