@@ -61,7 +61,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                 onClick={onScrollToMenu}
                 className="bg-[#1a120b] hover:bg-[#2b1b12] text-white font-bold text-sm px-8 py-3.5 rounded-full transition-all flex items-center gap-2 shadow-sm hover:shadow-md active:scale-[0.98]"
               >
-                <span>Explore the Menu</span>
+                <span>Order Now</span>
                 <ArrowRight className="w-4 h-4 text-[#d4a35a]" />
               </button>
 

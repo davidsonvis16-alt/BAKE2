@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Heart, Menu, X, Phone } from 'lucide-react';
+import { ShoppingBag, Heart, Menu, X, Phone, Search } from 'lucide-react';
 
 interface NavbarProps {
   searchQuery: string;
@@ -163,12 +163,13 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile Search */}
       <div className="px-4 sm:px-6 lg:px-8 pb-2.5 lg:hidden">
         <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8c7a6c]" />
           <input
             type="text"
-            placeholder="Search menu..."
+            placeholder="Search for pizza, coffee, burgers, juices..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#fdfaf3] border border-[#e6d3c2] focus:border-[#1a120b] text-sm text-[#2b1b12] placeholder-[#8c7a6c] rounded-full pl-4 pr-4 py-2 outline-none"
+            className="w-full bg-[#fdfaf3] border border-[#e6d3c2] focus:border-[#1a120b] text-sm text-[#2b1b12] placeholder-[#8c7a6c] rounded-full pl-10 pr-4 py-2.5 outline-none"
           />
         </div>
       </div>

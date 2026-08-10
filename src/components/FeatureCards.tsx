@@ -39,6 +39,8 @@ const features: FeatureItem[] = [
 ];
 
 export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateReservation, onNavigateMenu }) => {
+  const orderNowCard = features.find((f) => f.title === 'Order Now');
+
   return (
     <section className="py-10 md:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,45 +57,57 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateReservatio
         </div>
 
         <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className={`group flex flex-col items-center text-center rounded-2xl p-6 border transition-all duration-300 ${
-                feature.accent
-                  ? 'bg-[#1a120b] text-white border-[#2b1b12] shadow-md hover:shadow-lg'
-                  : 'bg-white text-[#1a120b] border-[#e6d3c2] hover:border-[#1a120b]/20 hover:shadow-md'
-              }`}
-            >
-              <div
-                className={`flex items-center justify-center w-12 h-12 rounded-full mb-4 transition-all ${
+          {features.map((feature, index) => {
+            const isOrderNow = feature.title === 'Order Now';
+            return (
+              <button
+                key={index}
+                type="button"
+                onClick={() => {
+                  if (isOrderNow && onNavigateMenu) onNavigateMenu();
+                }}
+                className={`group flex flex-col items-center text-center rounded-2xl p-6 border transition-all duration-300 text-left ${
                   feature.accent
-                    ? 'bg-[#d4a35a] text-[#1a120b] group-hover:scale-110'
-                    : 'bg-[#fdfaf3] border border-[#e6d3c2] group-hover:bg-[#f8f1e5]'
-                }`}
+                    ? 'bg-[#1a120b] text-white border-[#2b1b12] shadow-md hover:shadow-lg'
+                    : 'bg-white text-[#1a120b] border-[#e6d3c2] hover:border-[#1a120b]/20 hover:shadow-md'
+                } ${isOrderNow ? 'cursor-pointer' : ''}`}
               >
-                {React.cloneElement(feature.icon as React.ReactElement, {
-                  className: `w-6 h-6 transition-colors`,
-                  style: feature.accent
-                    ? { color: '#1a120b' }
-                    : { color: '#1a120b' },
-                })}
-              </div>
-              <h3
-                className={`font-serif font-bold text-sm sm:text-base mb-2 ${
-                  feature.accent ? 'text-[#fdfaf3]' : 'text-[#1a120b]'
-                }`}
-              >
-                {feature.title}
-              </h3>
-              <p
-                className={`text-xs sm:text-sm leading-relaxed flex-1 ${
-                  feature.accent ? 'text-[#d4a35a]/80' : 'text-[#5c4b3f]'
-                }`}
-              >
-                {feature.description}
-              </p>
-            </div>
-          ))}
+                <div
+                  className={`flex items-center justify-center w-12 h-12 rounded-full mb-4 transition-all ${
+                    feature.accent
+                      ? 'bg-[#d4a35a] text-[#1a120b] group-hover:scale-110'
+                      : 'bg-[#fdfaf3] border border-[#e6d3c2] group-hover:bg-[#f8f1e5]'
+                  }`}
+                >
+                  {React.cloneElement(feature.icon as React.ReactElement, {
+                    className: `w-6 h-6 transition-colors`,
+                    style: feature.accent
+                      ? { color: '#1a120b' }
+                      : { color: '#1a120b' },
+                  })}
+                </div>
+                <h3
+                  className={`font-serif font-bold text-sm sm:text-base mb-2 ${
+                    feature.accent ? 'text-[#fdfaf3]' : 'text-[#1a120b]'
+                  }`}
+                >
+                  {feature.title}
+                </h3>
+                <p
+                  className={`text-xs sm:text-sm leading-relaxed flex-1 ${
+                    feature.accent ? 'text-[#d4a35a]/80' : 'text-[#5c4b3f]'
+                  }`}
+                >
+                  {feature.description}
+                </p>
+                {isOrderNow && (
+                  <span className="mt-3 text-[10px] font-bold uppercase tracking-widest text-[#d4a35a]">
+                    Tap to order →
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {(onNavigateReservation || onNavigateMenu) && (

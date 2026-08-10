@@ -363,7 +363,7 @@ export default function App() {
               </section>
 
              {/* Feature Cards */}
-             <FeatureCards onNavigateReservation={handleOpenReservation} />
+             <FeatureCards onNavigateReservation={handleOpenReservation} onNavigateMenu={() => navigate('/menu')} />
 
              {/* Category Platter Nav Hub */}
              <CategoryPlatterNav

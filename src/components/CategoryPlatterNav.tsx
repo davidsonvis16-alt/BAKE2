@@ -51,14 +51,14 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
               <button
                 key={cat.id}
                 onClick={() => onSelectCategory(cat.id)}
-                className={`shrink-0 min-w-[200px] sm:min-w-[220px] lg:min-w-[240px] max-w-[280px] group flex flex-col rounded-2xl border bg-white transition-all duration-300 ${
+                className={`shrink-0 w-[78vw] max-w-[300px] sm:w-[220px] lg:w-[240px] group flex flex-col rounded-2xl border bg-white transition-all duration-300 ${
                   isSelected
                     ? 'border-[#1a120b] shadow-lg'
                     : 'border-[#e6d3c2] hover:border-[#1a120b]/30 hover:shadow-md'
                 }`}
               >
                 {/* Category Image */}
-                <div className="relative h-48 sm:h-52 overflow-hidden rounded-t-2xl bg-[#f8f1e5]">
+                <div className="relative h-[180px] sm:h-[200px] overflow-hidden rounded-t-2xl bg-[#f8f1e5]">
                   <img
                     src={cat.image}
                     alt={cat.name}
@@ -85,6 +85,14 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
               </button>
             );
           })}
+        </div>
+
+        {/* Swipe indicator */}
+        <div className="pointer-events-none absolute bottom-2 right-4 sm:right-6 lg:right-8 flex items-center gap-1 text-[#8c7a6c]">
+          <span className="text-[10px] font-bold uppercase tracking-widest">Swipe</span>
+          <svg className="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+          </svg>
         </div>
       </div>
     </section>
