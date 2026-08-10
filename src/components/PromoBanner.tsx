@@ -16,10 +16,10 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({ onAddToCart, onScrollT
   return (
     <section className="py-8 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-2xl bg-[#1a120b] text-white overflow-hidden p-0 border border-[#2b1b12] flex flex-col md:grid md:grid-cols-12 md:gap-6 md:items-center md:p-8">
+        <div className="relative rounded-2xl bg-[#1a120b] text-white overflow-hidden p-0 border border-[#2b1b12] flex flex-col lg:grid lg:grid-cols-12 lg:gap-6 lg:items-center lg:p-8">
           {/* Image Content — on top for mobile, right side on desktop */}
-          <div className="md:col-span-5 relative order-1 md:order-2">
-            <div className="relative w-full aspect-[16/10] md:aspect-[4/3] md:rounded-xl overflow-hidden md:border md:border-white/10">
+          <div className="lg:col-span-5 relative order-1 lg:order-2">
+            <div className="relative w-full aspect-[16/10] lg:aspect-[4/3] lg:rounded-xl overflow-hidden lg:border lg:border-white/10">
               <img
                 src={bbqCategory.image}
                 alt="BakeMart Barbecue Platter"
@@ -33,7 +33,7 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({ onAddToCart, onScrollT
           </div>
 
           {/* Text Content — below image on mobile, left side on desktop */}
-          <div className="order-2 md:order-1 md:col-span-7 space-y-3 p-6 md:p-0">
+          <div className="order-2 lg:order-1 lg:col-span-7 space-y-3 p-6 lg:p-0">
             <div className="inline-flex items-center gap-2 bg-[#d4a35a] text-[#1a120b] text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
               <span>Barbecue Special</span>
             </div>

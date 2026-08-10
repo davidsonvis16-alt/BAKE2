@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { Category, MenuItem } from '../types';
 
 interface CategoryPlatterNavProps {
@@ -19,10 +20,17 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
   };
 
   const totalItems = menuItems.length;
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollBy = (dir: number) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: dir * 320, behavior: 'smooth' });
+    }
+  };
 
   return (
-    <section className="py-8 md:py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+    <section className="pt-6 md:pt-12 pb-8 md:pb-12">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 mb-6">
         <div className="flex items-end justify-between">
           <div className="max-w-2xl">
             <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
@@ -35,11 +43,30 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
               {totalItems} items across {categories.length} categories
             </p>
           </div>
+
+          {/* Desktop carousel arrows */}
+          <div className="hidden lg:flex items-center gap-2">
+            <button
+              onClick={() => scrollBy(-1)}
+              className="w-10 h-10 rounded-full border border-[#e6d3c2] bg-white text-[#1a120b] flex items-center justify-center hover:bg-[#f5efe7] transition-colors"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => scrollBy(1)}
+              className="w-10 h-10 rounded-full border border-[#e6d3c2] bg-white text-[#1a120b] flex items-center justify-center hover:bg-[#f5efe7] transition-colors"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="relative">
+      <div className="relative max-w-[1500px] mx-auto">
         <div
+          ref={scrollRef}
           className="flex gap-4 overflow-x-auto no-scrollbar px-4 sm:px-6 lg:px-8 pb-4 scroll-smooth"
           style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x' }}
         >
@@ -51,14 +78,14 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
               <button
                 key={cat.id}
                 onClick={() => onSelectCategory(cat.id)}
-                className={`shrink-0 w-[78vw] max-w-[320px] sm:w-[220px] lg:w-[240px] group flex flex-col rounded-2xl border bg-white transition-all duration-300 ${
+                className={`shrink-0 w-[calc(100vw-56px)] max-w-[360px] sm:w-[240px] lg:w-[274px] group flex flex-col rounded-2xl border bg-white transition-all duration-300 ${
                   isSelected
                     ? 'border-[#1a120b] shadow-lg'
                     : 'border-[#e6d3c2] hover:border-[#1a120b]/30 hover:shadow-md'
                 }`}
               >
                 {/* Category Image */}
-                <div className="relative h-[180px] sm:h-[200px] overflow-hidden rounded-t-2xl bg-[#f8f1e5]">
+                <div className="relative h-[170px] sm:h-[180px] lg:h-[190px] overflow-hidden rounded-t-2xl bg-[#f8f1e5]">
                   <img
                     src={cat.image}
                     alt={cat.name}
@@ -87,12 +114,10 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
           })}
         </div>
 
-        {/* Swipe indicator */}
-        <div className="pointer-events-none absolute bottom-2 right-4 sm:right-6 lg:right-8 flex items-center gap-1 text-[#8c7a6c]">
+        {/* Swipe indicator (mobile) */}
+        <div className="lg:hidden pointer-events-none absolute bottom-0 right-4 flex items-center gap-1 text-[#8c7a6c]">
           <span className="text-[10px] font-bold uppercase tracking-widest">Swipe</span>
-          <svg className="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-          </svg>
+          <ChevronRight className="w-4 h-4 animate-pulse" />
         </div>
       </div>
     </section>

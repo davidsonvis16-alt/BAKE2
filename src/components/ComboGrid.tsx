@@ -26,7 +26,7 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
 
   return (
     <section className="py-8 md:py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-8 md:mb-10">
           <span className="text-[10px] font-black uppercase tracking-wider text-[#8c7a6c]">
             COMBOS & DEALS

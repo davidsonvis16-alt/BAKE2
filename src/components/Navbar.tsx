@@ -15,6 +15,7 @@ interface NavbarProps {
   onNavigateGallery: () => void;
   onNavigateAbout: () => void;
   onNavigateFAQ: () => void;
+  onNavigateReservation: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -31,6 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateGallery,
   onNavigateAbout,
   onNavigateFAQ,
+  onNavigateReservation,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -64,12 +66,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex flex-1 items-center justify-center gap-1">
           {navItems.map((item) => (
             <button
               key={item.label}
               onClick={item.onClick}
-              className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
                 item.active
                   ? 'bg-[#1a120b] text-[#d4a35a]'
                   : 'text-[#2b1b12] hover:bg-[#f5efe7] hover:text-[#1a120b]'
@@ -111,12 +113,20 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="relative flex items-center gap-2 bg-[#1a120b] hover:bg-[#2b1b12] text-white px-4 py-2 rounded-full font-bold text-xs md:text-sm transition-all"
           >
             <ShoppingBag className="w-4 h-4 text-[#d4a35a]" />
-            <span className="hidden sm:inline">Order</span>
+            <span className="hidden sm:inline">Cart</span>
             {cartCount > 0 && (
               <span className="bg-[#d4a35a] text-[#1a120b] font-bold text-[10px] px-2 py-0.5 rounded-full">
                 {cartCount}
               </span>
             )}
+          </button>
+
+          {/* Reserve a Table (Desktop) */}
+          <button
+            onClick={onNavigateReservation}
+            className="hidden lg:flex items-center gap-2 bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm"
+          >
+            Reserve a Table
           </button>
         </div>
       </div>

@@ -42,9 +42,9 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateReservatio
   const orderNowCard = features.find((f) => f.title === 'Order Now');
 
   return (
-    <section className="py-10 md:py-14">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-10">
+    <section className="py-8 md:py-14">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-8">
           <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             WHY BAKEMART
           </span>
@@ -111,8 +111,8 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateReservatio
         </div>
 
         {(onNavigateReservation || onNavigateMenu) && (
-          <div className="mt-12 text-center">
-            <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-8 text-center">
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
               {onNavigateMenu && (
                 <button
                   onClick={onNavigateMenu}
@@ -125,9 +125,9 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateReservatio
               {onNavigateReservation && (
                 <button
                   onClick={onNavigateReservation}
-                  className="bg-white hover:bg-[#f8f1e5] text-[#1a120b] border border-[#e6d3c2] font-bold text-sm px-8 py-3 rounded-full transition-all flex items-center gap-2"
+                  className="bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] font-bold text-sm px-8 py-3 rounded-full transition-all flex items-center gap-2 shadow-sm"
                 >
-                  <Clock className="w-4 h-4 text-[#d4a35a]" />
+                  <Clock className="w-4 h-4" />
                   <span>Reserve a Table</span>
                 </button>
               )}

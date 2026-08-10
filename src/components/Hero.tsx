@@ -7,26 +7,25 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
   return (
-    <section className="relative bg-[#fdfaf3] pt-6 md:pt-10 pb-16 md:pb-24 overflow-hidden">
-      {/* Warm, bright editorial background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#fdfaf3] via-[#f8f1e5] to-[#f5efe7]" />
-        <img
-          src="/gallery-16.jpg"
-          alt="Open Kitchen"
-          className="w-full h-full object-cover opacity-35 mix-blend-multiply"
-          onError={(e) => {
-            (e.target as HTMLImageElement).style.display = 'none';
-          }}
-        />
-      </div>
+    <section className="relative overflow-hidden bg-[#fdfaf3] lg:min-h-[460px] flex items-center pt-6 md:pt-10 pb-12 md:pb-16">
+      {/* Desktop hero background image */}
+      <img
+        src="/gallery-16.jpg"
+        alt="BakeMart café interior"
+        className="hidden lg:block absolute inset-0 w-full h-full object-cover"
+        onError={(e) => {
+          (e.target as HTMLImageElement).style.display = 'none';
+        }}
+      />
+      {/* Left cream gradient overlay for desktop readability */}
+      <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#fdfaf3] via-[#fdfaf3]/70 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="relative z-10 max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
-          <div className="lg:col-span-6 space-y-5 text-center lg:text-left">
+          <div className="lg:col-span-5 space-y-5 text-center lg:text-left">
             {/* Location Badge */}
-            <div className="inline-flex items-center gap-2 bg-white border border-[#e6d3c2] text-[#1a120b] text-[10px] font-bold px-3.5 py-1.5 rounded-full">
+            <div className="inline-flex items-center gap-2 bg-white/90 lg:bg-white border border-[#e6d3c2] text-[#1a120b] text-[10px] font-bold px-3.5 py-1.5 rounded-full">
               <span className="text-[#d4a35a]">●</span>
               <span>Nakuru’s Cozy Open-Kitchen Café</span>
             </div>
@@ -45,11 +44,11 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
 
             {/* Rating & Hours */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs font-semibold text-[#5c4b3f]">
-              <span className="flex items-center gap-1.5 bg-white border border-[#e6d3c2] px-3 py-1.5 rounded-full">
+              <span className="flex items-center gap-1.5 bg-white/90 lg:bg-white border border-[#e6d3c2] px-3 py-1.5 rounded-full">
                 <span className="text-[#d4a35a]">★</span>
                 <span>Rated 5.0 on Google</span>
               </span>
-              <span className="flex items-center gap-1.5 bg-white border border-[#e6d3c2] px-3 py-1.5 rounded-full">
+              <span className="flex items-center gap-1.5 bg-white/90 lg:bg-white border border-[#e6d3c2] px-3 py-1.5 rounded-full">
                 <Clock className="w-3.5 h-3.5 text-[#d4a35a]" />
                 <span>Open Daily · 7 AM – 8 PM</span>
               </span>
@@ -76,33 +75,17 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
             </div>
           </div>
 
-          {/* Right Image Feature */}
-          <div className="lg:col-span-6 relative">
-            <div className="relative mx-auto max-w-lg lg:max-w-none">
-              <div className="relative rounded-2xl overflow-hidden border border-[#e6d3c2] shadow-lg bg-[#f8f1e5] aspect-[4/3]">
-                <img
-                  src="/gallery-16.jpg"
-                  alt="Open Kitchen"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1a120b]/40 via-transparent to-transparent" />
-
-                {/* Overlay Badge */}
-                <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm p-4 rounded-xl border border-[#e6d3c2] shadow-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase tracking-widest text-[#8c7a6c] font-bold">The Space</span>
-                      <h4 className="font-serif font-bold text-base text-[#1a120b] mt-0.5">Warm Light, Open Kitchen</h4>
-                    </div>
-                    <span className="bg-[#1a120b] text-white text-[10px] font-bold px-3 py-1.5 rounded-full">
-                      Open Daily
-                    </span>
-                  </div>
-                </div>
-              </div>
+          {/* Right Image Feature (mobile only — desktop uses background) */}
+          <div className="lg:col-span-7 lg:hidden">
+            <div className="relative rounded-2xl overflow-hidden border border-[#e6d3c2] shadow-lg bg-[#f8f1e5] aspect-[4/3]">
+              <img
+                src="/gallery-16.jpg"
+                alt="BakeMart café interior"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
             </div>
           </div>
         </div>

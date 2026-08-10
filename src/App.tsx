@@ -259,6 +259,7 @@ export default function App() {
         onNavigateGallery={() => navigate('/gallery')}
         onNavigateAbout={() => navigate('/about')}
         onNavigateFAQ={() => navigate('/faq')}
+        onNavigateReservation={handleOpenReservation}
        />
 
       {/* Main Page Content */}
@@ -327,11 +328,40 @@ export default function App() {
           <FAQ />
         ) : (
            /* MAIN HOME VIEW HUB PAGE */
-           <div className="pb-28 md:pb-0">
-             {/* Hero Section */}
+           <div className="pb-28 lg:pb-32">
+              {/* Hero Section */}
               <Hero
                 onScrollToMenu={() => navigate('/menu')}
               />
+
+              {/* Large Desktop Search Bar */}
+              <section className="hidden lg:block max-w-[1500px] mx-auto px-8 -mt-8 mb-4 relative z-20">
+                <div className="bg-white rounded-2xl border border-[#e6d3c2] shadow-lg p-2">
+                  <div className="relative">
+                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8c7a6c]" />
+                    <input
+                      type="text"
+                      placeholder="Search for pizza, coffee, burgers, juices..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && searchQuery.trim()) {
+                          navigate('/menu');
+                        }
+                      }}
+                      className="w-full bg-[#fdfaf3] border border-[#e6d3c2] focus:border-[#1a120b] text-base text-[#1a120b] placeholder-[#8c7a6c] rounded-xl pl-14 pr-10 py-4 outline-none transition-colors"
+                    />
+                    {searchQuery && (
+                      <button
+                        onClick={() => setSearchQuery('')}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-[#e6d3c2] hover:bg-[#d8c7b0] text-[#2b1b12] transition-colors"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </section>
 
               {/* Feature Cards */}
              <FeatureCards onNavigateReservation={handleOpenReservation} onNavigateMenu={() => navigate('/menu')} />
@@ -405,8 +435,46 @@ export default function App() {
         onAddToCart={handleAddToCart}
       />
 
+      {/* Sticky Bottom Bar — Desktop */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 hidden lg:flex w-full max-w-[1100px] px-4">
+        <div className="flex items-center justify-between gap-4 w-full bg-white border border-[#e6d3c2] shadow-[0_8px_30px_rgba(26,18,11,0.12)] rounded-full px-4 py-3">
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="flex items-center gap-2 bg-[#1a120b] hover:bg-[#2b1b12] text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all active:scale-[0.98]"
+          >
+            <ShoppingBag className="w-4 h-4 text-[#d4a35a]" />
+            <span>View Cart ({totalCartCount})</span>
+          </button>
+
+          <span className="hidden xl:block text-xs font-semibold text-[#5c4b3f] tracking-wide">
+            Fast &amp; Secure Checkout
+          </span>
+
+          <button
+            onClick={() => {
+              if (cartItems.length === 0) return;
+              const total = cartItems.reduce((acc, ci) => {
+                const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
+                return acc + price * ci.quantity;
+              }, 0);
+              const message = `*NEW ORDER - BAKEMART COFFEE HOUSE*\n----------------------------------\n*ORDER ITEMS:*\n${cartItems.map((ci, idx) => {
+                const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
+                return `${idx + 1}. *${ci.item.name}* x${ci.quantity} - KSh ${(price * ci.quantity).toLocaleString()}`;
+              }).join('\n')}\n----------------------------------\n*GRAND TOTAL:* KSh ${total.toLocaleString()}\n\n*Location:* BakeMart Coffee House, Tropical House, Watalii Rd, Nakuru City`;
+              window.open(`https://wa.me/254725009708?text=${encodeURIComponent(message)}`, '_blank');
+            }}
+            className={`flex items-center justify-center gap-2 bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] px-6 py-2.5 rounded-full font-bold text-sm transition-all active:scale-[0.98] ${
+              cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+          >
+            <Send className="w-4 h-4" />
+            <span>Checkout →</span>
+          </button>
+        </div>
+      </div>
+
       {/* Sticky Bottom Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#e6d3c2] shadow-[0_-4px_16px_rgba(26,18,11,0.08)] md:hidden safe-bottom">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#e6d3c2] shadow-[0_-4px_16px_rgba(26,18,11,0.08)] lg:hidden safe-bottom">
         <div className="flex items-center gap-3 px-4 py-3">
           <button
             onClick={() => setIsCartOpen(true)}
