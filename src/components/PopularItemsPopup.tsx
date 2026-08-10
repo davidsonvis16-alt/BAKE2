@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { Plus, X, Flame, ShoppingBag } from 'lucide-react';
 import { useMenuData } from '../hooks/useMenuData';
 import { supabase } from '../lib/supabase';

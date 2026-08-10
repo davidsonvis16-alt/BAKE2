@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { supabase, uploadMenuItemImage, validateImageFile } from '../lib/supabase';
+import { CATEGORIES } from '../data/menuData';
 import { useAuth } from '../components/AuthContext';
 import { Trash2, Plus, Save, X, Check, LogOut, Search } from 'lucide-react';
 
@@ -213,9 +214,14 @@ export const AdminDashboard: React.FC = () => {
               <input placeholder="ID (e.g. b16)" value={newItem.id}
                 onChange={(e) => setNewItem({ ...newItem, id: e.target.value })}
                 className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
-              <input placeholder="Category id (e.g. bakery-desserts)" value={newItem.category}
+              <select value={newItem.category}
                 onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-                className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />
+                className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors">
+                <option value="">Select category…</option>
+                {CATEGORIES.map((cat) => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
             </div>
             <input placeholder="Item name" value={newItem.name}
               onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
@@ -362,30 +368,32 @@ export const AdminDashboard: React.FC = () => {
                             <span className="font-mono font-bold text-[#000000] text-sm">KSh {item.price.toLocaleString()}</span>
                           </div>
 
-                          <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-[#EADECB]">
-                            <button
-                              onClick={() => toggleAvailable(item)}
-                              className={`text-[10px] px-2.5 py-1.5 rounded-full font-semibold transition-all ${
-                                item.available
-                                  ? 'bg-green-100 text-green-700 hover:bg-green-200 active:scale-95'
-                                  : 'bg-red-100 text-red-600 hover:bg-red-200 active:scale-95'
-                              }`}
-                            >
-                               {item.available ? (
-                                 <span className="flex items-center gap-1"><Check className="w-3.5 h-3.5" /> Avail</span>
-                               ) : (
-                                 <span className="flex items-center gap-1"><X className="w-3.5 h-3.5" /> Sold</span>
-                               )}
-                            </button>
-                            <button onClick={() => startEdit(item)}
-                              className="text-[10px] bg-[#FAF3E7] hover:bg-[#EADECB] px-2.5 py-1.5 rounded-full font-semibold text-[#000000] border border-[#D8C7B0] active:scale-95 transition-all">
-                              Edit
-                            </button>
-                            <button onClick={() => deleteItem(item.id)}
-                              className="text-red-500 hover:bg-red-50 p-1.5 rounded-full active:scale-95 transition-all ml-auto">
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
+                           <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-[#EADECB]">
+                             <button
+                               onClick={() => toggleAvailable(item)}
+                               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                                 item.available ? 'bg-green-500' : 'bg-red-400'
+                               }`}
+                               title={item.available ? 'Click to mark as sold out' : 'Click to mark as available'}
+                             >
+                               <span
+                                 className={`inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
+                                   item.available ? 'translate-x-6' : 'translate-x-1'
+                                 }`}
+                               />
+                             </button>
+                             <span className="text-[10px] font-semibold text-[#000000]/60 w-10">
+                               {item.available ? 'On' : 'Off'}
+                             </span>
+                             <button onClick={() => startEdit(item)}
+                               className="text-[10px] bg-[#FAF3E7] hover:bg-[#EADECB] px-2.5 py-1.5 rounded-full font-semibold text-[#000000] border border-[#D8C7B0] active:scale-95 transition-all">
+                               Edit
+                             </button>
+                             <button onClick={() => deleteItem(item.id)}
+                               className="text-red-500 hover:bg-red-50 p-1.5 rounded-full active:scale-95 transition-all ml-auto">
+                               <Trash2 className="w-3.5 h-3.5" />
+                             </button>
+                           </div>
                         </>
                       )}
                     </div>

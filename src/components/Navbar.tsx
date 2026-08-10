@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef, useCallback } from 'react';
+import React, { useState } from 'react';
 import { ShoppingBag, Heart, Menu, X, Phone } from 'lucide-react';
 
 interface NavbarProps {
@@ -15,7 +15,6 @@ interface NavbarProps {
   onNavigateGallery: () => void;
   onNavigateAbout: () => void;
   onNavigateFAQ: () => void;
-  onCartButtonRef?: (rect: DOMRect | null) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -32,37 +31,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateGallery,
   onNavigateAbout,
   onNavigateFAQ,
-  onCartButtonRef,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const cartButtonRef = useRef<HTMLButtonElement>(null);
-  const lastRectRef = useRef<{ left: number; top: number; width: number; height: number } | null>(null);
-
-  const reportCartButtonRect = useCallback(() => {
-    if (!onCartButtonRef || !cartButtonRef.current) return;
-    const rect = cartButtonRef.current.getBoundingClientRect();
-    const last = lastRectRef.current;
-    if (last && last.left === rect.left && last.top === rect.top && last.width === rect.width && last.height === rect.height) {
-      return;
-    }
-    lastRectRef.current = { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
-    onCartButtonRef(rect);
-  }, [onCartButtonRef]);
-
-  useLayoutEffect(() => {
-    reportCartButtonRect();
-
-    const handleResize = () => reportCartButtonRect();
-    const handleScroll = () => reportCartButtonRect();
-
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', handleScroll, true);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll, true);
-    };
-  }, [reportCartButtonRect]);
 
   const navItems = [
     { label: 'Home', onClick: onNavigateHome, active: activePage === 'home' },
@@ -137,7 +107,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Cart Button */}
           <button
-            ref={cartButtonRef}
             onClick={onOpenCart}
             className="relative flex items-center gap-2 bg-[#1a120b] hover:bg-[#2b1b12] text-white px-4 py-2 rounded-full font-bold text-xs md:text-sm transition-all"
           >

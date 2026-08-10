@@ -22,7 +22,6 @@ import { CATEGORIES } from './data/menuData';
 import { useMenuData } from './hooks/useMenuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
 import { ShoppingBag, Send, Search, X } from 'lucide-react';
-import { PopularItemsPopup } from './components/PopularItemsPopup';
 
 export default function App() {
   const navigate = useNavigate();
@@ -71,11 +70,6 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(false);
-  const [showPopularPopup, setShowPopularPopup] = useState(false);
-  const [cartButtonPosition, setCartButtonPosition] = useState<{ x: number; y: number } | null>(null);
-  const handleCartButtonRef = useCallback((rect: DOMRect | null) => {
-    setCartButtonPosition(rect ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 } : null);
-  }, []);
 
   const handleReorderBatch = (orderItems: { item: MenuItem; quantity: number; optionName?: string }[]) => {
     setCartItems((prevCart) => {
@@ -265,8 +259,7 @@ export default function App() {
         onNavigateGallery={() => navigate('/gallery')}
         onNavigateAbout={() => navigate('/about')}
         onNavigateFAQ={() => navigate('/faq')}
-        onCartButtonRef={handleCartButtonRef}
-      />
+       />
 
       {/* Main Page Content */}
       <main className="flex-1">
@@ -439,13 +432,6 @@ export default function App() {
         wishlistItems={wishlistItems}
         onRemoveFromWishlist={handleToggleWishlist}
         onAddToCart={handleAddToCart}
-      />
-
-      {/* Popular Items Popup for all visitors */}
-      <PopularItemsPopup
-        onClose={() => setShowPopularPopup(false)}
-        onAddToCart={handleAddToCart}
-        cartButtonPosition={cartButtonPosition}
       />
 
       {/* Sticky Bottom Bar for Mobile */}
