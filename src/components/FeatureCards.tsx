@@ -2,7 +2,6 @@ import React from 'react';
 import { ShoppingBag, Clock, MapPin, Send } from 'lucide-react';
 
 interface FeatureCardsProps {
-  onNavigateReservation?: () => void;
   onNavigateMenu?: () => void;
 }
 
@@ -38,7 +37,7 @@ const features: FeatureItem[] = [
   },
 ];
 
-export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateReservation, onNavigateMenu }) => {
+export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateMenu }) => {
   const orderNowCard = features.find((f) => f.title === 'Order Now');
 
   return (
@@ -109,31 +108,6 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateReservatio
             );
           })}
         </div>
-
-        {(onNavigateReservation || onNavigateMenu) && (
-          <div className="mt-8 text-center">
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-              {onNavigateMenu && (
-                <button
-                  onClick={onNavigateMenu}
-                  className="bg-[#1a120b] hover:bg-[#2b1b12] text-white font-bold text-sm px-8 py-3 rounded-full transition-all flex items-center gap-2 shadow-sm"
-                >
-                  <ShoppingBag className="w-4 h-4 text-[#d4a35a]" />
-                  <span>View Full Menu</span>
-                </button>
-              )}
-              {onNavigateReservation && (
-                <button
-                  onClick={onNavigateReservation}
-                  className="bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] font-bold text-sm px-8 py-3 rounded-full transition-all flex items-center gap-2 shadow-sm"
-                >
-                  <Clock className="w-4 h-4" />
-                  <span>Reserve a Table</span>
-                </button>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );
