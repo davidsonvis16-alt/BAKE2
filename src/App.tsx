@@ -2,8 +2,6 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { CategoryPlatterNav } from './components/CategoryPlatterNav';
-import { PromoBanner } from './components/PromoBanner';
 import { MenuSection } from './components/MenuSection';
 import { CategoryUnfoldView } from './components/CategoryUnfoldView';
 import { ReservationSection } from './components/ReservationSection';
@@ -20,7 +18,6 @@ import { FeatureCards } from './components/FeatureCards';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { CartAnimationProvider } from './components/CartAnimation';
 import { useAuth } from './components/AuthContext';
-import { CATEGORIES } from './data/menuData';
 import { useMenuData } from './hooks/useMenuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
 import { ShoppingBag, Send, Search, X } from 'lucide-react';
@@ -331,7 +328,7 @@ export default function App() {
         ) : activePage === 'faq' ? (
           <FAQ />
         ) : activePage === 'specials' ? (
-          <SpecialsPage onNavigateMenu={() => navigate('/menu')} onAddToCart={handleAddToCartById} />
+          <SpecialsPage onNavigateMenu={() => navigate('/menu')} onAddToCart={handleAddToCartById} onSelectCategory={handleSelectCategory} />
         ) : (
            /* MAIN HOME VIEW HUB PAGE */
            <div className="pb-28 lg:pb-32">
@@ -369,23 +366,9 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Feature Cards */}
-             <FeatureCards onNavigateMenu={() => navigate('/menu')} />
-
-             {/* Category Platter Nav Hub */}
-             <CategoryPlatterNav
-               categories={CATEGORIES}
-               menuItems={menuItems}
-               selectedCategory={selectedCategory}
-               onSelectCategory={handleSelectCategory}
-             />
-
-             {/* BBQ Promo Banner */}
-             <PromoBanner
-               onAddToCart={handleAddToCartById}
-               onScrollToMenu={() => handleSelectCategory('bbq-platters')}
-             />
-           </div>
+            {/* Feature Cards */}
+           <FeatureCards onNavigateMenu={() => navigate('/menu')} />
+            </div>
         )}
       </main>
 

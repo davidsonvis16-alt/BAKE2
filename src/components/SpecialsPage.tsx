@@ -1,13 +1,15 @@
 import React from 'react';
 import { ComboGrid } from './ComboGrid';
+import { PromoBanner } from './PromoBanner';
 import { ReservationSection } from './ReservationSection';
 
 interface SpecialsPageProps {
   onNavigateMenu: () => void;
   onAddToCart: (itemId: string) => void;
+  onSelectCategory: (categoryId: string) => void;
 }
 
-export const SpecialsPage: React.FC<SpecialsPageProps> = ({ onNavigateMenu, onAddToCart }) => {
+export const SpecialsPage: React.FC<SpecialsPageProps> = ({ onNavigateMenu, onAddToCart, onSelectCategory }) => {
   return (
     <div className="pb-16 lg:pb-20">
       {/* Full Menu Callout Banner */}
@@ -33,6 +35,12 @@ export const SpecialsPage: React.FC<SpecialsPageProps> = ({ onNavigateMenu, onAd
           </button>
         </div>
       </section>
+
+      {/* BBQ Promo Banner */}
+      <PromoBanner
+        onAddToCart={onAddToCart}
+        onScrollToMenu={() => onSelectCategory('bbq-platters')}
+      />
 
       {/* Combos Grid */}
       <ComboGrid onAddToCart={onAddToCart} />
