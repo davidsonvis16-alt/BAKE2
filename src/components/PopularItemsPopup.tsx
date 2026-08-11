@@ -5,6 +5,7 @@ import { useMenuData } from '../hooks/useMenuData';
 import { supabase } from '../lib/supabase';
 import { MenuItem } from '../types';
 import { useCartAnimation } from './CartAnimation';
+import { getCachedData, invalidateCache } from '../lib/dataCache';
 
 const SESSION_KEY = 'bakemart_popular_seen';
 const FALLBACK_ITEM_IDS = ['s6', 'bbq1'];
@@ -41,33 +42,39 @@ export const PopularItemsPopup: React.FC<PopularItemsPopupProps> = ({
       return;
     }
 
-    const { data: orders, error } = await supabase
-      .from('orders')
-      .select('items');
+    const ids = await getCachedData<string[]>(
+      'popular-item-ids',
+      async () => {
+        const { data: orders, error } = await supabase
+          .from('orders')
+          .select('items');
 
-    if (error || !orders) {
-      showItemsForIds(FALLBACK_ITEM_IDS);
-      return;
-    }
+        if (error || !orders) {
+          return FALLBACK_ITEM_IDS;
+        }
 
-    const totals: Record<string, number> = {};
-    for (const order of orders) {
-      const lineItems = Array.isArray(order.items) ? order.items : [];
-      for (const li of lineItems) {
-        const id = li.id ?? li.product_id ?? li.item_id;
-        const qty = Number(li.quantity ?? li.qty ?? 1);
-        if (!id) continue;
-        totals[id] = (totals[id] || 0) + qty;
-      }
-    }
+        const totals: Record<string, number> = {};
+        for (const order of orders) {
+          const lineItems = Array.isArray(order.items) ? order.items : [];
+          for (const li of lineItems) {
+            const id = li.id ?? li.product_id ?? li.item_id;
+            const qty = Number(li.quantity ?? li.qty ?? 1);
+            if (!id) continue;
+            totals[id] = (totals[id] || 0) + qty;
+          }
+        }
 
-    const rankedIds = Object.entries(totals)
-      .sort((a, b) => Number(b[1]) - Number(a[1]))
-      .slice(0, 2)
-      .map(([id]) => id);
+        const rankedIds = Object.entries(totals)
+          .sort((a, b) => Number(b[1]) - Number(a[1]))
+          .slice(0, 2)
+          .map(([id]) => id);
 
-    const idsToUse = rankedIds.length > 0 ? rankedIds : FALLBACK_ITEM_IDS;
-    showItemsForIds(idsToUse);
+        return rankedIds.length > 0 ? rankedIds : FALLBACK_ITEM_IDS;
+      },
+      { ttlMs: 5 * 60 * 1000 }
+    );
+
+    showItemsForIds(ids);
   }
 
   function showItemsForIds(ids: string[]) {

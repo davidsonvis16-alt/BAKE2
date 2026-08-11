@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { CATEGORIES } from '../data/menuData';
 import { useMenuData } from '../hooks/useMenuData';
 import { ProductCard } from './ProductCard';
@@ -6,6 +6,7 @@ import { MenuItem, MenuItemOption } from '../types';
 import { ProductCardSkeleton, TicketListItemSkeleton, ImageWithSkeleton } from './Skeletons';
 import { FoodPreviewModal } from './FoodPreviewModal';
 import { useCartAnimation } from './CartAnimation';
+import { getCachedDataSync } from '../lib/dataCache';
 import {
   ArrowLeft,
   ChevronRight,
@@ -50,8 +51,13 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [previewItem, setPreviewItem] = useState<MenuItem | null>(null);
   const { triggerFly } = useCartAnimation();
+  const dataAvailableRef = useRef(!!getCachedDataSync<any>('menu-data', 5 * 60 * 1000));
 
   useEffect(() => {
+    if (dataAvailableRef.current) {
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);

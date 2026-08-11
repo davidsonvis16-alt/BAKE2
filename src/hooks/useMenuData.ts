@@ -1,13 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { CATEGORIES, MENU_ITEMS } from '../data/menuData';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { Category, MenuItem } from '../types';
+import { getCachedData, getCachedDataSync, setCachedData, invalidateCache } from '../lib/dataCache';
+
+const MENU_CACHE_KEY = 'menu-data';
+const MENU_TTL = 5 * 60 * 1000;
 
 export function useMenuData() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const cachedMenuItems = getCachedDataSync<MenuItem[]>(MENU_CACHE_KEY, MENU_TTL);
+
+  const [categories, setCategories] = useState<Category[]>(CATEGORIES);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>(cachedMenuItems || []);
+  const [loading, setLoading] = useState(!cachedMenuItems);
   const [refreshToken, setRefreshToken] = useState(0);
+  const initializedRef = useRef(!!cachedMenuItems);
 
   useEffect(() => {
     setCategories(CATEGORIES);
@@ -23,62 +30,65 @@ export function useMenuData() {
 
     const fetchRemoteImages = async () => {
       try {
-        const { data, error } = await supabase
-          .from('menu_items')
-          .select('id, name, price, description, badge, category, available, image');
+        const data = await getCachedData<MenuItem[]>(MENU_CACHE_KEY, async () => {
+          const { data, error } = await supabase
+            .from('menu_items')
+            .select('id, name, price, description, badge, category, available, image');
 
-        if (cancelled) return;
-        if (error || !data) {
-          setMenuItems(base);
-          setLoading(false);
-          return;
-        }
-
-        const remoteMap: Record<string, Record<string, unknown>> = {};
-        for (const row of data) {
-          if (row.id) {
-            remoteMap[row.id] = row;
+          if (error || !data) {
+            return base;
           }
-        }
 
-        const baseIds = new Set(base.map((item) => item.id));
-        const newRemoteItems: MenuItem[] = [];
-
-        const merged: MenuItem[] = base.map((item) => {
-          const remote = remoteMap[item.id];
-          if (remote) {
-            return {
-              ...item,
-              name: (remote.name as string) || item.name,
-              price: (remote.price as number) || item.price,
-              description: (remote.description as string) ?? item.description,
-              badge: (remote.badge as string) || item.badge || null,
-              category: (remote.category as string) || item.category,
-              available: (remote.available as boolean) ?? item.available,
-              image: (remote.image as string) || item.image,
-            };
+          const remoteMap: Record<string, Record<string, unknown>> = {};
+          for (const row of data) {
+            if (row.id) {
+              remoteMap[row.id] = row;
+            }
           }
-          return item;
+
+          const baseIds = new Set(base.map((item) => item.id));
+          const newRemoteItems: MenuItem[] = [];
+
+          const merged: MenuItem[] = base.map((item) => {
+            const remote = remoteMap[item.id];
+            if (remote) {
+              return {
+                ...item,
+                name: (remote.name as string) || item.name,
+                price: (remote.price as number) || item.price,
+                description: (remote.description as string) ?? item.description,
+                badge: (remote.badge as string) || item.badge || null,
+                category: (remote.category as string) || item.category,
+                available: (remote.available as boolean) ?? item.available,
+                image: (remote.image as string) || item.image,
+              };
+            }
+            return item;
+          });
+
+          for (const row of data) {
+            if (row.id && !baseIds.has(row.id)) {
+              newRemoteItems.push({
+                id: row.id as string,
+                name: (row.name as string) || 'Untitled Item',
+                price: (row.price as number) || 0,
+                description: (row.description as string) || '',
+                badge: (remote.badge as string) || null,
+                category: (row.category as string) || '',
+                available: (remote.available as boolean) ?? true,
+                image: (remote.image as string) || '',
+                options: [],
+              });
+            }
+          }
+
+          return [...merged, ...newRemoteItems];
         });
 
-        for (const row of data) {
-          if (row.id && !baseIds.has(row.id)) {
-            newRemoteItems.push({
-              id: row.id as string,
-              name: (row.name as string) || 'Untitled Item',
-              price: (row.price as number) || 0,
-              description: (row.description as string) || '',
-              badge: (row.badge as string) || null,
-              category: (row.category as string) || '',
-              available: (row.available as boolean) ?? true,
-              image: (row.image as string) || '',
-              options: [],
-            });
-          }
-        }
-
-        setMenuItems([...merged, ...newRemoteItems]);
+        if (cancelled) return;
+        setMenuItems(data);
         setLoading(false);
+        initializedRef.current = true;
       } catch {
         if (cancelled) return;
         setMenuItems(base);
@@ -86,9 +96,12 @@ export function useMenuData() {
       }
     };
 
-    fetchRemoteImages();
+    if (!initializedRef.current) {
+      fetchRemoteImages();
+    }
 
     const handleMenuUpdated = () => {
+      invalidateCache(MENU_CACHE_KEY);
       setRefreshToken((t) => t + 1);
     };
 

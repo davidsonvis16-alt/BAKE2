@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { supabase, uploadMenuItemImage, validateImageFile } from '../lib/supabase';
 import { CATEGORIES } from '../data/menuData';
 import { useAuth } from '../components/AuthContext';
+import { getCachedData, invalidateCache, setCachedData } from '../lib/dataCache';
 import { Trash2, Plus, Save, X, Check, LogOut, Search } from 'lucide-react';
 
 interface MenuItemRow {
@@ -76,17 +77,23 @@ export const AdminDashboard: React.FC = () => {
     }
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('menu_items')
-        .select('*')
-        .order('category');
+      const data = await getCachedData<MenuItemRow[]>(
+        'admin-menu-items',
+        async () => {
+          const { data, error } = await supabase
+            .from('menu_items')
+            .select('*')
+            .order('category');
 
-      if (error) {
-        console.error('AdminDashboard: menu_items fetch error', error);
-        setItems([]);
-      } else {
-        setItems(data || []);
-      }
+          if (error) {
+            console.error('AdminDashboard: menu_items fetch error', error);
+            return [];
+          }
+          return data || [];
+        },
+        { ttlMs: 10 * 60 * 1000 }
+      );
+      setItems(data);
     } catch (err) {
       console.error('AdminDashboard: menu_items fetch exception', err);
       setItems([]);
@@ -104,36 +111,39 @@ export const AdminDashboard: React.FC = () => {
     setStatsLoading(true);
     setStatsError(null);
     try {
-      const { data, error } = await supabase.from('orders').select('items');
+      const data = await getCachedData<ItemStat[]>(
+        'admin-order-stats',
+        async () => {
+          const { data, error } = await supabase.from('orders').select('items');
 
-      if (error) {
-        console.error('AdminDashboard: orders fetch error', error);
-        setStatsError(error.message);
-        setStats([]);
-        return;
-      }
+          if (error) {
+            console.error('AdminDashboard: orders fetch error', error);
+            return [];
+          }
 
-      const tally: Record<string, { total_sold: number; revenue: number }> = {};
+          const tally: Record<string, { total_sold: number; revenue: number }> = {};
 
-      (data || []).forEach((order: { items: unknown }) => {
-        const orderItems = Array.isArray(order.items) ? order.items : [];
-        orderItems.forEach((item: any) => {
-          const name = item?.name;
-          const qty = Number(item?.quantity) || 0;
-          const price = Number(item?.price) || 0;
-          if (!name) return;
+          (data || []).forEach((order: { items: unknown }) => {
+            const orderItems = Array.isArray(order.items) ? order.items : [];
+            orderItems.forEach((item: any) => {
+              const name = item?.name;
+              const qty = Number(item?.quantity) || 0;
+              const price = Number(item?.price) || 0;
+              if (!name) return;
 
-          if (!tally[name]) tally[name] = { total_sold: 0, revenue: 0 };
-          tally[name].total_sold += qty;
-          tally[name].revenue += qty * price;
-        });
-      });
+              if (!tally[name]) tally[name] = { total_sold: 0, revenue: 0 };
+              tally[name].total_sold += qty;
+              tally[name].revenue += qty * price;
+            });
+          });
 
-      const result: ItemStat[] = Object.entries(tally)
-        .map(([item_name, v]) => ({ item_name, ...v }))
-        .sort((a, b) => b.total_sold - a.total_sold);
-
-      setStats(result);
+          return Object.entries(tally)
+            .map(([item_name, v]) => ({ item_name, ...v }))
+            .sort((a, b) => b.total_sold - a.total_sold);
+        },
+        { ttlMs: 2 * 60 * 1000 }
+      );
+      setStats(data);
     } catch (err) {
       console.error('AdminDashboard: orders fetch exception', err);
       setStatsError('Failed to load stats');
@@ -152,18 +162,23 @@ export const AdminDashboard: React.FC = () => {
     setOrdersLoading(true);
     setOrdersError(null);
     try {
-      const { data, error } = await supabase
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const data = await getCachedData<OrderRow[]>(
+        'admin-orders',
+        async () => {
+          const { data, error } = await supabase
+            .from('orders')
+            .select('*')
+            .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('AdminDashboard: orders fetch error', error);
-        setOrdersError(error.message);
-        setOrders([]);
-      } else {
-        setOrders(data || []);
-      }
+          if (error) {
+            console.error('AdminDashboard: orders fetch error', error);
+            return [];
+          }
+          return data || [];
+        },
+        { ttlMs: 2 * 60 * 1000 }
+      );
+      setOrders(data);
     } catch (err) {
       console.error('AdminDashboard: orders fetch exception', err);
       setOrdersError('Failed to load orders');
