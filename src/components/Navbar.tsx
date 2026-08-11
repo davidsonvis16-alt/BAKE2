@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Heart, Menu, X, Phone, Search } from 'lucide-react';
+import { ShoppingBag, Heart, Phone, Search } from 'lucide-react';
+import { HamburgerIcon } from './HamburgerIcon';
 import { useCartAnimation } from './CartAnimation';
 
 interface NavbarProps {
@@ -91,13 +92,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Right Actions */}
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Hamburger Menu Button (Mobile) */}
-          <button
+          <HamburgerIcon
+            isOpen={isMobileMenuOpen}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 rounded-full hover:bg-[#f5efe7] text-[#000000] transition-colors"
-            title="Menu"
-          >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          />
 
           {/* Wishlist Button */}
           <button
