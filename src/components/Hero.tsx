@@ -38,7 +38,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               className="inline-flex items-center gap-2 bg-white border border-[#e6d3c2] text-[#000000] text-[10px] font-bold px-3.5 py-1.5 rounded-full"
             >
               <span className="text-[#d4a35a]">●</span>
-              <span>Nakuru's Cozy Open-Kitchen Café</span>
+              <span>Nakuru's Only Open-Kitchen Coffee House</span>
             </motion.div>
 
             <motion.h1
@@ -55,7 +55,8 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               {...fadeUp(reduceMotion, 0.16)}
               className="text-[#5c4b3f] text-sm sm:text-base max-w-lg mx-auto lg:mx-0 leading-relaxed mt-5"
             >
-              Step into a warm, curated space — open kitchen, golden light, honest flavors, and the kind of atmosphere that keeps you lingering.
+              Widely rated among the best coffee spots and restaurants in Nakuru, BakeMart serves fresh food cooked in full view of your table —
+              honest flavors, an open kitchen, and prices that keep it one of the most affordable places to eat well in the city.
             </motion.p>
 
             <motion.div
@@ -107,7 +108,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               <div className="relative rounded-[28px] overflow-hidden border border-[#e6d3c2] shadow-[0_20px_50px_rgba(26,18,11,0.18)] aspect-[4/3] lg:aspect-[16/12] bg-[#f8f1e5]">
                 <img
                   src="/gallery-16.jpg"
-                  alt="BakeMart café interior"
+                  alt="Cozy interior of BakeMart Coffee House, one of the best restaurants in Nakuru"
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
@@ -134,7 +135,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2px] bg-[#f8f1e5]">
                   <img
                     src="/breakfast.jpeg"
-                    alt="Fresh breakfast spread"
+                    alt="Fresh breakfast spread at BakeMart, a fresh food restaurant in Nakuru"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = 'none';

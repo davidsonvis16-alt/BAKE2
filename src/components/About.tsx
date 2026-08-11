@@ -13,6 +13,8 @@ export const About: React.FC = () => {
           </h1>
           <p className="mt-4 text-sm sm:text-base text-[#5c4b3f] leading-relaxed max-w-2xl">
             Bakemart Coffee House is located on Moi Road at Tropical House, behind Gilanis Supermarket and besides Nakuru GPO in Nakuru City, Kenya.
+            We're often named among the best coffee spots and best restaurants in Nakuru, and we've built our menu around fresh food at prices
+            that keep BakeMart one of the most affordable places to eat well in the city.
           </p>
         </div>
 
@@ -22,7 +24,7 @@ export const About: React.FC = () => {
             <div className="aspect-[4/3] overflow-hidden bg-[#f8f1e5]">
               <img
                 src="/open-kitchen.jpeg"
-                alt="Open kitchen"
+                alt="Chefs preparing fresh food in BakeMart's open kitchen in Nakuru"
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = 'none';
@@ -34,7 +36,8 @@ export const About: React.FC = () => {
                 Our Story
               </h2>
               <p className="text-sm text-[#5c4b3f] leading-relaxed">
-                We offer a trendy, relaxing, serene, and cozy atmosphere where guests can watch food being prepared in our open kitchen.
+                We offer a trendy, relaxing, serene, and cozy atmosphere where guests can watch food being prepared in our open kitchen —
+                one of the reasons locals keep calling BakeMart one of the best restaurants in Nakuru for fresh, honestly-made food.
               </p>
             </div>
           </div>
@@ -44,7 +47,8 @@ export const About: React.FC = () => {
               What Makes Us Special
             </h2>
             <p className="text-sm text-[#5c4b3f] leading-relaxed mb-6">
-              We&apos;re the only open-kitchen coffee shop in Nakuru City, offering a broad menu that mixes coffeehouse classics with pizzas, burgers, waffles, healthy options, and local Kenyan flavors.
+              We&apos;re the only open-kitchen coffee shop in Nakuru City, offering a broad menu that mixes coffeehouse classics with pizzas, burgers, waffles, healthy options, and local Kenyan flavors —
+              fresh food at some of the most affordable prices in Nakuru.
             </p>
 
             <h3 className="font-serif font-bold text-base text-[#000000] mb-3">
