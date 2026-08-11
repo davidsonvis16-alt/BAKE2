@@ -17,6 +17,7 @@ import { Gallery } from './components/Gallery';
 import { About } from './components/About';
 import { FAQ } from './components/FAQ';
 import { FeatureCards } from './components/FeatureCards';
+import { MobileBottomNav } from './components/MobileBottomNav';
 import { useAuth } from './components/AuthContext';
 import { CATEGORIES } from './data/menuData';
 import { useMenuData } from './hooks/useMenuData';
@@ -227,7 +228,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF3E7] text-[#000000] flex flex-col font-sans selection:bg-black selection:text-white pb-0 lg:pb-0 overflow-x-hidden">
+    <div className="min-h-screen bg-[#FAF3E7] text-[#000000] flex flex-col font-sans selection:bg-black selection:text-white pb-16 lg:pb-0 overflow-x-hidden">
       
       {/* Page Transition Loading Overlay */}
       {isPageLoading && (
@@ -472,52 +473,16 @@ export default function App() {
         </div>
       </div>
 
-      {/* Sticky Bottom Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#e6d3c2] shadow-[0_-4px_16px_rgba(26,18,11,0.08)] lg:hidden safe-bottom">
-        <div className="flex items-center gap-3 px-4 py-3">
-          <button
-            onClick={() => setIsCartOpen(true)}
-            className="flex-1 flex items-center justify-center gap-2 bg-[#000000] text-white px-4 py-3 rounded-full font-bold text-sm shadow-md transition-all active:scale-[0.98]"
-          >
-            <ShoppingBag className="w-4 h-4 text-[#d97a4c]" />
-            <span>View Cart ({totalCartCount})</span>
-          </button>
-          <button
-            onClick={() => navigate('/reservation')}
-            className="flex items-center justify-center bg-[#fdfaf3] hover:bg-[#f8f1e5] text-[#000000] border border-[#e6d3c2] px-3 py-3 rounded-full shadow-xs"
-            title="Reserve a Table"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 3v18" />
-              <path d="M7 16h4" />
-              <path d="M7 11h10" />
-              <path d="M17 3v6" />
-              <path d="M17 11v6" />
-              <path d="M21 16v4" />
-            </svg>
-          </button>
-          <button
-            onClick={() => {
-              if (cartItems.length === 0) return;
-              const total = cartItems.reduce((acc, ci) => {
-                const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
-                return acc + price * ci.quantity;
-              }, 0);
-              const message = `*NEW ORDER - BAKEMART COFFEE HOUSE*\n----------------------------------\n*ORDER ITEMS:*\n${cartItems.map((ci, idx) => {
-                const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
-                return `${idx + 1}. *${ci.item.name}* x${ci.quantity} - KSh ${(price * ci.quantity).toLocaleString()}`;
-              }).join('\n')}\n----------------------------------\n*GRAND TOTAL:* KSh ${total.toLocaleString()}\n\n*Location:* BakeMart Coffee House, Tropical House, Watalii Rd, Nakuru City`;
-              window.open(`https://wa.me/254725009708?text=${encodeURIComponent(message)}`, '_blank');
-            }}
-            className={`flex items-center justify-center gap-2 bg-[#d97a4c] hover:bg-[#e8a27a] text-[#000000] px-5 py-3 rounded-full font-bold text-sm shadow-md transition-all active:scale-[0.98] ${
-              cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-          >
-            <Send className="w-4 h-4" />
-            <span>Checkout →</span>
-          </button>
-        </div>
-      </div>
+      <MobileBottomNav
+        activePage={activePage}
+        onNavigateHome={() => navigate('/')}
+        onNavigateMenu={() => navigate('/menu')}
+        onOpenCart={() => setIsCartOpen(true)}
+        onOpenWishlist={() => setIsWishlistOpen(true)}
+        onNavigateReservation={() => navigate('/reservation')}
+        cartCount={totalCartCount}
+        wishlistCount={wishlistItems.length}
+      />
 
       {/* Sticky Bottom Nav for Mobile */}
     </div>
