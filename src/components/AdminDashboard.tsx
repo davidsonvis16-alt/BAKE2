@@ -216,11 +216,13 @@ export const AdminDashboard: React.FC = () => {
   const startEdit = (item: MenuItemRow) => {
     setEditingId(item.id);
     setEditForm(item);
+    setEditImage(null);
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setEditForm({});
+    setEditImage(null);
   };
 
   const saveEdit = async () => {

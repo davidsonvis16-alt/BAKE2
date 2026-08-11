@@ -14,7 +14,6 @@ export function useMenuData() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>(cachedMenuItems || []);
   const [loading, setLoading] = useState(!cachedMenuItems);
   const [refreshToken, setRefreshToken] = useState(0);
-  const initializedRef = useRef(!!cachedMenuItems);
 
   useEffect(() => {
     setCategories(CATEGORIES);
@@ -73,10 +72,10 @@ export function useMenuData() {
                 name: (row.name as string) || 'Untitled Item',
                 price: (row.price as number) || 0,
                 description: (row.description as string) || '',
-                badge: (remote.badge as string) || null,
+                badge: (row.badge as string) || null,
                 category: (row.category as string) || '',
-                available: (remote.available as boolean) ?? true,
-                image: (remote.image as string) || '',
+                available: (row.available as boolean) ?? true,
+                image: (row.image as string) || '',
                 options: [],
               });
             }
@@ -88,7 +87,6 @@ export function useMenuData() {
         if (cancelled) return;
         setMenuItems(data);
         setLoading(false);
-        initializedRef.current = true;
       } catch {
         if (cancelled) return;
         setMenuItems(base);
@@ -96,9 +94,7 @@ export function useMenuData() {
       }
     };
 
-    if (!initializedRef.current) {
-      fetchRemoteImages();
-    }
+    fetchRemoteImages();
 
     const handleMenuUpdated = () => {
       invalidateCache(MENU_CACHE_KEY);
