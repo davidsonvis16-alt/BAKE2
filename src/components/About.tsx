@@ -94,7 +94,7 @@ export const About: React.FC = () => {
                 allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Bakemart Coffee House location map"
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAOkM8f2b3kQ7l0yL5n0w6q4X5y3j8Z7wE&q=Bakemart+Coffee+House+Tropical+House+Moi+Road+Nakuru"
+                src="https://www.google.com/maps?q=Tropical+House+Moi+Road+Nakuru+Kenya&output=embed"
               ></iframe>
             </div>
 
