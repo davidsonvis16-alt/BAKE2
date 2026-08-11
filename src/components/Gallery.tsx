@@ -121,7 +121,7 @@ const StickyNoteCard: React.FC<{
     animate={{ opacity: 1, y: 0, rotate }}
     transition={{ duration: 0.5, ease: 'easeOut', delay: reduceMotion ? 0 : delay }}
     whileHover={reduceMotion ? undefined : { rotate: 0, scale: 1.06, zIndex: 60 }}
-    className="absolute -translate-x-1/2 rounded-sm bg-white p-2 pb-7 shadow-[0_10px_30px_rgba(26,18,11,0.25)] border border-[#e6d3c2] text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a120b]"
+    className="absolute -translate-x-1/2 rounded-sm bg-white p-2 pb-7 shadow-[0_10px_30px_rgba(26,18,11,0.25)] border border-[#e6d3c2] text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#000000]"
     style={{ top, left, width, zIndex: z }}
     aria-label={`Open photo: ${label}`}
   >
@@ -136,7 +136,7 @@ const StickyNoteCard: React.FC<{
         className="h-full w-full object-cover"
       />
     </div>
-    <p className="mt-2 text-center text-[15px] leading-none text-[#2b1b12]" style={{ fontFamily: "'Caveat', cursive" }}>
+    <p className="mt-2 text-center text-[15px] leading-none text-[#000000]" style={{ fontFamily: "'Caveat', cursive" }}>
       {label}
     </p>
   </motion.button>
@@ -150,14 +150,14 @@ const StickyNoteHero: React.FC<{ onOpen: (src: string) => void }> = ({ onOpen })
     offset: ['start start', 'end start'],
   });
 
-  const stackY = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const stackScale = useTransform(scrollYProgress, [0, 1], [1, 0.88]);
-  const stackOpacity = useTransform(scrollYProgress, [0, 0.85, 1], [1, 1, 0]);
-  const headingOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-  const headingY = useTransform(scrollYProgress, [0, 0.6], [0, -40]);
+  const stackY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const stackScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+  const stackOpacity = useTransform(scrollYProgress, [0.55, 1], [1, 0]);
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
+  const headingY = useTransform(scrollYProgress, [0, 0.5], [0, -40]);
 
   return (
-    <div ref={heroRef} className="relative h-[130vh]">
+    <div ref={heroRef} className="relative h-[105vh] sm:h-[108vh]">
       <div className="sticky top-0 h-[85vh] sm:h-[80vh] overflow-hidden bg-[#fdfaf3]">
         {/* corkboard texture */}
         <div
@@ -176,7 +176,7 @@ const StickyNoteHero: React.FC<{ onOpen: (src: string) => void }> = ({ onOpen })
           <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             GALLERY
           </span>
-          <h1 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-[#1a120b] mt-3 leading-tight">
+          <h1 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-3 leading-tight">
             The Wall Behind the Counter
           </h1>
           <p className="mt-3 max-w-md mx-auto text-sm sm:text-base text-[#5c4b3f] leading-relaxed">
@@ -211,7 +211,7 @@ const StickyNoteHero: React.FC<{ onOpen: (src: string) => void }> = ({ onOpen })
           style={reduceMotion ? undefined : { opacity: headingOpacity }}
           className="absolute bottom-4 sm:bottom-6 inset-x-0 flex justify-center z-40"
         >
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#1a120b] text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest shadow-lg">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#000000] text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest shadow-lg">
             Scroll to explore ↓
           </span>
         </motion.div>
@@ -235,7 +235,7 @@ const CorkCard: React.FC<{
     viewport={{ once: true, margin: '-40px' }}
     transition={{ duration: 0.4, ease: 'easeOut' }}
     whileHover={{ rotate: 0, scale: 1.03, zIndex: 20 }}
-    className="group relative mb-4 sm:mb-6 w-full break-inside-avoid rounded-sm bg-white p-2.5 pb-8 shadow-[0_8px_20px_rgba(26,18,11,0.15)] border border-[#e6d3c2] text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1a120b]"
+    className="group relative mb-4 sm:mb-6 w-full break-inside-avoid rounded-sm bg-white p-2.5 pb-8 shadow-[0_8px_20px_rgba(26,18,11,0.15)] border border-[#e6d3c2] text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#000000]"
     style={{ transform: `rotate(${tiltFor(index)}deg)` }}
     aria-label={`Open photo: ${label}`}
   >
@@ -251,7 +251,7 @@ const CorkCard: React.FC<{
       />
     </div>
     <p
-      className="mt-2.5 text-center text-lg leading-none text-[#2b1b12]"
+      className="mt-2.5 text-center text-lg leading-none text-[#000000]"
       style={{ fontFamily: "'Caveat', cursive" }}
     >
       {label}
@@ -288,7 +288,7 @@ const Lightbox: React.FC<{
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#1a120b]/95 backdrop-blur-sm px-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#000000]/95 backdrop-blur-sm px-4"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -344,7 +344,7 @@ const Lightbox: React.FC<{
         >
           {current.label}
         </p>
-        <p className="mt-1 text-xs text-white/50">
+        <p className="mt-1 text-xs text-white">
           {index + 1} / {images.length}
         </p>
       </motion.div>
@@ -394,8 +394,8 @@ export const Gallery: React.FC = () => {
                     onClick={() => setSelectedCategory(category.id)}
                     className={`rounded-full border px-4 py-2 text-[11px] font-bold transition-all ${
                       isActive
-                        ? 'bg-[#1a120b] text-white border-[#1a120b]'
-                        : 'bg-white text-[#2b1b12] border-[#e6d3c2] hover:border-[#1a120b]'
+                        ? 'bg-[#000000] text-white border-[#000000]'
+                        : 'bg-white text-[#000000] border-[#e6d3c2] hover:border-[#000000]'
                     }`}
                   >
                     {category.label}
@@ -431,7 +431,7 @@ export const Gallery: React.FC = () => {
               <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
                 SEE YOU AT BAKEMART
               </span>
-              <h2 className="mt-4 font-serif font-black text-3xl sm:text-4xl text-[#1a120b] leading-tight">
+              <h2 className="mt-4 font-serif font-black text-3xl sm:text-4xl text-[#000000] leading-tight">
                 Come hungry. Leave happy.
               </h2>
               <p className="mt-4 text-sm sm:text-base text-[#5c4b3f] leading-relaxed">

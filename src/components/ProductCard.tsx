@@ -7,6 +7,7 @@ interface ProductCardProps {
   isWishlisted: boolean;
   onAddToCart: (item: MenuItem, selectedOption?: MenuItemOption) => void;
   onToggleWishlist: (item: MenuItem) => void;
+  onOpenPreview?: (item: MenuItem) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -14,6 +15,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   isWishlisted,
   onAddToCart,
   onToggleWishlist,
+  onOpenPreview,
 }) => {
   const [selectedOption, setSelectedOption] = useState<MenuItemOption | undefined>(
     item.options && item.options.length > 0 ? item.options[0] : undefined
@@ -34,7 +36,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const showImage = item.image && !imageFailed;
 
   return (
-    <div className="group bg-white rounded-2xl border border-[#e6d3c2] overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-[#1a120b]/20">
+    <div
+      className="group bg-white rounded-2xl border border-[#e6d3c2] overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-[#000000]/20 cursor-pointer"
+      onClick={() => onOpenPreview?.(item)}
+    >
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden bg-[#f8f1e5]">
         {showImage ? (
@@ -59,11 +64,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Wishlist Button */}
         <button
-          onClick={() => onToggleWishlist(item)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleWishlist(item);
+          }}
           className={`absolute top-3 right-3 z-20 w-9 h-9 rounded-full border flex items-center justify-center transition-all ${
             isWishlisted
-              ? 'bg-[#d4a35a] border-[#d4a35a] text-white'
-              : 'bg-white/90 border-[#e6d3c2] text-[#2b1b12] hover:bg-white'
+              ? 'bg-[#d97a4c] border-[#d97a4c] text-white'
+              : 'bg-white/90 border-[#e6d3c2] text-[#000000] hover:bg-white'
           }`}
           title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
         >
@@ -73,7 +81,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {/* Badge */}
         {item.badge && (
           <div className="absolute top-3 left-3 z-20">
-            <span className="bg-[#1a120b] text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
+            <span className="bg-[#000000] text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
               {item.badge}
             </span>
           </div>
@@ -83,7 +91,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       {/* Content */}
       <div className="p-4 space-y-3">
         <div className="space-y-1.5">
-          <h3 className="font-serif font-bold text-base text-[#1a120b] leading-tight line-clamp-1">
+          <h3 className="font-serif font-bold text-base text-[#000000] leading-tight line-clamp-1">
             {item.name}
           </h3>
           {item.description && (
@@ -100,11 +108,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <button
                 key={opt.name}
                 type="button"
-                onClick={() => setSelectedOption(opt)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedOption(opt);
+                }}
                 className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition ${
                   selectedOption?.name === opt.name
-                    ? 'border-[#1a120b] bg-[#1a120b] text-white'
-                    : 'border-[#e6d3c2] bg-[#fdfaf3] text-[#2b1b12] hover:border-[#1a120b]'
+                    ? 'border-[#000000] bg-[#000000] text-white'
+                    : 'border-[#e6d3c2] bg-[#fdfaf3] text-[#000000] hover:border-[#000000]'
                 }`}
               >
                 {opt.name}
@@ -116,17 +127,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {/* Price & Add Button */}
         <div className="flex items-center justify-between gap-3 pt-1">
           <div>
-            <p className="font-mono font-bold text-base text-[#1a120b]">
+            <p className="font-mono font-bold text-base text-[#000000]">
               KSh {currentPrice.toLocaleString()}
             </p>
           </div>
           <button
-            onClick={handleAdd}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAdd();
+            }}
             disabled={addedAnimation}
             className={`shrink-0 rounded-full px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all active:scale-95 ${
               addedAnimation
-                ? 'bg-[#d4a35a] text-white'
-                : 'bg-[#1a120b] text-white hover:bg-[#2b1b12]'
+                ? 'bg-[#d97a4c] text-white'
+                : 'bg-[#000000] text-white hover:bg-[#000000]'
             }`}
           >
             {addedAnimation ? (

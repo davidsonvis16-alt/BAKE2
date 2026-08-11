@@ -56,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="w-10 h-10 rounded-full border border-[#e6d3c2] object-cover group-hover:scale-105 transition-transform"
           />
           <div className="flex flex-col">
-            <span className="font-serif font-black text-sm md:text-base lg:text-lg text-[#1a120b] tracking-tight leading-none">
+            <span className="font-serif font-black text-sm md:text-base lg:text-lg text-[#000000] tracking-tight leading-none">
               BakeMart Coffee House
             </span>
             <span className="text-[10px] font-serif italic text-[#5c4b3f] tracking-wide mt-0.5 hidden sm:block">
@@ -73,8 +73,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={item.onClick}
               className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
                 item.active
-                  ? 'bg-[#1a120b] text-[#d4a35a]'
-                  : 'text-[#2b1b12] hover:bg-[#f5efe7] hover:text-[#1a120b]'
+                  ? 'bg-[#000000] text-[#d97a4c]'
+                  : 'text-[#000000] hover:bg-[#f5efe7] hover:text-[#000000]'
               }`}
             >
               {item.label}
@@ -87,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Hamburger Menu Button (Mobile) */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 rounded-full hover:bg-[#f5efe7] text-[#2b1b12] transition-colors"
+            className="lg:hidden p-2 rounded-full hover:bg-[#f5efe7] text-[#000000] transition-colors"
             title="Menu"
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -96,12 +96,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Wishlist Button */}
           <button
             onClick={onOpenWishlist}
-            className="relative p-2 rounded-full hover:bg-[#f5efe7] text-[#2b1b12] transition-colors hidden sm:flex"
+            className="relative p-2 rounded-full hover:bg-[#f5efe7] text-[#000000] transition-colors hidden sm:flex"
             title="Wishlist"
           >
             <Heart className="w-5 h-5" />
             {wishlistCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#d4a35a] text-[#1a120b] text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[#d97a4c] text-[#000000] text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
                 {wishlistCount}
               </span>
             )}
@@ -110,12 +110,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Cart Button */}
           <button
             onClick={onOpenCart}
-            className="relative flex items-center gap-2 bg-[#1a120b] hover:bg-[#2b1b12] text-white px-4 py-2 rounded-full font-bold text-xs md:text-sm transition-all"
+            className="relative flex items-center gap-2 bg-[#000000] hover:bg-[#000000] text-white px-4 py-2 rounded-full font-bold text-xs md:text-sm transition-all"
           >
-            <ShoppingBag className="w-4 h-4 text-[#d4a35a]" />
+            <ShoppingBag className="w-4 h-4 text-[#d97a4c]" />
             <span className="hidden sm:inline">Cart</span>
             {cartCount > 0 && (
-              <span className="bg-[#d4a35a] text-[#1a120b] font-bold text-[10px] px-2 py-0.5 rounded-full">
+              <span className="bg-[#d97a4c] text-[#000000] font-bold text-[10px] px-2 py-0.5 rounded-full">
                 {cartCount}
               </span>
             )}
@@ -124,7 +124,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Reserve a Table (Desktop) */}
           <button
             onClick={onNavigateReservation}
-            className="hidden lg:flex items-center gap-2 bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm"
+            className="hidden lg:flex items-center gap-2 bg-[#d97a4c] hover:bg-[#e8a27a] text-[#000000] px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm"
           >
             Reserve a Table
           </button>
@@ -144,8 +144,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }}
                 className={`w-full text-left px-4 py-2.5 rounded-full text-sm font-bold transition-all ${
                   item.active
-                    ? 'bg-[#1a120b] text-[#d4a35a]'
-                    : 'text-[#2b1b12] hover:bg-[#f5efe7]'
+                    ? 'bg-[#000000] text-[#d97a4c]'
+                    : 'text-[#000000] hover:bg-[#f5efe7]'
                 }`}
               >
                 {item.label}
@@ -160,9 +160,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-[#2b1b12] hover:bg-[#f5efe7] transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-[#000000] hover:bg-[#f5efe7] transition-colors"
               >
-                <Phone className="w-4 h-4 shrink-0 text-[#d4a35a]" />
+                <Phone className="w-4 h-4 shrink-0 text-[#d97a4c]" />
                 <span>0725 009 708</span>
               </a>
             </div>
@@ -179,7 +179,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             placeholder="Search for pizza, coffee, burgers, juices..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#fdfaf3] border border-[#e6d3c2] focus:border-[#1a120b] text-sm text-[#2b1b12] placeholder-[#8c7a6c] rounded-full pl-10 pr-4 py-2.5 outline-none"
+            className="w-full bg-[#fdfaf3] border border-[#e6d3c2] focus:border-[#000000] text-sm text-[#000000] placeholder-[#8c7a6c] rounded-full pl-10 pr-4 py-2.5 outline-none"
           />
         </div>
       </div>

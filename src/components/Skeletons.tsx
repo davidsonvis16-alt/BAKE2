@@ -129,7 +129,7 @@ export const ImageWithSkeleton: React.FC<ImageWithSkeletonProps> = ({
       {/* Skeleton overlay shown until image is fully loaded */}
       {(!isLoaded || hasError) && (
         <div className="absolute inset-0 bg-gradient-to-r from-[#e6d3c2] via-[#f3e8d8] to-[#e6d3c2] z-10 flex items-center justify-center">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#1a120b]/40">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#000000]/40">
             BakeMart
           </span>
         </div>

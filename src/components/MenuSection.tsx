@@ -4,6 +4,7 @@ import { ProductCard } from './ProductCard';
 import { MenuItem, MenuItemOption } from '../types';
 import { ProductCardSkeleton, TicketListItemSkeleton } from './Skeletons';
 import { CategoryPlatterNav } from './CategoryPlatterNav';
+import { FoodPreviewModal } from './FoodPreviewModal';
 
 interface MenuSectionProps {
   searchQuery: string;
@@ -25,6 +26,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
   const { categories, menuItems, loading: dataLoading } = useMenuData();
   const [viewMode, setViewMode] = useState<'grid' | 'ticket'>('grid');
   const [isLoading, setIsLoading] = useState(true);
+  const [previewItem, setPreviewItem] = useState<MenuItem | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -58,7 +60,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
           <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             FULL MENU
           </span>
-          <h2 className="font-serif font-black text-3xl sm:text-4xl text-[#1a120b] mt-2 tracking-tight">
+          <h2 className="font-serif font-black text-3xl sm:text-4xl text-[#000000] mt-2 tracking-tight">
             Popular Dishes & Drinks
           </h2>
           <p className="text-sm text-[#5c4b3f] mt-3 max-w-lg mx-auto leading-relaxed">
@@ -78,11 +80,11 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
         <div className="flex items-center justify-between mb-6">
           <p className="text-xs font-semibold text-[#5c4b3f]">
             {selectedCategory === 'all' ? (
-              <>Showing all <span className="text-[#1a120b] font-bold">{filteredItems.length}</span> items</>
+              <>Showing all <span className="text-[#000000] font-bold">{filteredItems.length}</span> items</>
             ) : (
               <>
                 {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'} in{" "}
-                <span className="font-bold text-[#1a120b]">{categories.find(c => c.id === selectedCategory)?.name}</span>
+                <span className="font-bold text-[#000000]">{categories.find(c => c.id === selectedCategory)?.name}</span>
               </>
             )}
           </p>
@@ -93,8 +95,8 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
               onClick={() => setViewMode('grid')}
               className={`p-2 rounded-lg transition-colors ${
                 viewMode === 'grid'
-                  ? 'bg-[#1a120b] text-white'
-                  : 'bg-white text-[#5c4b3f] border border-[#e6d3c2] hover:border-[#1a120b]'
+                  ? 'bg-[#000000] text-white'
+                  : 'bg-white text-[#5c4b3f] border border-[#e6d3c2] hover:border-[#000000]'
               }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,8 +107,8 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
               onClick={() => setViewMode('ticket')}
               className={`p-2 rounded-lg transition-colors ${
                 viewMode === 'ticket'
-                  ? 'bg-[#1a120b] text-white'
-                  : 'bg-white text-[#5c4b3f] border border-[#e6d3c2] hover:border-[#1a120b]'
+                  ? 'bg-[#000000] text-white'
+                  : 'bg-white text-[#5c4b3f] border border-[#e6d3c2] hover:border-[#000000]'
               }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,22 +132,23 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
               onClick={() => {
                 onSelectCategory('all');
               }}
-              className="mt-3 text-xs font-bold text-[#1a120b] underline underline-offset-4"
+              className="mt-3 text-xs font-bold text-[#000000] underline underline-offset-4"
             >
               Clear filters
             </button>
           </div>
         ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {filteredItems.map((item) => (
-              <ProductCard
-                key={item.id}
-                item={item}
-                isWishlisted={wishlistIds.includes(item.id)}
-                onAddToCart={onAddToCart}
-                onToggleWishlist={onToggleWishlist}
-              />
-            ))}
+              {filteredItems.map((item) => (
+                <ProductCard
+                  key={item.id}
+                  item={item}
+                  isWishlisted={wishlistIds.includes(item.id)}
+                  onAddToCart={onAddToCart}
+                  onToggleWishlist={onToggleWishlist}
+                  onOpenPreview={setPreviewItem}
+                />
+              ))}
           </div>
         ) : (
           <div className="bg-white rounded-2xl border border-[#e6d3c2] overflow-hidden">
@@ -159,11 +162,11 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-bold text-sm text-[#1a120b]">
+                        <span className="font-bold text-sm text-[#000000]">
                           {item.name}
                         </span>
                         {item.badge && (
-                          <span className="text-[9px] uppercase font-extrabold bg-[#1a120b] text-white px-2 py-0.5 rounded-full">
+                          <span className="text-[9px] uppercase font-extrabold bg-[#000000] text-white px-2 py-0.5 rounded-full">
                             {item.badge}
                           </span>
                         )}
@@ -174,13 +177,13 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
                     </div>
 
                     <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0">
-                      <span className="font-mono font-bold text-sm text-[#1a120b]">
+                      <span className="font-mono font-bold text-sm text-[#000000]">
                         KSh {item.price.toLocaleString()}
                       </span>
 
                       <button
                         onClick={() => onAddToCart(item)}
-                        className="bg-[#1a120b] hover:bg-[#2b1b12] text-white text-xs font-bold px-4 py-2 rounded-full transition-all flex items-center gap-1.5"
+                        className="bg-[#000000] hover:bg-[#000000] text-white text-xs font-bold px-4 py-2 rounded-full transition-all flex items-center gap-1.5"
                       >
                         <span>+ Add</span>
                       </button>
@@ -192,6 +195,13 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
           </div>
         )}
       </div>
+      {previewItem && (
+        <FoodPreviewModal
+          item={previewItem}
+          onClose={() => setPreviewItem(null)}
+          onAddToCart={onAddToCart}
+        />
+      )}
     </section>
   );
 };

@@ -8,7 +8,7 @@ export const About: React.FC = () => {
           <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             ABOUT US
           </span>
-          <h1 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-[#1a120b] mt-4 leading-tight">
+          <h1 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-4 leading-tight">
             The only open-kitchen coffee shop in Nakuru City
           </h1>
           <p className="mt-4 text-sm sm:text-base text-[#5c4b3f] leading-relaxed max-w-2xl">
@@ -30,7 +30,7 @@ export const About: React.FC = () => {
               />
             </div>
             <div className="p-6 sm:p-8 space-y-4">
-              <h2 className="font-serif font-bold text-xl text-[#1a120b]">
+              <h2 className="font-serif font-bold text-xl text-[#000000]">
                 Our Story
               </h2>
               <p className="text-sm text-[#5c4b3f] leading-relaxed">
@@ -40,14 +40,14 @@ export const About: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-2xl border border-[#e6d3c2] p-6 sm:p-8 shadow-sm">
-            <h2 className="font-serif font-bold text-xl text-[#1a120b] mb-4">
+            <h2 className="font-serif font-bold text-xl text-[#000000] mb-4">
               What Makes Us Special
             </h2>
             <p className="text-sm text-[#5c4b3f] leading-relaxed mb-6">
               We&apos;re the only open-kitchen coffee shop in Nakuru City, offering a broad menu that mixes coffeehouse classics with pizzas, burgers, waffles, healthy options, and local Kenyan flavors.
             </p>
 
-            <h3 className="font-serif font-bold text-base text-[#1a120b] mb-3">
+            <h3 className="font-serif font-bold text-base text-[#000000] mb-3">
               Our Menu Highlights
             </h3>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-[#5c4b3f]">
@@ -70,7 +70,7 @@ export const About: React.FC = () => {
         {/* Delivery & Contact */}
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           <div className="bg-white rounded-2xl border border-[#e6d3c2] p-6 sm:p-8 shadow-sm">
-            <h3 className="font-serif font-bold text-lg text-[#1a120b] mb-3">
+            <h3 className="font-serif font-bold text-lg text-[#000000] mb-3">
               Delivery
             </h3>
             <p className="text-sm text-[#5c4b3f] leading-relaxed">
@@ -79,7 +79,7 @@ export const About: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-2xl border border-[#e6d3c2] p-6 sm:p-8 shadow-sm">
-            <h3 className="font-serif font-bold text-lg text-[#1a120b] mb-3">
+            <h3 className="font-serif font-bold text-lg text-[#000000] mb-3">
               Visit Us
             </h3>
             <p className="text-sm text-[#5c4b3f] leading-relaxed">
@@ -90,7 +90,7 @@ export const About: React.FC = () => {
                 href="https://www.instagram.com/bakemartcoffeehouse/"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 bg-[#1a120b] text-white text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#2b1b12] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#000000] text-white text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#000000] transition-colors"
               >
                 Instagram
               </a>
@@ -98,13 +98,13 @@ export const About: React.FC = () => {
                 href="https://www.facebook.com/BakemartCoffeeHouse/"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 bg-[#1a120b] text-white text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#2b1b12] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#000000] text-white text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#000000] transition-colors"
               >
                 Facebook
               </a>
               <a
                 href="mailto:Salesbakemart.co.ke@gmail.com"
-                className="inline-flex items-center gap-2 bg-[#f8f1e5] text-[#1a120b] border border-[#e6d3c2] text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#f5efe7] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#f8f1e5] text-[#000000] border border-[#e6d3c2] text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#f5efe7] transition-colors"
               >
                 Email Us
               </a>

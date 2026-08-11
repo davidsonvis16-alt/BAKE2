@@ -200,6 +200,10 @@ export default function App() {
     );
   };
 
+  const handleOpenReservation = () => {
+    navigate('/reservation');
+  };
+
   const wishlistItems = menuItems.filter((i) => wishlistIds.includes(i.id));
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -254,6 +258,7 @@ export default function App() {
         onNavigateGallery={() => navigate('/gallery')}
         onNavigateAbout={() => navigate('/about')}
         onNavigateFAQ={() => navigate('/faq')}
+        onNavigateReservation={handleOpenReservation}
         />
 
       {/* Main Page Content */}
@@ -343,12 +348,12 @@ export default function App() {
                           navigate('/menu');
                         }
                       }}
-                      className="w-full bg-[#fdfaf3] border border-[#e6d3c2] focus:border-[#1a120b] text-base text-[#1a120b] placeholder-[#8c7a6c] rounded-xl pl-14 pr-10 py-4 outline-none transition-colors"
+                      className="w-full bg-[#fdfaf3] border border-[#e6d3c2] focus:border-[#000000] text-base text-[#000000] placeholder-[#8c7a6c] rounded-xl pl-14 pr-10 py-4 outline-none transition-colors"
                     />
                     {searchQuery && (
                       <button
                         onClick={() => setSearchQuery('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-[#e6d3c2] hover:bg-[#d8c7b0] text-[#2b1b12] transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-[#e6d3c2] hover:bg-[#d8c7b0] text-[#000000] transition-colors"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
@@ -379,22 +384,22 @@ export default function App() {
 
             {/* Full Menu Page Callout Banner */}
             <section className="max-w-7xl mx-auto px-4 py-8">
-              <div className="bg-[#1a120b] text-[#fdfaf3] p-8 rounded-3xl border border-[#2b1b12] flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+              <div className="bg-[#000000] text-[#fdfaf3] p-8 rounded-3xl border border-[#000000] flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
                 <div className="space-y-2 text-center md:text-left">
-                  <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#d4a35a]">
+                  <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#d97a4c]">
                     COMPLETE LISTINGS
                   </span>
                   <h3 className="font-serif font-bold text-2xl sm:text-3xl">
                     Prefer to view our full menu on a single page?
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#d4a35a]/80 max-w-xl">
+                  <p className="text-xs sm:text-sm text-[#d97a4c]/80 max-w-xl">
                     Explore all 12 food categories with live instant search, dietary tags, portion selection, and clean list layouts.
                   </p>
                 </div>
 
                 <button
                   onClick={() => navigate('/menu')}
-                  className="bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] font-bold text-sm px-6 py-3 rounded-full transition-all flex items-center gap-2 shadow-sm"
+                  className="bg-[#d97a4c] hover:bg-[#e8a27a] text-[#000000] font-bold text-sm px-6 py-3 rounded-full transition-all flex items-center gap-2 shadow-sm"
                 >
                   <span>Open Full Menu Page →</span>
                 </button>
@@ -434,9 +439,9 @@ export default function App() {
         <div className="flex items-center justify-between gap-4 w-full bg-white border border-[#e6d3c2] shadow-[0_8px_30px_rgba(26,18,11,0.12)] rounded-full px-4 py-3">
           <button
             onClick={() => setIsCartOpen(true)}
-            className="flex items-center gap-2 bg-[#1a120b] hover:bg-[#2b1b12] text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all active:scale-[0.98]"
+            className="flex items-center gap-2 bg-[#000000] hover:bg-[#000000] text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all active:scale-[0.98]"
           >
-            <ShoppingBag className="w-4 h-4 text-[#d4a35a]" />
+            <ShoppingBag className="w-4 h-4 text-[#d97a4c]" />
             <span>View Cart ({totalCartCount})</span>
           </button>
 
@@ -457,7 +462,7 @@ export default function App() {
               }).join('\n')}\n----------------------------------\n*GRAND TOTAL:* KSh ${total.toLocaleString()}\n\n*Location:* BakeMart Coffee House, Tropical House, Watalii Rd, Nakuru City`;
               window.open(`https://wa.me/254725009708?text=${encodeURIComponent(message)}`, '_blank');
             }}
-            className={`flex items-center justify-center gap-2 bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] px-6 py-2.5 rounded-full font-bold text-sm transition-all active:scale-[0.98] ${
+            className={`flex items-center justify-center gap-2 bg-[#d97a4c] hover:bg-[#e8a27a] text-[#000000] px-6 py-2.5 rounded-full font-bold text-sm transition-all active:scale-[0.98] ${
               cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
@@ -472,14 +477,14 @@ export default function App() {
         <div className="flex items-center gap-3 px-4 py-3">
           <button
             onClick={() => setIsCartOpen(true)}
-            className="flex-1 flex items-center justify-center gap-2 bg-[#1a120b] text-white px-4 py-3 rounded-full font-bold text-sm shadow-md transition-all active:scale-[0.98]"
+            className="flex-1 flex items-center justify-center gap-2 bg-[#000000] text-white px-4 py-3 rounded-full font-bold text-sm shadow-md transition-all active:scale-[0.98]"
           >
-            <ShoppingBag className="w-4 h-4 text-[#d4a35a]" />
+            <ShoppingBag className="w-4 h-4 text-[#d97a4c]" />
             <span>View Cart ({totalCartCount})</span>
           </button>
           <button
             onClick={() => navigate('/reservation')}
-            className="flex items-center justify-center bg-[#fdfaf3] hover:bg-[#f8f1e5] text-[#1a120b] border border-[#e6d3c2] px-3 py-3 rounded-full shadow-xs"
+            className="flex items-center justify-center bg-[#fdfaf3] hover:bg-[#f8f1e5] text-[#000000] border border-[#e6d3c2] px-3 py-3 rounded-full shadow-xs"
             title="Reserve a Table"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -504,7 +509,7 @@ export default function App() {
               }).join('\n')}\n----------------------------------\n*GRAND TOTAL:* KSh ${total.toLocaleString()}\n\n*Location:* BakeMart Coffee House, Tropical House, Watalii Rd, Nakuru City`;
               window.open(`https://wa.me/254725009708?text=${encodeURIComponent(message)}`, '_blank');
             }}
-            className={`flex items-center justify-center gap-2 bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] px-5 py-3 rounded-full font-bold text-sm shadow-md transition-all active:scale-[0.98] ${
+            className={`flex items-center justify-center gap-2 bg-[#d97a4c] hover:bg-[#e8a27a] text-[#000000] px-5 py-3 rounded-full font-bold text-sm shadow-md transition-all active:scale-[0.98] ${
               cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >

@@ -14,23 +14,23 @@ interface FeatureItem {
 
 const features: FeatureItem[] = [
   {
-    icon: <ShoppingBag className="w-6 h-6 text-[#1a120b]" />,
+    icon: <ShoppingBag className="w-6 h-6 text-[#000000]" />,
     title: 'Open Kitchen',
     description: 'Watch our chefs prepare every dish fresh to order. No mystery behind the scenes.',
     accent: true,
   },
   {
-    icon: <Clock className="w-6 h-6 text-[#1a120b]" />,
+    icon: <Clock className="w-6 h-6 text-[#000000]" />,
     title: 'Daily Fresh',
     description: 'Open daily from 7 AM until 8 PM. Coffee brewed, pastries baked, meals cooked fresh.',
   },
   {
-    icon: <MapPin className="w-6 h-6 text-[#1a120b]" />,
+    icon: <MapPin className="w-6 h-6 text-[#000000]" />,
     title: 'Nakuru Location',
     description: 'Tropical House, Moi Road — behind Gilanis Supermarket, beside Nakuru GPO.',
   },
   {
-    icon: <Send className="w-6 h-6 text-[#1a120b]" />,
+    icon: <Send className="w-6 h-6 text-[#000000]" />,
     title: 'Order Now',
     description: 'Order via WhatsApp or Glovo delivery. Quick pickup or dine-in available.',
     accent: true,
@@ -47,7 +47,7 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateMenu }) =>
           <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             WHY BAKEMART
           </span>
-          <h2 className="font-serif font-black text-2xl sm:text-3xl text-[#1a120b] mt-2 tracking-tight">
+          <h2 className="font-serif font-black text-2xl sm:text-3xl text-[#000000] mt-2 tracking-tight">
             The Open-Kitchen Experience
           </h2>
           <p className="text-sm text-[#5c4b3f] mt-3 max-w-lg mx-auto leading-relaxed">
@@ -67,40 +67,40 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateMenu }) =>
                 }}
                 className={`group flex flex-col items-center text-center rounded-2xl p-4 sm:p-6 border transition-all duration-300 text-left ${
                   feature.accent
-                    ? 'bg-[#1a120b] text-white border-[#2b1b12] shadow-md hover:shadow-lg'
-                    : 'bg-white text-[#1a120b] border-[#e6d3c2] hover:border-[#1a120b]/20 hover:shadow-md'
+                    ? 'bg-[#000000] text-white border-[#000000] shadow-md hover:shadow-lg'
+                    : 'bg-white text-[#000000] border-[#e6d3c2] hover:border-[#000000]/20 hover:shadow-md'
                 } ${isOrderNow ? 'cursor-pointer' : ''}`}
               >
                 <div
                   className={`flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full mb-3 sm:mb-4 transition-all ${
                     feature.accent
-                      ? 'bg-[#d4a35a] text-[#1a120b] group-hover:scale-110'
+                      ? 'bg-[#d97a4c] text-[#000000] group-hover:scale-110'
                       : 'bg-[#fdfaf3] border border-[#e6d3c2] group-hover:bg-[#f8f1e5]'
                   }`}
                 >
                   {React.cloneElement(feature.icon as React.ReactElement, {
                     className: `w-5 h-5 sm:w-6 sm:h-6 transition-colors`,
                     style: feature.accent
-                      ? { color: '#1a120b' }
-                      : { color: '#1a120b' },
+                      ? { color: '#000000' }
+                      : { color: '#000000' },
                   })}
                 </div>
                 <h3
                   className={`font-serif font-bold text-sm sm:text-base mb-1.5 sm:mb-2 ${
-                    feature.accent ? 'text-[#fdfaf3]' : 'text-[#1a120b]'
+                    feature.accent ? 'text-[#fdfaf3]' : 'text-[#000000]'
                   }`}
                 >
                   {feature.title}
                 </h3>
                 <p
                   className={`text-[11px] sm:text-xs md:text-sm leading-relaxed flex-1 ${
-                    feature.accent ? 'text-[#d4a35a]/80' : 'text-[#5c4b3f]'
+                    feature.accent ? 'text-[#d97a4c]/80' : 'text-[#5c4b3f]'
                   }`}
                 >
                   {feature.description}
                 </p>
                 {isOrderNow && (
-                  <span className="mt-2 sm:mt-3 text-[10px] font-bold uppercase tracking-widest text-[#d4a35a]">
+                  <span className="mt-2 sm:mt-3 text-[10px] font-bold uppercase tracking-widest text-[#d97a4c]">
                     Tap to order →
                   </span>
                 )}
