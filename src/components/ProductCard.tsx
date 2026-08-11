@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Heart, Check } from 'lucide-react';
 import { MenuItem, MenuItemOption } from '../types';
 import { useCartAnimation } from './CartAnimation';
