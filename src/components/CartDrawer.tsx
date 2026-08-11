@@ -3,6 +3,7 @@ import { X, Trash2, Plus, ShoppingBag, MapPin, Send, Minus } from 'lucide-react'
 import { CartItem } from '../types';
 import { OrderTicket } from './OrderTicket';
 import { generateSecureOrderId } from '../utils/ids';
+import { supabase } from '../lib/supabase';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -46,13 +47,15 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     setShowTicket(true);
   };
 
-  const confirmAndSendWhatsApp = () => {
+  const confirmAndSendWhatsApp = async () => {
     setSentStatus('sent');
     setShowTicket(false);
 
+    const orderId = generateSecureOrderId();
+
     try {
       const newOrder = {
-        id: generateSecureOrderId(),
+        id: orderId,
         date: 'Just Now',
         status: 'In Kitchen',
         orderType: orderType,
@@ -75,6 +78,37 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       localStorage.setItem('bakemart_recent_orders', JSON.stringify(updated));
     } catch (err) {
       console.error('Failed to save recent order:', err);
+    }
+
+    // Save the order to Supabase so it shows up in the admin Orders tab and stats.
+    // This runs alongside the WhatsApp message, not instead of it — if this fails,
+    // the WhatsApp order still goes through below.
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('orders').insert([
+          {
+            id: orderId,
+            date: new Date().toISOString(),
+            status: 'pending',
+            order_type: orderType,
+            items: cartItems.map((ci) => ({
+              name: ci.item.name,
+              price: ci.selectedOption ? ci.selectedOption.price : ci.item.price,
+              quantity: ci.quantity,
+              selectedOptionName: ci.selectedOption?.name,
+            })),
+            total_amount: grandTotal,
+            delivery_address: orderType === 'delivery' ? deliveryAddress || null : null,
+            table_number: orderType === 'dine-in' ? tableNumber || null : null,
+          },
+        ]);
+
+        if (error) {
+          console.error('Failed to save order to Supabase:', error);
+        }
+      } catch (err) {
+        console.error('Supabase order insert exception:', err);
+      }
     }
 
     let orderDetails = `*NEW ORDER - BAKEMART COFFEE HOUSE*\n`;
