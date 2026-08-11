@@ -117,7 +117,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             ref={setCartRef}
             onClick={onOpenCart}
-            className="relative flex items-center gap-2 bg-[#000000] hover:bg-[#000000] text-white px-4 py-2 rounded-full font-bold text-xs md:text-sm transition-all"
+            className="hidden lg:flex relative items-center gap-2 bg-[#000000] hover:bg-[#000000] text-white px-4 py-2 rounded-full font-bold text-xs md:text-sm transition-all"
           >
             <ShoppingBag className="w-4 h-4 text-[#d97a4c]" />
             <span className="hidden sm:inline">Cart</span>
