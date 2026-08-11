@@ -85,6 +85,19 @@ export const About: React.FC = () => {
             <p className="text-sm text-[#5c4b3f] leading-relaxed">
               Moi Road, Tropical House, Nakuru (behind Gilanis Supermarket and besides Nakuru GPO). We&apos;re open daily until 8:00 PM.
             </p>
+
+            <div className="mt-4 rounded-xl overflow-hidden border border-[#e6d3c2] shadow-sm">
+              <iframe
+                className="w-full h-64 sm:h-72"
+                style={{ border: 0 }}
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Bakemart Coffee House location map"
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAOkM8f2b3kQ7l0yL5n0w6q4X5y3j8Z7wE&q=Bakemart+Coffee+House+Tropical+House+Moi+Road+Nakuru"
+              ></iframe>
+            </div>
+
             <div className="flex flex-wrap items-center gap-3 mt-4">
               <a
                 href="https://www.instagram.com/bakemartcoffeehouse/"

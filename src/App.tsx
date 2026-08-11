@@ -4,10 +4,10 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { CategoryPlatterNav } from './components/CategoryPlatterNav';
 import { PromoBanner } from './components/PromoBanner';
-import { ComboGrid } from './components/ComboGrid';
 import { MenuSection } from './components/MenuSection';
 import { CategoryUnfoldView } from './components/CategoryUnfoldView';
 import { ReservationSection } from './components/ReservationSection';
+import { SpecialsPage } from './components/SpecialsPage';
 import { CartDrawer } from './components/CartDrawer';
 import { WishlistDrawer } from './components/WishlistDrawer';
 import { AdminDashboard } from './components/AdminDashboard';
@@ -33,7 +33,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const path = location.pathname;
-  const activePage = useMemo<'home' | 'menu' | 'category' | 'reservation' | 'admin' | 'gallery' | 'about' | 'faq'>(() => {
+  const activePage = useMemo<'home' | 'menu' | 'category' | 'reservation' | 'admin' | 'gallery' | 'about' | 'faq' | 'specials'>(() => {
     if (path === '/menu') return 'menu';
     if (path.startsWith('/category/')) return 'category';
     if (path === '/reservation') return 'reservation';
@@ -41,6 +41,7 @@ export default function App() {
     if (path === '/gallery') return 'gallery';
     if (path === '/about') return 'about';
     if (path === '/faq') return 'faq';
+    if (path === '/specials') return 'specials';
     return 'home';
   }, [path]);
 
@@ -262,6 +263,7 @@ export default function App() {
         onNavigateAbout={() => navigate('/about')}
         onNavigateFAQ={() => navigate('/faq')}
         onNavigateReservation={handleOpenReservation}
+        onNavigateSpecials={() => navigate('/specials')}
         />
 
       {/* Main Page Content */}
@@ -328,6 +330,8 @@ export default function App() {
           <About />
         ) : activePage === 'faq' ? (
           <FAQ />
+        ) : activePage === 'specials' ? (
+          <SpecialsPage onNavigateMenu={() => navigate('/menu')} onAddToCart={handleAddToCartById} />
         ) : (
            /* MAIN HOME VIEW HUB PAGE */
            <div className="pb-28 lg:pb-32">
@@ -376,42 +380,12 @@ export default function App() {
                onSelectCategory={handleSelectCategory}
              />
 
-            {/* BBQ Promo Banner */}
-            <PromoBanner
-              onAddToCart={handleAddToCartById}
-              onScrollToMenu={() => handleSelectCategory('bbq-platters')}
-            />
-
-            {/* Combos Grid */}
-            <ComboGrid onAddToCart={handleAddToCartById} />
-
-            {/* Full Menu Page Callout Banner */}
-            <section className="max-w-7xl mx-auto px-4 py-8">
-              <div className="bg-[#000000] text-[#fdfaf3] p-8 rounded-3xl border border-[#000000] flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
-                <div className="space-y-2 text-center md:text-left">
-                  <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#d97a4c]">
-                    COMPLETE LISTINGS
-                  </span>
-                  <h3 className="font-serif font-bold text-2xl sm:text-3xl">
-                    Prefer to view our full menu on a single page?
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#d97a4c]/80 max-w-xl">
-                    Explore all 12 food categories with live instant search, dietary tags, portion selection, and clean list layouts.
-                  </p>
-                </div>
-
-                <button
-                  onClick={() => navigate('/menu')}
-                  className="bg-[#d97a4c] hover:bg-[#e8a27a] text-[#000000] font-bold text-sm px-6 py-3 rounded-full transition-all flex items-center gap-2 shadow-sm"
-                >
-                  <span>Open Full Menu Page →</span>
-                </button>
-              </div>
-            </section>
-
-            {/* Table Reservation Section Teaser */}
-            <ReservationSection />
-          </div>
+             {/* BBQ Promo Banner */}
+             <PromoBanner
+               onAddToCart={handleAddToCartById}
+               onScrollToMenu={() => handleSelectCategory('bbq-platters')}
+             />
+           </div>
         )}
       </main>
 
@@ -484,6 +458,7 @@ export default function App() {
         onOpenCart={() => setIsCartOpen(true)}
         onOpenWishlist={() => setIsWishlistOpen(true)}
         onNavigateReservation={() => navigate('/reservation')}
+        onNavigateSpecials={() => navigate('/specials')}
         cartCount={totalCartCount}
         wishlistCount={wishlistItems.length}
       />

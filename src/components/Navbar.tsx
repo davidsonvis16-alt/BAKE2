@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Heart, Phone, Search } from 'lucide-react';
+import { ShoppingBag, Heart, Phone, Search, Gift } from 'lucide-react';
 import { HamburgerIcon } from './HamburgerIcon';
 import { useCartAnimation } from './CartAnimation';
 
@@ -18,6 +18,7 @@ interface NavbarProps {
   onNavigateAbout: () => void;
   onNavigateFAQ: () => void;
   onNavigateReservation: () => void;
+  onNavigateSpecials: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -35,6 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateAbout,
   onNavigateFAQ,
   onNavigateReservation,
+  onNavigateSpecials,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { setCartRef } = useCartAnimation();
@@ -43,13 +45,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'Home', onClick: onNavigateHome, active: activePage === 'home' },
     { label: 'Full Menu', onClick: onNavigateMenu, active: activePage === 'menu' },
     { label: 'Categories', onClick: onNavigateCategories, active: activePage === 'category' },
+    { label: 'Specials', icon: Gift, onClick: onNavigateSpecials, active: activePage === 'specials' },
     { label: 'Gallery', onClick: onNavigateGallery, active: activePage === 'gallery' },
     { label: 'About', onClick: onNavigateAbout, active: activePage === 'about' },
     { label: 'FAQ', onClick: onNavigateFAQ, active: activePage === 'faq' },
   ];
 
   const mobileMenuItems = navItems.filter(
-    (item) => item.label !== 'Home' && item.label !== 'Full Menu'
+    (item) => !['Home', 'Full Menu', 'Specials'].includes(item.label)
   );
 
   return (
@@ -78,12 +81,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               key={item.label}
               onClick={item.onClick}
-              className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
+              className={`px-4 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-1.5 ${
                 item.active
                   ? 'bg-[#000000] text-[#d97a4c]'
                   : 'text-[#000000] hover:bg-[#f5efe7] hover:text-[#000000]'
               }`}
             >
+              {item.icon ? React.createElement(item.icon, { className: 'w-4 h-4' }) : null}
               {item.label}
             </button>
           ))}
@@ -153,7 +157,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'text-[#000000] hover:bg-[#f5efe7]'
                 }`}
               >
-                {item.label}
+                <div className="flex items-center gap-2">
+                  {item.icon ? React.createElement(item.icon, { className: 'w-4 h-4' }) : null}
+                  {item.label}
+                </div>
               </button>
             ))}
             <div className="pt-2 border-t border-[#e6d3c2] space-y-1.5">

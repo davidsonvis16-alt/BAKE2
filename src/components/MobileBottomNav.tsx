@@ -1,14 +1,15 @@
 import React from 'react';
-import { Home, UtensilsCrossed, ShoppingBag, Heart, Calendar } from 'lucide-react';
+import { Home, UtensilsCrossed, ShoppingBag, Heart, Calendar, Gift } from 'lucide-react';
 import { useCartAnimation } from './CartAnimation';
 
 interface MobileBottomNavProps {
-  activePage: 'home' | 'menu' | 'category' | 'reservation' | 'admin' | 'gallery' | 'about' | 'faq';
+  activePage: 'home' | 'menu' | 'category' | 'reservation' | 'admin' | 'gallery' | 'about' | 'faq' | 'specials';
   onNavigateHome: () => void;
   onNavigateMenu: () => void;
   onOpenCart: () => void;
   onOpenWishlist: () => void;
   onNavigateReservation: () => void;
+  onNavigateSpecials: () => void;
   cartCount: number;
   wishlistCount: number;
 }
@@ -29,6 +30,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   onOpenCart,
   onOpenWishlist,
   onNavigateReservation,
+  onNavigateSpecials,
   cartCount,
   wishlistCount,
 }) => {
@@ -53,6 +55,13 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       icon: Calendar,
       onClick: onNavigateReservation,
       active: activePage === 'reservation',
+      badge: undefined,
+    },
+    {
+      label: 'Specials',
+      icon: Gift,
+      onClick: onNavigateSpecials,
+      active: activePage === 'specials',
       badge: undefined,
     },
     {
