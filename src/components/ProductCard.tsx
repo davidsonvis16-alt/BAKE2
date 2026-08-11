@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, Check } from 'lucide-react';
 import { MenuItem, MenuItemOption } from '../types';
+import { useCartAnimation } from './CartAnimation';
 
 interface ProductCardProps {
   item: MenuItem;
@@ -23,6 +24,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [addedAnimation, setAddedAnimation] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
+  const { triggerFly } = useCartAnimation();
+  const addButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const currentPrice = selectedOption ? selectedOption.price : item.price;
   const safeImageSrc = item.image;
@@ -30,6 +33,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const handleAdd = () => {
     onAddToCart(item, selectedOption);
     setAddedAnimation(true);
+    if (addButtonRef.current) {
+      triggerFly(addButtonRef.current.getBoundingClientRect());
+    }
     setTimeout(() => setAddedAnimation(false), 1200);
   };
 
@@ -132,6 +138,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </p>
           </div>
           <button
+            ref={addButtonRef}
             onClick={(e) => {
               e.stopPropagation();
               handleAdd();

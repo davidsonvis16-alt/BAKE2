@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Heart, Plus, Trash2 } from 'lucide-react';
 import { MenuItem } from '../types';
+import { useCartAnimation } from './CartAnimation';
 
 interface WishlistDrawerProps {
   isOpen: boolean;
@@ -17,6 +18,8 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
   onRemoveFromWishlist,
   onAddToCart,
 }) => {
+  const { triggerFly } = useCartAnimation();
+
   if (!isOpen) return null;
 
   return (
@@ -89,7 +92,11 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
 
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => onAddToCart(item)}
+                      onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        onAddToCart(item);
+                        triggerFly(rect);
+                      }}
                       className="bg-[#000000] hover:bg-[#000000] text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
                     >
                       <Plus className="w-3.5 h-3.5" />

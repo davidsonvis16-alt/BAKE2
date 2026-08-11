@@ -2,6 +2,7 @@ import React from 'react';
 import { ShoppingBag, ArrowRight } from 'lucide-react';
 import { CATEGORIES, MENU_ITEMS } from '../data/menuData';
 import { useMenuData } from '../hooks/useMenuData';
+import { useCartAnimation } from './CartAnimation';
 
 interface PromoBannerProps {
   onAddToCart: (itemId: string) => void;
@@ -10,6 +11,7 @@ interface PromoBannerProps {
 
 export const PromoBanner: React.FC<PromoBannerProps> = ({ onAddToCart, onScrollToMenu }) => {
   const { menuItems } = useMenuData();
+  const { triggerFly } = useCartAnimation();
   const bbqCategory = CATEGORIES.find((c) => c.id === 'bbq-platters') || CATEGORIES[0];
   const bbqPlatter = menuItems.find((i) => i.id === 'bbq1') || MENU_ITEMS.find((i) => i.id === 'bbq1') || menuItems[0];
 
@@ -59,7 +61,11 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({ onAddToCart, onScrollT
 
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => onAddToCart(bbqPlatter.id)}
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    onAddToCart(bbqPlatter.id);
+                    triggerFly(rect);
+                  }}
                   className="bg-[#d97a4c] hover:bg-[#e8a27a] text-[#000000] font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full transition-all flex items-center gap-2"
                 >
                   <ShoppingBag className="w-4 h-4" />

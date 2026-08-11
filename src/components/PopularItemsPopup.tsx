@@ -4,6 +4,7 @@ import { Plus, X, Flame, ShoppingBag } from 'lucide-react';
 import { useMenuData } from '../hooks/useMenuData';
 import { supabase } from '../lib/supabase';
 import { MenuItem } from '../types';
+import { useCartAnimation } from './CartAnimation';
 
 const SESSION_KEY = 'bakemart_popular_seen';
 const FALLBACK_ITEM_IDS = ['s6', 'bbq1'];
@@ -16,23 +17,17 @@ const FALLBACK_IMAGES: Record<string, string> = {
 interface PopularItemsPopupProps {
   onClose: () => void;
   onAddToCart: (item: MenuItem, selectedOption?: any) => void;
-  cartButtonPosition?: { x: number; y: number } | null;
 }
 
 export const PopularItemsPopup: React.FC<PopularItemsPopupProps> = ({
   onClose,
   onAddToCart,
-  cartButtonPosition,
 }) => {
   const { menuItems, loading: menuLoading } = useMenuData();
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [flyingItem, setFlyingItem] = useState<{
-    id: string;
-    startX: number;
-    startY: number;
-  } | null>(null);
+  const { triggerFly } = useCartAnimation();
 
   useEffect(() => {
     const alreadySeen = sessionStorage.getItem(SESSION_KEY);
@@ -94,22 +89,10 @@ export const PopularItemsPopup: React.FC<PopularItemsPopupProps> = ({
   const handleAddToCart = useCallback(
     (item: MenuItem, e: React.MouseEvent) => {
       const rect = e.currentTarget.getBoundingClientRect();
-      const target = cartButtonPosition;
-
-      if (target) {
-        setFlyingItem({
-          id: item.id,
-          startX: rect.left + rect.width / 2,
-          startY: rect.top + rect.height / 2,
-        });
-      }
-
-      setTimeout(() => {
-        onAddToCart(item);
-        setFlyingItem(null);
-      }, 500);
+      onAddToCart(item);
+      triggerFly(rect);
     },
-    [onAddToCart, cartButtonPosition]
+    [onAddToCart, triggerFly]
   );
 
   if (loading || !isOpen || items.length === 0) return null;
@@ -214,43 +197,8 @@ export const PopularItemsPopup: React.FC<PopularItemsPopupProps> = ({
                 </div>
               ))}
             </div>
-
-            {/* Flying Item Animation */}
-            <AnimatePresence>
-              {flyingItem && cartButtonPosition && (
-                <motion.div
-                  initial={{
-                    position: 'fixed',
-                    left: flyingItem.startX - 15,
-                    top: flyingItem.startY - 15,
-                    width: 30,
-                    height: 30,
-                    borderRadius: '50%',
-                    backgroundColor: '#000000',
-                    zIndex: 9999,
-                    opacity: 1,
-                  }}
-                  animate={{
-                    left: cartButtonPosition.x - 15,
-                    top: cartButtonPosition.y - 15,
-                    scale: [1, 1.2, 0.5, 0.1],
-                    opacity: [1, 1, 0.8, 0],
-                  }}
-                  transition={{ duration: 0.5, ease: 'easeInOut' }}
-                  onAnimationComplete={() => setFlyingItem(null)}
-                  className="fixed pointer-events-none"
-                />
-              )}
-            </AnimatePresence>
-
-            {/* Bottom CTA */}
-            <button
-              onClick={handleClose}
-              className="w-full bg-[#000000] hover:bg-neutral-800 text-white font-bold text-sm py-3 rounded-full transition-all shadow-md hover:shadow-lg active:scale-[0.98]"
-            >
-              View Full Menu
-            </button>
-          </motion.div>
+          </div>
+        </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

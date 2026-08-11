@@ -18,6 +18,7 @@ import { About } from './components/About';
 import { FAQ } from './components/FAQ';
 import { FeatureCards } from './components/FeatureCards';
 import { MobileBottomNav } from './components/MobileBottomNav';
+import { CartAnimationProvider } from './components/CartAnimation';
 import { useAuth } from './components/AuthContext';
 import { CATEGORIES } from './data/menuData';
 import { useMenuData } from './hooks/useMenuData';
@@ -228,7 +229,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF3E7] text-[#000000] flex flex-col font-sans selection:bg-black selection:text-white pb-16 lg:pb-0 overflow-x-hidden">
+    <CartAnimationProvider>
+      <div className="min-h-screen bg-[#FAF3E7] text-[#000000] flex flex-col font-sans selection:bg-black selection:text-white pb-16 lg:pb-0 overflow-x-hidden">
       
       {/* Page Transition Loading Overlay */}
       {isPageLoading && (
@@ -473,6 +475,8 @@ export default function App() {
         </div>
       </div>
 
+      {/* Sticky Bottom Nav for Mobile */}
+    </div>
       <MobileBottomNav
         activePage={activePage}
         onNavigateHome={() => navigate('/')}
@@ -483,8 +487,6 @@ export default function App() {
         cartCount={totalCartCount}
         wishlistCount={wishlistItems.length}
       />
-
-      {/* Sticky Bottom Nav for Mobile */}
-    </div>
+    </CartAnimationProvider>
   );
 }

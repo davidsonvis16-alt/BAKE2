@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShoppingBag } from 'lucide-react';
 import { useMenuData } from '../hooks/useMenuData';
+import { useCartAnimation } from './CartAnimation';
 
 interface ComboGridProps {
   onAddToCart: (itemId: string) => void;
@@ -8,6 +9,7 @@ interface ComboGridProps {
 
 export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
   const { menuItems, loading } = useMenuData();
+  const { triggerFly } = useCartAnimation();
   const grandFeast = menuItems.find((i) => i.id === 'bbq2') || menuItems[0];
   const tikkaPizza = menuItems.find((i) => i.id === 'p2') || menuItems[0];
 
@@ -72,7 +74,11 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
                   </span>
                 </div>
                 <button
-                  onClick={() => onAddToCart(grandFeast.id)}
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    onAddToCart(grandFeast.id);
+                    triggerFly(rect);
+                  }}
                   className="bg-[#000000] hover:bg-[#000000] text-white text-xs font-bold px-4 py-2.5 rounded-full flex items-center gap-1.5 transition-all active:scale-95"
                 >
                   <ShoppingBag className="w-3.5 h-3.5 text-[#d97a4c]" />
@@ -114,7 +120,11 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
                   </span>
                 </div>
                 <button
-                  onClick={() => onAddToCart(tikkaPizza.id)}
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    onAddToCart(tikkaPizza.id);
+                    triggerFly(rect);
+                  }}
                   className="bg-[#000000] hover:bg-[#000000] text-white text-xs font-bold px-4 py-2.5 rounded-full flex items-center gap-1.5 transition-all active:scale-95"
                 >
                   <ShoppingBag className="w-3.5 h-3.5 text-[#d97a4c]" />

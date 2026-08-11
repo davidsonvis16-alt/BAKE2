@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Plus, Check } from 'lucide-react';
 import { MenuItem, MenuItemOption } from '../types';
+import { useCartAnimation } from './CartAnimation';
 
 interface FoodPreviewModalProps {
   item: MenuItem;
@@ -17,12 +18,17 @@ export const FoodPreviewModal: React.FC<FoodPreviewModalProps> = ({
     item.options && item.options.length > 0 ? item.options[0] : undefined
   );
   const [added, setAdded] = React.useState(false);
+  const { triggerFly } = useCartAnimation();
+  const addButtonRef = React.useRef<HTMLButtonElement | null>(null);
 
   const currentPrice = selectedOption ? selectedOption.price : item.price;
 
   const handleAdd = () => {
     onAddToCart(item, selectedOption);
     setAdded(true);
+    if (addButtonRef.current) {
+      triggerFly(addButtonRef.current.getBoundingClientRect());
+    }
     setTimeout(() => {
       setAdded(false);
       onClose();
@@ -110,6 +116,7 @@ export const FoodPreviewModal: React.FC<FoodPreviewModalProps> = ({
 
         <div className="p-4 border-t border-[#e6d3c2] bg-white">
           <button
+            ref={addButtonRef}
             onClick={handleAdd}
             className={`w-full flex items-center justify-center gap-2 rounded-full py-3.5 text-sm font-bold transition-all active:scale-[0.98] ${
               added

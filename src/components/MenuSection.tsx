@@ -5,6 +5,7 @@ import { MenuItem, MenuItemOption } from '../types';
 import { ProductCardSkeleton, TicketListItemSkeleton } from './Skeletons';
 import { CategoryPlatterNav } from './CategoryPlatterNav';
 import { FoodPreviewModal } from './FoodPreviewModal';
+import { useCartAnimation } from './CartAnimation';
 
 interface MenuSectionProps {
   searchQuery: string;
@@ -27,6 +28,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
   const [viewMode, setViewMode] = useState<'grid' | 'ticket'>('grid');
   const [isLoading, setIsLoading] = useState(true);
   const [previewItem, setPreviewItem] = useState<MenuItem | null>(null);
+  const { triggerFly } = useCartAnimation();
 
   useEffect(() => {
     setIsLoading(true);
@@ -182,7 +184,12 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
                       </span>
 
                       <button
-                        onClick={() => onAddToCart(item)}
+                        onClick={(e) => {
+                          const btn = e.currentTarget;
+                          const rect = btn.getBoundingClientRect();
+                          onAddToCart(item);
+                          triggerFly(rect);
+                        }}
                         className="bg-[#000000] hover:bg-[#000000] text-white text-xs font-bold px-4 py-2 rounded-full transition-all flex items-center gap-1.5"
                       >
                         <span>+ Add</span>

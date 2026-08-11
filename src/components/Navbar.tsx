@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ShoppingBag, Heart, Menu, X, Phone, Search } from 'lucide-react';
+import { useCartAnimation } from './CartAnimation';
 
 interface NavbarProps {
   searchQuery: string;
@@ -35,6 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateReservation,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { setCartRef } = useCartAnimation();
 
   const navItems = [
     { label: 'Home', onClick: onNavigateHome, active: activePage === 'home' },
@@ -44,6 +46,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'About', onClick: onNavigateAbout, active: activePage === 'about' },
     { label: 'FAQ', onClick: onNavigateFAQ, active: activePage === 'faq' },
   ];
+
+  const mobileMenuItems = navItems.filter(
+    (item) => item.label !== 'Home' && item.label !== 'Full Menu'
+  );
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 border-b border-[#e6d3c2]">
@@ -109,6 +115,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Cart Button */}
           <button
+            ref={setCartRef}
             onClick={onOpenCart}
             className="relative flex items-center gap-2 bg-[#000000] hover:bg-[#000000] text-white px-4 py-2 rounded-full font-bold text-xs md:text-sm transition-all"
           >
@@ -135,7 +142,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white border-t border-[#e6d3c2] shadow-sm">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 space-y-1">
-            {navItems.map((item) => (
+            {mobileMenuItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => {

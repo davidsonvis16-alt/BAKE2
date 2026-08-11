@@ -15,6 +15,36 @@ interface MenuItemRow {
   image?: string | null;
 }
 
+interface ItemStat {
+  item_name: string;
+  total_sold: number;
+  revenue: number;
+}
+
+interface OrderRow {
+  id: string;
+  date: string | null;
+  status: string | null;
+  order_type: string | null;
+  items: any;
+  total_amount: number | null;
+  delivery_address: string | null;
+  table_number: string | null;
+  created_at: string | null;
+}
+
+const ORDER_STATUSES = ['pending', 'preparing', 'ready', 'completed'];
+
+const statusColor = (status: string | null) => {
+  switch (status) {
+    case 'pending': return 'bg-yellow-100 text-yellow-700';
+    case 'preparing': return 'bg-blue-100 text-blue-700';
+    case 'ready': return 'bg-green-100 text-green-700';
+    case 'completed': return 'bg-gray-200 text-gray-600';
+    default: return 'bg-gray-100 text-gray-500';
+  }
+};
+
 export const AdminDashboard: React.FC = () => {
   const [items, setItems] = useState<MenuItemRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +58,14 @@ export const AdminDashboard: React.FC = () => {
   const [newItemImage, setNewItemImage] = useState<File | null>(null);
   const [editImage, setEditImage] = useState<File | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [stats, setStats] = useState<ItemStat[]>([]);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'menu' | 'orders' | 'stats'>('menu');
+  const [orders, setOrders] = useState<OrderRow[]>([]);
+  const [ordersLoading, setOrdersLoading] = useState(true);
+  const [ordersError, setOrdersError] = useState<string | null>(null);
+  const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
   const { logout } = useAuth();
 
   const fetchItems = async () => {
@@ -57,8 +95,107 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
+  const fetchStats = async () => {
+    if (!supabase) {
+      setStats([]);
+      setStatsLoading(false);
+      return;
+    }
+    setStatsLoading(true);
+    setStatsError(null);
+    try {
+      const { data, error } = await supabase.from('orders').select('items');
+
+      if (error) {
+        console.error('AdminDashboard: orders fetch error', error);
+        setStatsError(error.message);
+        setStats([]);
+        return;
+      }
+
+      const tally: Record<string, { total_sold: number; revenue: number }> = {};
+
+      (data || []).forEach((order: { items: unknown }) => {
+        const orderItems = Array.isArray(order.items) ? order.items : [];
+        orderItems.forEach((item: any) => {
+          const name = item?.name;
+          const qty = Number(item?.quantity) || 0;
+          const price = Number(item?.price) || 0;
+          if (!name) return;
+
+          if (!tally[name]) tally[name] = { total_sold: 0, revenue: 0 };
+          tally[name].total_sold += qty;
+          tally[name].revenue += qty * price;
+        });
+      });
+
+      const result: ItemStat[] = Object.entries(tally)
+        .map(([item_name, v]) => ({ item_name, ...v }))
+        .sort((a, b) => b.total_sold - a.total_sold);
+
+      setStats(result);
+    } catch (err) {
+      console.error('AdminDashboard: orders fetch exception', err);
+      setStatsError('Failed to load stats');
+      setStats([]);
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
+  const fetchOrders = async () => {
+    if (!supabase) {
+      setOrders([]);
+      setOrdersLoading(false);
+      return;
+    }
+    setOrdersLoading(true);
+    setOrdersError(null);
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('AdminDashboard: orders fetch error', error);
+        setOrdersError(error.message);
+        setOrders([]);
+      } else {
+        setOrders(data || []);
+      }
+    } catch (err) {
+      console.error('AdminDashboard: orders fetch exception', err);
+      setOrdersError('Failed to load orders');
+      setOrders([]);
+    } finally {
+      setOrdersLoading(false);
+    }
+  };
+
+  const updateOrderStatus = async (orderId: string, newStatus: string) => {
+    if (!supabase) return;
+    setUpdatingOrderId(orderId);
+    try {
+      const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', orderId);
+      if (error) {
+        console.error('AdminDashboard: order status update error', error);
+        alert('Failed to update order status: ' + error.message);
+        return;
+      }
+      fetchOrders();
+    } catch (err) {
+      console.error('AdminDashboard: order status update exception', err);
+      alert('Failed to update order status');
+    } finally {
+      setUpdatingOrderId(null);
+    }
+  };
+
   useEffect(() => {
     fetchItems();
+    fetchStats();
+    fetchOrders();
   }, []);
 
   const startEdit = (item: MenuItemRow) => {
@@ -188,6 +325,131 @@ export const AdminDashboard: React.FC = () => {
       </header>
 
       <div className="max-w-6xl mx-auto px-4 py-6">
+        {/* Tab navigation */}
+        <div className="flex gap-2 mb-6 border-b border-[#EADECB]">
+          {(['menu', 'orders', 'stats'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2.5 text-sm font-semibold capitalize border-b-2 transition-colors ${
+                activeTab === tab
+                  ? 'border-[#000000] text-[#000000]'
+                  : 'border-transparent text-[#000000]/50 hover:text-[#000000]'
+              }`}
+            >
+              {tab === 'stats' ? 'Popular Items' : tab}
+            </button>
+          ))}
+        </div>
+
+        {activeTab === 'orders' && (
+          <div className="bg-white rounded-2xl p-6 mb-8 shadow-sm border border-[#EADECB]">
+            <h2 className="font-serif text-lg font-bold text-[#000000] mb-4">Orders</h2>
+
+            {ordersLoading ? (
+              <p className="text-[#000000]/60 text-sm">Loading orders...</p>
+            ) : ordersError ? (
+              <p className="text-red-500 text-sm">Error loading orders: {ordersError}</p>
+            ) : orders.length === 0 ? (
+              <p className="text-[#000000]/50 text-sm">No orders yet — they'll show up here as customers order.</p>
+            ) : (
+              <div className="space-y-4">
+                {orders.map((order) => {
+                  const orderItems = Array.isArray(order.items) ? order.items : [];
+                  return (
+                    <div key={order.id} className="border border-[#EADECB] rounded-xl p-4">
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-sm text-[#000000]">Order #{order.id}</span>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase ${statusColor(order.status)}`}>
+                            {order.status || 'unknown'}
+                          </span>
+                        </div>
+                        <span className="text-xs text-[#000000]/50">
+                          {order.created_at ? new Date(order.created_at).toLocaleString() : order.date}
+                        </span>
+                      </div>
+
+                      <div className="text-xs text-[#000000]/70 mb-2">
+                        {order.order_type && <span className="mr-3">Type: {order.order_type}</span>}
+                        {order.table_number && <span className="mr-3">Table: {order.table_number}</span>}
+                        {order.delivery_address && <span>Deliver to: {order.delivery_address}</span>}
+                      </div>
+
+                      <ul className="text-xs text-[#000000]/80 mb-3 space-y-0.5">
+                        {orderItems.map((item: any, idx: number) => (
+                          <li key={idx}>
+                            {item.quantity}× {item.name}
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="font-mono font-bold text-sm text-[#000000]">
+                          KSh {(order.total_amount || 0).toLocaleString()}
+                        </span>
+                        <div className="flex gap-1.5 flex-wrap">
+                          {ORDER_STATUSES.map((s) => (
+                            <button
+                              key={s}
+                              disabled={updatingOrderId === order.id || order.status === s}
+                              onClick={() => updateOrderStatus(order.id, s)}
+                              className={`text-[10px] px-2.5 py-1.5 rounded-full font-semibold border transition-all active:scale-95 disabled:opacity-40 ${
+                                order.status === s
+                                  ? 'bg-[#000000] text-white border-[#000000]'
+                                  : 'bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] border-[#D8C7B0]'
+                              }`}
+                            >
+                              {s}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'stats' && (
+          <div className="bg-white rounded-2xl p-6 mb-8 shadow-sm border border-[#EADECB]">
+            <h2 className="font-serif text-lg font-bold text-[#000000] mb-4">Popular Items</h2>
+
+            {statsLoading ? (
+              <p className="text-[#000000]/60 text-sm">Loading stats...</p>
+            ) : statsError ? (
+              <p className="text-red-500 text-sm">Error loading stats: {statsError}</p>
+            ) : stats.length === 0 ? (
+              <p className="text-[#000000]/50 text-sm">No orders yet — stats will appear here once customers start ordering.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="border-b border-[#EADECB] text-left text-[#000000]/60 uppercase text-[10px] tracking-wider">
+                      <th className="py-2 pr-4 font-semibold">Item</th>
+                      <th className="py-2 pr-4 font-semibold">Sold</th>
+                      <th className="py-2 pr-4 font-semibold">Revenue (KSh)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stats.map((stat) => (
+                      <tr key={stat.item_name} className="border-b border-[#EADECB]">
+                        <td className="py-2 pr-4 font-semibold text-[#000000]">{stat.item_name}</td>
+                        <td className="py-2 pr-4 text-[#000000]">{stat.total_sold}</td>
+                        <td className="py-2 pr-4 font-mono text-[#000000]">{stat.revenue.toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'menu' && (
+        <>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <button
             onClick={() => setShowAddForm(!showAddForm)}
@@ -402,6 +664,8 @@ export const AdminDashboard: React.FC = () => {
               </section>
             ))}
           </div>
+        )}
+        </>
         )}
       </div>
     </div>

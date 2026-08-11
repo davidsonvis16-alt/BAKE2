@@ -5,6 +5,7 @@ import { ProductCard } from './ProductCard';
 import { MenuItem, MenuItemOption } from '../types';
 import { ProductCardSkeleton, TicketListItemSkeleton, ImageWithSkeleton } from './Skeletons';
 import { FoodPreviewModal } from './FoodPreviewModal';
+import { useCartAnimation } from './CartAnimation';
 import {
   ArrowLeft,
   ChevronRight,
@@ -48,6 +49,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
   const [selectedSubFilter, setSelectedSubFilter] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [previewItem, setPreviewItem] = useState<MenuItem | null>(null);
+  const { triggerFly } = useCartAnimation();
 
   useEffect(() => {
     setIsLoading(true);
@@ -392,7 +394,12 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                           KSh {item.price.toLocaleString()}
                         </span>
                         <button
-                          onClick={() => onAddToCart(item)}
+                          onClick={(e) => {
+                            const btn = e.currentTarget;
+                            const rect = btn.getBoundingClientRect();
+                            onAddToCart(item);
+                            triggerFly(rect);
+                          }}
                           className="bg-[#000000] hover:bg-[#000000] text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
                         >
                           + Add

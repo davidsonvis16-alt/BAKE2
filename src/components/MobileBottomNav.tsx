@@ -1,5 +1,6 @@
 import React from 'react';
 import { Home, UtensilsCrossed, ShoppingBag, Heart, Calendar } from 'lucide-react';
+import { useCartAnimation } from './CartAnimation';
 
 interface MobileBottomNavProps {
   activePage: 'home' | 'menu' | 'category' | 'reservation' | 'admin' | 'gallery' | 'about' | 'faq';
@@ -12,6 +13,15 @@ interface MobileBottomNavProps {
   wishlistCount: number;
 }
 
+interface TabItem {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  onClick: () => void;
+  active: boolean;
+  badge?: number;
+  ref?: (el: HTMLButtonElement | null) => void;
+}
+
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   activePage,
   onNavigateHome,
@@ -22,7 +32,8 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   cartCount,
   wishlistCount,
 }) => {
-  const tabs = [
+  const { setCartRef } = useCartAnimation();
+  const tabs: TabItem[] = [
     {
       label: 'Home',
       icon: Home,
@@ -57,6 +68,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       onClick: onOpenCart,
       active: false,
       badge: cartCount > 0 ? cartCount : undefined,
+      ref: setCartRef,
     },
   ];
 
@@ -70,6 +82,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             <button
               key={tab.label}
               onClick={tab.onClick}
+              ref={tab.ref}
               className={`relative flex flex-col items-center justify-center gap-0.5 rounded-2xl px-3 py-1.5 min-w-[64px] transition-all ${
                 isActive
                   ? 'text-[#000000]'
