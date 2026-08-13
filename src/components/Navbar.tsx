@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ShoppingBag, Heart, Phone, Search, Gift, X } from 'lucide-react';
+import { ShoppingBag, Heart, Phone, Search, Gift, X, Instagram, Facebook, Youtube, Music2 } from 'lucide-react';
 import { HamburgerIcon } from './HamburgerIcon';
 import { useCartAnimation } from './CartAnimation';
 
@@ -102,15 +102,24 @@ export const Navbar: React.FC<NavbarProps> = ({
       >
         <div className="max-w-[1400px] mx-auto px-6 xl:px-8 h-9 flex items-center justify-between text-[11px] font-semibold text-[var(--color-warm-stone)]">
           <span className="tracking-wide">Beyond Sweetness — It is fresh and nutritional</span>
-          <a
-            href="https://wa.me/254725009708"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-1.5 text-[var(--color-espresso)] hover:text-[var(--color-orange-muted)] transition-colors"
-          >
-            <Phone className="w-3 h-3" />
-            0725 009 708
-          </a>
+          <div className="flex items-center gap-3">
+            <a href="tel:+254725009708" className="flex items-center gap-1.5 text-[var(--color-espresso)] hover:text-[var(--color-orange-muted)] transition-colors">
+              <Phone className="w-3 h-3" />
+              <span>0725 009 708</span>
+            </a>
+            <a href="https://www.instagram.com/bakemartcoffeehouse/" target="_blank" rel="noreferrer" className="hover:text-[var(--color-orange-muted)] transition-colors">
+              <Instagram className="w-3.5 h-3.5" />
+            </a>
+            <a href="https://www.facebook.com/BakemartCoffeeHouse/" target="_blank" rel="noreferrer" className="hover:text-[var(--color-orange-muted)] transition-colors">
+              <Facebook className="w-3.5 h-3.5" />
+            </a>
+            <a href="https://www.tiktok.com/@bakemartcoffeehouse" target="_blank" rel="noreferrer" className="hover:text-[var(--color-orange-muted)] transition-colors">
+              <Music2 className="w-3.5 h-3.5" />
+            </a>
+            <a href="https://www.youtube.com/@bakemartcoffeehouse" target="_blank" rel="noreferrer" className="hover:text-[var(--color-orange-muted)] transition-colors">
+              <Youtube className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </div>
       </div>
 
