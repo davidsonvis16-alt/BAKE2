@@ -272,16 +272,16 @@ export default function App() {
                      </button>
                    </div>
                  </div>
-                 <div className="menu-page-header-image">
-                   <img
-                     src="/Quarter-Chicken.jpg"
-                     alt="BakeMart signature dish"
-                     className="w-full h-full object-cover"
-                     onError={(e) => {
-                       (e.target as HTMLImageElement).src = '/gallery-16.jpg';
-                     }}
-                   />
-                 </div>
+                  <div className="menu-page-header-image">
+                    <img
+                      src="/main-bar.png"
+                      alt="BakeMart signature dish"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/gallery-16.jpg';
+                      }}
+                    />
+                  </div>
                </div>
              </div>
 

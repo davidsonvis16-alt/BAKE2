@@ -241,6 +241,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
+      {/* ---- mobile tagline ---- */}
+      <div className="md:hidden px-4 pt-2 pb-1">
+        <span className="text-[10px] font-semibold tracking-wide text-[var(--color-warm-stone)] uppercase">
+          Beyond Sweetness — It is fresh and nutritional
+        </span>
+      </div>
+
       {/* ---- mobile search — always visible under the main row on small screens ---- */}
       <div className="md:hidden px-4 pb-3">
         <div className="flex items-center gap-2 bg-[var(--color-warm-bg-alt)] border border-[var(--color-warm-border-light)] rounded-full px-4 py-2.5">
