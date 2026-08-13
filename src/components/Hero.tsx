@@ -47,7 +47,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         </svg>
 
         <svg
-          className="absolute bottom-[15%] right-[4%] w-10 sm:w-16 opacity-[0.10] hidden sm:block"
+          className="absolute bottom-[15%] right-[4%] w-10 sm:w-16 opacity-[0.10] sm:block hidden"
           viewBox="0 0 100 100"
           fill="none"
           stroke="#1a120b"
@@ -59,7 +59,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         </svg>
 
         <svg
-          className="absolute top-[45%] left-[2%] w-8 sm:w-14 opacity-[0.08] hidden lg:block"
+          className="absolute top-[45%] left-[2%] w-8 sm:w-14 opacity-[0.08] lg:block hidden"
           viewBox="0 0 60 100"
           fill="none"
           stroke="#1a120b"
@@ -70,8 +70,8 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         </svg>
       </div>
 
-      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 lg:pt-16 pb-10 sm:pb-14 lg:pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 sm:gap-10 lg:gap-14">
+      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 lg:pt-14 pb-10 sm:pb-14 lg:pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-6 sm:gap-8 lg:gap-14">
           <div className="lg:col-span-5 relative z-20 text-center lg:text-left">
             <div
               className="inline-flex items-center gap-2 bg-[#f8f1e5] border border-[#e6d3c2] text-[#000000] text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-5 sm:mb-6"
@@ -129,8 +129,8 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
           </div>
 
           <div className="lg:col-span-7 relative z-20 mt-2 sm:mt-4 lg:mt-0">
-            <div className="relative mx-auto max-w-xs sm:max-w-sm lg:max-w-none">
-              <div className="relative w-[90%] sm:w-[80%] lg:w-[92%] mx-auto">
+            <div className="relative mx-auto max-w-[85%] sm:max-w-sm lg:max-w-none">
+              <div className="relative w-full mx-auto">
                 <img
                   src="/menu-item-cutout.png"
                   alt="Signature BakeMart dish"
@@ -158,7 +158,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               </div>
 
               <div
-                className="absolute top-[36%] -right-1 sm:-right-3 lg:-right-6 max-w-[130px] sm:max-w-[150px] lg:max-w-[170px] bg-white rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30 hidden sm:block"
+                className="absolute top-[32%] -right-1 sm:-right-3 lg:-right-6 max-w-[140px] sm:max-w-[150px] lg:max-w-[170px] bg-white rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30"
               >
                 <div className="flex gap-0.5 mb-1.5">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -172,7 +172,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               </div>
 
               <div
-                className="absolute bottom-[4%] left-0 sm:-left-4 lg:-left-6 bg-white rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30 hidden sm:block"
+                className="absolute bottom-[4%] left-0 sm:-left-4 lg:-left-6 bg-white rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30"
               >
                 <div className="font-serif font-black text-xl sm:text-2xl text-[#000000] leading-none">
                   202+
