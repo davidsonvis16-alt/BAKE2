@@ -199,22 +199,32 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
         {/* Sticky Category Navigation */}
         <div className="sticky-category-nav">
           <div className="sticky-category-nav-inner">
-            <div className="sticky-category-scroll">
-              <button
-                onClick={() => onSelectCategory('all')}
-                className={`sticky-category-pill ${selectedCategory === 'all' ? 'active' : ''}`}
-              >
-                ALL
-              </button>
-              {categories.map((cat) => (
+            <div className="relative">
+              <div className="sticky-category-scroll">
                 <button
-                  key={cat.id}
-                  onClick={() => onSelectCategory(cat.id)}
-                  className={`sticky-category-pill ${selectedCategory === cat.id ? 'active' : ''}`}
+                  onClick={() => onSelectCategory('all')}
+                  className={`sticky-category-pill ${selectedCategory === 'all' ? 'active' : ''}`}
                 >
-                  {cat.name.toUpperCase()}
+                  ALL
                 </button>
-              ))}
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => onSelectCategory(cat.id)}
+                    className={`sticky-category-pill ${selectedCategory === cat.id ? 'active' : ''}`}
+                  >
+                    {cat.name.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+              <div className="sticky-category-swipe-indicator">
+                <div className="sticky-category-swipe-text">
+                  <span>Swipe</span>
+                  <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
         </div>

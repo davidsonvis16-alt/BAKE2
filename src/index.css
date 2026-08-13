@@ -2136,6 +2136,35 @@ html {
   border-color: #000000;
 }
 
+.sticky-category-swipe-indicator {
+  position: absolute;
+  inset-y: 0;
+  right: 0;
+  width: 4rem;
+  background: linear-gradient(to left, var(--color-ivory), rgba(253, 250, 243, 0.6), transparent);
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.75rem;
+  pointer-events: none;
+}
+@media (max-width: 1023px) {
+  .sticky-category-swipe-indicator {
+    display: flex;
+  }
+}
+
+.sticky-category-swipe-text {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #000000;
+  font-size: 0.625rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
 /* Popular Section */
 .popular-section {
   padding-top: 2.5rem;
