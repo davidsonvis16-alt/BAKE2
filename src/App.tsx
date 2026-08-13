@@ -243,31 +243,49 @@ export default function App() {
             onAddToCart={handleAddToCart}
             onToggleWishlist={handleToggleWishlist}
           />
-        ) : activePage === 'menu' ? (
-          <div style={{ paddingTop: '2rem', paddingBottom: '2rem', maxWidth: '80rem', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1rem', paddingRight: '1rem' }} className="menu-page-container">
-            <div style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', backgroundColor: 'white', padding: '1.5rem', borderRadius: '1rem', border: '1px solid #EADECB' }} className="md:flex-row md:items-center md:justify-between">
-              <div>
-                 <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.1em', color: '#000000' }}>
-                   FULL DIGITAL MENU
-                 </span>
-                 <h1 style={{ fontFamily: 'Fraunces, Georgia, serif', fontWeight: 900, fontSize: '1.5rem', color: '#000000', marginTop: '0.25rem' }} className="md:text-3xl">
-                   Complete Food & Beverage Selection
-                 </h1>
-                 <p style={{ fontSize: '0.875rem', color: '#000000', marginTop: '0.25rem' }}>
-                   Browse all specialty dishes, beverages, pastries, and house specials in one place.
-                 </p>
-              </div>
+         ) : activePage === 'menu' ? (
+           <div className="menu-page-container">
+             <div className="menu-page-header">
+               <div className="menu-page-header-inner">
+                 <div className="menu-page-header-content">
+                   <span className="menu-page-eyebrow">BAKEMART MENU</span>
+                   <h1 className="menu-page-title">
+                     GOOD FOOD.
+                     <br />
+                     <span className="text-[#d97a4c]">NO SHORTCUTS.</span>
+                   </h1>
+                   <p className="menu-page-description">
+                     Freshly prepared food, coffee, pastries and everyday favourites from our open kitchen in Nakuru.
+                   </p>
+                   <div className="menu-page-actions">
+                     <button
+                       onClick={() => navigate('/menu')}
+                       className="menu-page-btn-primary"
+                     >
+                       View Menu
+                     </button>
+                     <button
+                       onClick={() => window.open('https://wa.me/254725009708', '_blank')}
+                       className="menu-page-btn-secondary"
+                     >
+                       Order Now
+                     </button>
+                   </div>
+                 </div>
+                 <div className="menu-page-header-image">
+                   <img
+                     src="/Quarter-Chicken.jpg"
+                     alt="BakeMart signature dish"
+                     className="w-full h-full object-cover"
+                     onError={(e) => {
+                       (e.target as HTMLImageElement).src = '/gallery-16.jpg';
+                     }}
+                   />
+                 </div>
+               </div>
+             </div>
 
-              <button
-                onClick={() => navigate('/')}
-                style={{ backgroundColor: '#FAF3E7', color: '#000000', fontSize: '0.75rem', fontWeight: 700, padding: '0.5rem 1rem', borderRadius: '9999px', border: '1px solid #D8C7B0', cursor: 'pointer', alignSelf: 'flex-start' }}
-                className="md:self-auto hover-bg-eadecb"
-              >
-                ← Back to Home Page
-              </button>
-            </div>
-
-            <MenuSection
+             <MenuSection
               searchQuery={searchQuery}
               selectedCategory={selectedCategory === 'pizza-pasta' && activePage === 'menu' ? 'all' : selectedCategory}
               onSelectCategory={handleSelectCategory}

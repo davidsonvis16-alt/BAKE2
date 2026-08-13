@@ -43,10 +43,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div
-      className="product-card"
+      className="premium-card"
       onClick={() => onOpenPreview?.(item)}
     >
-      <div className="product-card-image">
+      <div className="premium-card-image">
         {showImage ? (
           <img
             src={safeImageSrc}
@@ -57,13 +57,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               setImageFailed(true);
               setImageLoaded(true);
             }}
-            className={`w-full h-full object-cover transition duration-500 ${
-              imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-            }`}
+            className={`premium-card-img ${imageLoaded ? 'loaded' : 'loading'}`}
           />
         ) : (
-          <div className="flex h-full items-center justify-center bg-[#f8f1e5]">
-            <span className="text-4xl">🍽️</span>
+          <div className="premium-card-fallback">
+            <span>🍽️</span>
+          </div>
+        )}
+
+        {item.badge && (
+          <div className="premium-card-badge">
+            {item.badge}
           </div>
         )}
 
@@ -72,60 +76,29 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             e.stopPropagation();
             onToggleWishlist(item);
           }}
-          className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full border flex items-center justify-center transition-all"
-          style={{
-            backgroundColor: isWishlisted ? '#d97a4c' : 'rgba(255, 255, 255, 0.9)',
-            borderColor: isWishlisted ? '#d97a4c' : '#e6d3c2',
-            color: '#000000'
-          }}
+          className="premium-card-wishlist"
           title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
         >
           <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-white' : ''}`} style={{ color: isWishlisted ? 'white' : '#000000' }} />
         </button>
-
-        {item.badge && (
-          <div className="product-card-badge">
-            {item.badge}
-          </div>
-        )}
       </div>
 
-      <div className="product-card-content">
-        <div className="space-y-1.5">
-          <h3 className="product-card-name">
+      <div className="premium-card-body">
+        <div className="premium-card-text">
+          <h3 className="premium-card-name">
             {item.name}
           </h3>
           {item.description && (
-            <p className="product-card-desc">
+            <p className="premium-card-desc">
               {item.description}
             </p>
           )}
         </div>
 
-        {item.options && item.options.length > 0 && (
-          <div className="product-card-options">
-            {item.options.map((opt) => (
-              <button
-                key={opt.name}
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedOption(opt);
-                }}
-                className={`product-card-option ${selectedOption?.name === opt.name ? 'selected' : ''}`}
-              >
-                {opt.name}
-              </button>
-            ))}
-          </div>
-        )}
-
-        <div className="product-card-footer">
-          <div>
-            <p className="product-card-price">
-              KSh {currentPrice.toLocaleString()}
-            </p>
-          </div>
+        <div className="premium-card-footer">
+          <p className="premium-card-price">
+            KSh {currentPrice.toLocaleString()}
+          </p>
           <button
             ref={addButtonRef}
             onClick={(e) => {
@@ -133,7 +106,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               handleAdd();
             }}
             disabled={addedAnimation}
-            className={`product-card-add-btn ${addedAnimation ? 'added' : ''}`}
+            className={`premium-card-add ${addedAnimation ? 'added' : ''}`}
           >
             {addedAnimation ? (
               <span className="flex items-center gap-1">
