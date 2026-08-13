@@ -30,7 +30,11 @@ const features: FeatureItem[] = [
   },
 ];
 
-export const FeatureCards: React.FC = () => {
+interface FeatureCardsProps {
+  onNavigateMenu?: () => void;
+}
+
+export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateMenu }) => {
   return (
     <section className="relative overflow-hidden bg-white">
       <div className="absolute inset-0 pointer-events-none">
@@ -93,28 +97,33 @@ export const FeatureCards: React.FC = () => {
           <div className="lg:col-span-5">
             <div className="space-y-0">
               {features.map((feature, index) => (
-                <div key={index}>
-                  <div className="group py-5 sm:py-6 cursor-default">
-                    <div className="flex items-start gap-4 sm:gap-5">
-                      <span className="font-serif font-black text-2xl sm:text-3xl text-[#d97a4c] leading-none mt-0.5">
-                        {feature.number}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-3">
-                          <h3 className="font-serif font-black text-base sm:text-lg text-[#000000] tracking-tight">
-                            {feature.title}
-                          </h3>
-                          <ArrowRight className="w-4 h-4 text-[#d97a4c] transition-transform duration-200 group-hover:translate-x-1 shrink-0 mt-0.5" />
-                        </div>
-                        <p className="text-xs sm:text-sm text-[#5c4b3f] leading-relaxed mt-1.5 max-w-md">
-                          {feature.description}
-                        </p>
+                <div
+                  key={index}
+                  className={`group py-5 sm:py-6 ${
+                    feature.title === 'ORDER NOW' && onNavigateMenu ? 'cursor-pointer' : 'cursor-default'
+                  }`}
+                  onClick={() => {
+                    if (feature.title === 'ORDER NOW' && onNavigateMenu) {
+                      onNavigateMenu();
+                    }
+                  }}
+                >
+                  <div className="flex items-start gap-4 sm:gap-5">
+                    <span className="font-serif font-black text-2xl sm:text-3xl text-[#d97a4c] leading-none mt-0.5">
+                      {feature.number}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-3">
+                        <h3 className="font-serif font-black text-base sm:text-lg text-[#000000] tracking-tight">
+                          {feature.title}
+                        </h3>
+                        <ArrowRight className="w-4 h-4 text-[#d97a4c] transition-transform duration-200 group-hover:translate-x-1 shrink-0 mt-0.5" />
                       </div>
+                      <p className="text-xs sm:text-sm text-[#5c4b3f] leading-relaxed mt-1.5 max-w-md">
+                        {feature.description}
+                      </p>
                     </div>
                   </div>
-                  {index < features.length - 1 && (
-                    <div className="h-px bg-[#e6d3c2]" />
-                  )}
                 </div>
               ))}
             </div>

@@ -3,7 +3,7 @@ import { CATEGORIES } from '../data/menuData';
 import { useMenuData } from '../hooks/useMenuData';
 import { ProductCard } from './ProductCard';
 import { MenuItem, MenuItemOption } from '../types';
-import { ProductCardSkeleton, TicketListItemSkeleton, ImageWithSkeleton } from './Skeletons';
+import { ProductCardSkeleton, TicketListItemSkeleton } from './Skeletons';
 import { FoodPreviewModal } from './FoodPreviewModal';
 import { CategoryCard } from './CategoryCard';
 import { useCartAnimation } from './CartAnimation';
@@ -14,7 +14,6 @@ import {
   Search,
   LayoutGrid,
   List,
-  Utensils,
 } from 'lucide-react';
 
 interface CategoryUnfoldViewProps {
@@ -142,7 +141,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                       : 'border-[#e6d3c2] bg-[#fdfaf3] text-[#000000] hover:border-[#000000]'
                   }`}
                 >
-                  <Utensils className="w-4 h-4 shrink-0" />
+                   <LayoutGrid className="w-4 h-4 shrink-0" />
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm truncate">All Items</span>
                     <span className={`block text-[11px] ${categoryId === 'all' ? 'text-white' : 'text-[#8c7a6c]'}`}>
@@ -173,45 +172,53 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
 
           {/* Main Content */}
           <div className="space-y-6 min-w-0">
-            {/* Category Header Banner */}
-            <div className="rounded-2xl border border-[#e6d3c2] bg-[#000000] text-white overflow-hidden">
-              <div className="grid gap-6 p-5 sm:gap-8 sm:p-6 lg:grid-cols-[1.6fr_1fr] lg:p-8 grid-cols-1 min-w-0">
-                <div className="space-y-4 min-w-0">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-widest text-[#d97a4c] font-bold">
-                    <Utensils className="w-3.5 h-3.5" />
-                    <span>Open Kitchen Specialty</span>
-                  </div>
+         {/* Category Header Hero */}
+         <div className="bg-[#17130F] rounded-[28px] p-8 sm:p-10 lg:p-12">
+           <div className="grid gap-8 lg:grid-cols-[1fr_38%] items-center min-w-0">
+             <div className="space-y-5 min-w-0">
+               <div className="inline-flex items-center gap-2">
+                 <span className="w-1.5 h-1.5 rounded-full bg-[#D97745]" />
+                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#D97745]">
+                   Open Kitchen Specialty
+                 </span>
+               </div>
 
-                  <h1 className="font-serif font-black text-3xl sm:text-4xl text-[#fdfaf3] leading-tight">
-                    {currentCategory.name}
-                  </h1>
+               <h1 className="font-serif font-black text-[2.25rem] sm:text-[2.75rem] lg:text-[3.25rem] text-[#F5EFE4] leading-[0.95] tracking-tight">
+                 {currentCategory.name}
+               </h1>
 
-                  <p className="text-sm text-[#d97a4c]/80 leading-relaxed max-w-2xl">
-                    {currentCategory.description}. All items freshly prepared upon order in our open kitchen in Nakuru City.
-                  </p>
+               <p className="text-sm sm:text-base text-[#F5EFE4]/80 leading-relaxed max-w-2xl">
+                 Brewed fresh. Made to slow you down.
+               </p>
 
-                  <div className="flex flex-wrap items-center gap-1 sm:gap-2 lg:gap-3 text-xs font-semibold uppercase tracking-wider text-[#d97a4c]/80">
-                    <span className="rounded-full bg-white/8 px-2 sm:px-3 py-2 border border-white/10 text-[9px] sm:text-xs">
-                      {menuItems.filter((i) => i.category === categoryId).length} Available Items
-                    </span>
-                    <span className="rounded-full bg-white/8 px-2 sm:px-3 py-2 border border-white/10 text-[9px] sm:text-xs">
-                      Freshly Prepared Daily
-                    </span>
-                  </div>
-                </div>
+               <p className="text-xs sm:text-sm text-[#F5EFE4]/60 leading-relaxed max-w-2xl">
+                 {currentCategory.description}. All items freshly prepared upon order in our open kitchen in Nakuru City.
+               </p>
 
-                <div className="hidden lg:block min-w-0 relative overflow-hidden rounded-xl border border-white/10 bg-[#0f0a05]">
-                  <ImageWithSkeleton
-                    src={currentCategory.image}
-                    alt={currentCategory.name}
-                    referrerPolicy="no-referrer"
-                    containerClassName="w-full h-full aspect-[4/3]"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                </div>
-              </div>
-            </div>
+               <div className="flex flex-wrap items-center gap-2">
+                 <span className="rounded-full bg-[#2b1b12] border border-[#e6d3c2]/20 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#F5EFE4]">
+                   {menuItems.filter((i) => i.category === categoryId).length} Items
+                 </span>
+                 <span className="rounded-full bg-[#2b1b12] border border-[#e6d3c2]/20 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#D97745]">
+                   Prepared Fresh Daily
+                 </span>
+               </div>
+             </div>
+
+             <div className="min-w-0">
+               <div className="relative overflow-hidden rounded-[20px] border border-[#e6d3c2]/20 aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3]">
+                 <img
+                   src={currentCategory.image}
+                   alt={currentCategory.name}
+                   className="w-full h-full object-cover"
+                   onError={(e) => {
+                     (e.target as HTMLImageElement).src = '/gallery-16.jpg';
+                   }}
+                 />
+               </div>
+             </div>
+           </div>
+         </div>
 
             {/* Mobile Category Switcher */}
             <div className="md:hidden">
