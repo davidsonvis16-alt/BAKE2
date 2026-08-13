@@ -275,15 +275,19 @@ export default function App() {
                       </button>
                     </div>
                  </div>
-                  <div className="menu-page-header-image">
-                    <img
-                      src="/main-bar.png"
-                      alt="BakeMart signature dish"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/gallery-16.jpg';
-                      }}
-                    />
-                  </div>
+                   <div className="relative mx-auto max-w-[85%] sm:max-w-sm lg:max-w-none bg-[#fdfaf3] rounded-3xl">
+                     <div className="relative w-full mx-auto">
+                       <img
+                         src="/main-bar.png"
+                         alt="BakeMart signature dish"
+                         className="w-full h-auto"
+                         style={{ filter: 'drop-shadow(0 30px 40px rgba(0,0,0,0.25))' }}
+                         onError={(e) => {
+                           (e.target as HTMLImageElement).src = '/gallery-16.jpg';
+                         }}
+                       />
+                     </div>
+                   </div>
                </div>
              </div>
 
