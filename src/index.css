@@ -2074,7 +2074,72 @@ html {
   box-shadow: 0 20px 40px rgba(26, 18, 11, 0.12);
 }
 
-/* Sticky Category Nav */
+/* Menu Page Map */
+.menu-map-section {
+  margin-top: 2rem;
+}
+.menu-map-inner {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@media (min-width: 768px) {
+  .menu-map-inner {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .menu-map-inner {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.menu-map-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #8c7a6c;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.menu-map-title {
+  font-family: var(--font-serif);
+  font-weight: 900;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #000000;
+  margin-bottom: 0.5rem;
+}
+@media (min-width: 640px) {
+  .menu-map-title {
+    font-size: 2.25rem;
+  }
+}
+
+.menu-map-description {
+  font-size: 0.875rem;
+  color: #5c4b3f;
+  margin-bottom: 1rem;
+  max-width: 32rem;
+}
+
+.menu-map-embed {
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid #e6d3c2;
+  background: #f8f1e5;
+  aspect-ratio: 16 / 9;
+}
+.menu-map-embed iframe {
+  display: block;
+}
 .sticky-category-nav {
   position: sticky;
   top: 5rem;

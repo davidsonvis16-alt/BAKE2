@@ -257,20 +257,22 @@ export default function App() {
                    <p className="menu-page-description">
                      Freshly prepared food, coffee, pastries and everyday favourites from our open kitchen in Nakuru.
                    </p>
-                   <div className="menu-page-actions">
-                     <button
-                       onClick={() => navigate('/menu')}
-                       className="menu-page-btn-primary"
-                     >
-                       View Menu
-                     </button>
-                     <button
-                       onClick={() => window.open('https://wa.me/254725009708', '_blank')}
-                       className="menu-page-btn-secondary"
-                     >
-                       Order Now
-                     </button>
-                   </div>
+                    <div className="menu-page-actions">
+                      <button
+                        onClick={() => {
+                          document.getElementById('full-menu')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="menu-page-btn-primary"
+                      >
+                        View Menu
+                      </button>
+                      <button
+                        onClick={() => setIsCartOpen(true)}
+                        className="menu-page-btn-secondary"
+                      >
+                        Order Now
+                      </button>
+                    </div>
                  </div>
                   <div className="menu-page-header-image">
                     <img
@@ -285,15 +287,35 @@ export default function App() {
                </div>
              </div>
 
-             <MenuSection
-              searchQuery={searchQuery}
-              selectedCategory={selectedCategory === 'pizza-pasta' && activePage === 'menu' ? 'all' : selectedCategory}
-              onSelectCategory={handleSelectCategory}
-              wishlistIds={wishlistIds}
-              onAddToCart={handleAddToCart}
-              onToggleWishlist={handleToggleWishlist}
-            />
-          </div>
+              <MenuSection
+               searchQuery={searchQuery}
+               selectedCategory={selectedCategory === 'pizza-pasta' && activePage === 'menu' ? 'all' : selectedCategory}
+               onSelectCategory={handleSelectCategory}
+               wishlistIds={wishlistIds}
+               onAddToCart={handleAddToCart}
+               onToggleWishlist={handleToggleWishlist}
+             />
+
+             <div className="menu-map-section">
+               <div className="menu-map-inner">
+                 <span className="menu-map-eyebrow">VISIT US</span>
+                 <h2 className="menu-map-title">Find Us in Nakuru</h2>
+                 <p className="menu-map-description">
+                   Tropical House, Moi Road — behind Gilanis Supermarket, beside Nakuru GPO.
+                 </p>
+                 <div className="menu-map-embed">
+                   <iframe
+                     title="BakeMart Coffee House location"
+                     src="https://www.google.com/maps?q=BakeMart+Coffee+House,Tropical+House,Moi+Road,Nakuru&output=embed"
+                     allowFullScreen
+                     loading="lazy"
+                     referrerPolicy="no-referrer"
+                     className="w-full h-full border-0"
+                   />
+                 </div>
+               </div>
+             </div>
+           </div>
         ) : activePage === 'reservation' ? (
           <div style={{ paddingTop: '2rem', paddingBottom: '2rem', maxWidth: '80rem', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1rem', paddingRight: '1rem' }}>
             <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
