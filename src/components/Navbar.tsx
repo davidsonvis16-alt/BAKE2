@@ -124,14 +124,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               alt="BakeMart Coffee House"
               className="w-10 h-10 lg:w-11 lg:h-11 rounded-full object-cover ring-2 ring-[var(--color-warm-border)] group-hover:ring-[var(--color-gold)] transition-all"
             />
-            <div className="text-left leading-tight">
-              <div className="font-serif font-black text-[15px] lg:text-[17px] text-[var(--color-espresso)]">
-                BakeMart
-              </div>
-              <div className="hidden sm:block text-[10px] font-semibold tracking-wide text-[var(--color-warm-stone)] uppercase">
-                Coffee House
-              </div>
-            </div>
+             <div className="text-left leading-tight">
+               <div className="font-serif font-black text-[15px] lg:text-[17px] text-[var(--color-espresso)]">
+                 BakeMart Coffee House
+               </div>
+               <div className="text-[10px] font-semibold tracking-wide text-[var(--color-warm-stone)] uppercase">
+                 Nakuru City
+               </div>
+             </div>
           </button>
 
           {/* center pill nav — desktop only */}

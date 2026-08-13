@@ -142,10 +142,10 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                 />
               </div>
 
-              <div className="absolute top-2 right-0 sm:top-0 sm:right-2 lg:right-4 z-30">
-                <div className="relative w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full bg-[#d97a4c] flex items-center justify-center shadow-[0_14px_30px_rgba(0,0,0,0.35)] border-2 border-[#000000]">
+              <div className="absolute top-1 right-0 sm:top-0 sm:right-2 lg:right-4 z-30">
+                <div className="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 rounded-full bg-[#d97a4c] flex items-center justify-center shadow-[0_14px_30px_rgba(0,0,0,0.35)] border-2 border-[#000000]">
                   <span
-                    className="text-center text-[11px] sm:text-[12px] lg:text-[13px] font-black uppercase leading-tight text-[#000000] px-2"
+                    className="text-center text-[10px] sm:text-[11px] lg:text-[13px] font-black uppercase leading-tight text-[#000000] px-2"
                     style={{ fontFamily: 'Fraunces, serif' }}
                   >
                     Baked
@@ -158,26 +158,26 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               </div>
 
               <div
-                className="absolute top-[32%] -right-1 sm:-right-3 lg:-right-6 max-w-[140px] sm:max-w-[150px] lg:max-w-[170px] bg-white rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30"
+                className="absolute top-[28%] -right-2 sm:-right-3 lg:-right-6 max-w-[130px] sm:max-w-[150px] lg:max-w-[170px] bg-white rounded-2xl px-2.5 py-2.5 sm:px-4 sm:py-3.5 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30"
               >
-                <div className="flex gap-0.5 mb-1.5">
+                <div className="flex gap-0.5 mb-1">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-2.5 h-2.5 text-[#d97a4c] fill-[#d97a4c]" />
+                    <Star key={i} className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-[#d97a4c] fill-[#d97a4c]" />
                   ))}
                 </div>
-                <p className="text-[11px] leading-snug text-[#000000] font-semibold">
+                <p className="text-[10px] sm:text-[11px] leading-snug text-[#000000] font-semibold">
                   "Best flame-grilled chicken in Nakuru, hands down."
                 </p>
-                <p className="text-[9px] text-[#8c7a6c] font-bold mt-1.5">— Google review</p>
+                <p className="text-[8px] sm:text-[9px] text-[#8c7a6c] font-bold mt-1">— Google review</p>
               </div>
 
               <div
-                className="absolute bottom-[4%] left-0 sm:-left-4 lg:-left-6 bg-white rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30"
+                className="absolute bottom-[2%] left-0 sm:-left-4 lg:-left-6 bg-white rounded-2xl px-2.5 py-2 sm:px-4 sm:py-3 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30"
               >
-                <div className="font-serif font-black text-xl sm:text-2xl text-[#000000] leading-none">
+                <div className="font-serif font-black text-lg sm:text-2xl text-[#000000] leading-none">
                   202+
                 </div>
-                <div className="text-[9px] uppercase tracking-wide text-[#8c7a6c] font-bold mt-1">
+                <div className="text-[8px] sm:text-[9px] uppercase tracking-wide text-[#8c7a6c] font-bold mt-1">
                   Menu items & counting
                 </div>
               </div>
