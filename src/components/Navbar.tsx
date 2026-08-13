@@ -71,8 +71,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'Home', onClick: onNavigateHome, active: activePage === 'home' },
     { label: 'Full Menu', onClick: onNavigateMenu, active: activePage === 'menu' },
     { label: 'Categories', onClick: onNavigateCategories, active: activePage === 'category' },
-    { label: 'Specials', icon: Gift, onClick: onNavigateSpecials, active: activePage === 'specials' },
+    { label: 'Specials', onClick: onNavigateSpecials, active: activePage === 'specials' },
     { label: 'Gallery', onClick: onNavigateGallery, active: activePage === 'gallery' },
+    { label: 'About', onClick: onNavigateAbout, active: activePage === 'about' },
+    { label: 'FAQ', onClick: onNavigateFAQ, active: activePage === 'faq' },
   ];
 
   const mobileMenuItems = [
@@ -144,12 +146,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* center pill nav — desktop only */}
-          <nav className="hidden lg:flex items-center gap-1 bg-[var(--color-warm-bg-alt)] border border-[var(--color-warm-border-light)] rounded-full p-1">
+          <nav className="hidden lg:flex items-center gap-1 bg-[var(--color-warm-bg-alt)] border border-[var(--color-warm-border-light)] rounded-full p-1 overflow-x-auto">
             {primaryNav.map((item) => (
               <button
                 key={item.label}
                 onClick={item.onClick}
-                className={`relative flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold smooth-nav ${
+                className={`relative flex items-center gap-1.5 px-3 py-2 rounded-full text-[13px] font-bold smooth-nav shrink-0 ${
                   item.active
                     ? 'text-white'
                     : 'text-[var(--color-text-secondary)] hover:text-[var(--color-espresso)]'
