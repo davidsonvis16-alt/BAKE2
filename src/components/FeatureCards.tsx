@@ -1,112 +1,124 @@
 import React from 'react';
-import { ShoppingBag, Clock, MapPin, Send } from 'lucide-react';
-
-interface FeatureCardsProps {
-  onNavigateMenu?: () => void;
-}
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface FeatureItem {
-  icon: React.ReactNode;
+  number: string;
   title: string;
   description: string;
-  accent?: boolean;
 }
 
 const features: FeatureItem[] = [
   {
-    icon: <ShoppingBag className="w-6 h-6 text-[#000000]" />,
-    title: 'Open Kitchen',
-    description: 'Watch our chefs prepare every dish fresh to order. No mystery behind the scenes.',
-    accent: true,
+    number: '01',
+    title: 'OPEN KITCHEN',
+    description: 'Watch our chefs prepare every dish fresh to order.',
   },
   {
-    icon: <Clock className="w-6 h-6 text-[#000000]" />,
-    title: 'Daily Fresh',
-    description: 'Open daily from 7 AM until 8 PM. Coffee brewed, pastries baked, meals cooked fresh.',
+    number: '02',
+    title: 'DAILY FRESH',
+    description: 'Coffee brewed, pastries baked and meals cooked fresh.',
   },
   {
-    icon: <MapPin className="w-6 h-6 text-[#000000]" />,
-    title: 'Nakuru Location',
+    number: '03',
+    title: 'NAKURU LOCATION',
     description: 'Tropical House, Moi Road — behind Gilanis Supermarket, beside Nakuru GPO.',
   },
   {
-    icon: <Send className="w-6 h-6 text-[#000000]" />,
-    title: 'Order Now',
-    description: 'Order via WhatsApp or Glovo delivery. Quick pickup or dine-in available.',
-    accent: true,
+    number: '04',
+    title: 'ORDER NOW',
+    description: 'Order via WhatsApp or Glovo for pickup or delivery.',
   },
 ];
 
-export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateMenu }) => {
-  const orderNowCard = features.find((f) => f.title === 'Order Now');
-
+export const FeatureCards: React.FC = () => {
   return (
-    <section className="py-8 md:py-14">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-8">
+    <section className="relative overflow-hidden bg-white">
+      <div className="absolute inset-0 pointer-events-none">
+        <svg
+          className="absolute top-[4%] left-[2%] w-14 sm:w-20 opacity-[0.10]"
+          viewBox="0 0 100 100"
+          fill="none"
+          stroke="#1a120b"
+          strokeWidth="2"
+        >
+          <ellipse cx="50" cy="50" rx="35" ry="22" />
+          <path d="M50 28 C60 28 72 40 72 50 C72 60 60 72 50 72 C40 72 28 60 28 50 C28 40 40 28 50 28Z" />
+          <path d="M50 50 L50 72" strokeDasharray="4 4" />
+        </svg>
+
+        <svg
+          className="absolute bottom-[8%] right-[3%] w-12 sm:w-16 opacity-[0.08] hidden sm:block"
+          viewBox="0 0 80 120"
+          fill="none"
+          stroke="#1a120b"
+          strokeWidth="2"
+        >
+          <path d="M40 10 C20 10 10 40 10 70 C10 100 25 115 40 115 C55 115 70 100 70 70 C70 40 60 10 40 10Z" />
+          <path d="M40 30 L40 100" strokeDasharray="3 3" />
+        </svg>
+
+        <div className="absolute top-[30%] right-[8%] w-2 h-2 rounded-full bg-[#d97a4c] opacity-20 hidden lg:block" />
+        <div className="absolute bottom-[25%] left-[5%] w-1.5 h-1.5 rounded-full bg-[#d97a4c] opacity-15 hidden lg:block" />
+      </div>
+
+      <div className="relative max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-20">
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
           <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             WHY BAKEMART
           </span>
-          <h2 className="font-serif font-black text-2xl sm:text-3xl text-[#000000] mt-2 tracking-tight">
-            The Open-Kitchen Experience
+          <h2 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-3 tracking-tight">
+            THE OPEN-KITCHEN EXPERIENCE
           </h2>
-          <p className="text-sm text-[#5c4b3f] mt-3 max-w-lg mx-auto leading-relaxed">
-            Beyond sweetness — it is fresh and nutritional. Every dish, brewed with care.
+          <div className="w-10 h-1 bg-[#d97a4c] rounded-full mx-auto mt-4" />
+          <p className="text-sm sm:text-base text-[#5c4b3f] mt-4 max-w-lg mx-auto leading-relaxed">
+            Fresh food, open preparation and the kind of room that keeps you lingering.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-8">
-          {features.map((feature, index) => {
-            const isOrderNow = feature.title === 'Order Now';
-            return (
-              <button
-                key={index}
-                type="button"
-                onClick={() => {
-                  if (isOrderNow && onNavigateMenu) onNavigateMenu();
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-14 items-start">
+          <div className="lg:col-span-7 relative">
+            <div className="relative rounded-[20px] sm:rounded-[24px] overflow-hidden aspect-[4/3] sm:aspect-[16/10] bg-[#f8f1e5]">
+              <img
+                src="/space.jpeg"
+                alt="Open kitchen space at BakeMart Coffee House"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/gallery-16.jpg';
                 }}
-                className={`group flex flex-col items-center text-center rounded-2xl p-4 sm:p-6 border transition-all duration-300 text-left ${
-                  feature.accent
-                    ? 'bg-[#000000] text-white border-[#000000] shadow-md hover:shadow-lg'
-                    : 'bg-white text-[#000000] border-[#e6d3c2] hover:border-[#000000]/20 hover:shadow-md'
-                } ${isOrderNow ? 'cursor-pointer' : ''}`}
-              >
-                <div
-                  className={`flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full mb-3 sm:mb-4 transition-all ${
-                    feature.accent
-                      ? 'bg-[#d97a4c] text-[#000000] group-hover:scale-110'
-                      : 'bg-[#fdfaf3] border border-[#e6d3c2] group-hover:bg-[#f8f1e5]'
-                  }`}
-                >
-                  {React.cloneElement(feature.icon as React.ReactElement, {
-                    className: `w-5 h-5 sm:w-6 sm:h-6 transition-colors`,
-                    style: feature.accent
-                      ? { color: '#000000' }
-                      : { color: '#000000' },
-                  })}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+            </div>
+          </div>
+
+          <div className="lg:col-span-5">
+            <div className="space-y-0">
+              {features.map((feature, index) => (
+                <div key={index}>
+                  <div className="group py-5 sm:py-6 cursor-default">
+                    <div className="flex items-start gap-4 sm:gap-5">
+                      <span className="font-serif font-black text-2xl sm:text-3xl text-[#d97a4c] leading-none mt-0.5">
+                        {feature.number}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-3">
+                          <h3 className="font-serif font-black text-base sm:text-lg text-[#000000] tracking-tight">
+                            {feature.title}
+                          </h3>
+                          <ArrowRight className="w-4 h-4 text-[#d97a4c] transition-transform duration-200 group-hover:translate-x-1 shrink-0 mt-0.5" />
+                        </div>
+                        <p className="text-xs sm:text-sm text-[#5c4b3f] leading-relaxed mt-1.5 max-w-md">
+                          {feature.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  {index < features.length - 1 && (
+                    <div className="h-px bg-[#e6d3c2]" />
+                  )}
                 </div>
-                <h3
-                  className={`font-serif font-bold text-sm sm:text-base mb-1.5 sm:mb-2 ${
-                    feature.accent ? 'text-[#fdfaf3]' : 'text-[#000000]'
-                  }`}
-                >
-                  {feature.title}
-                </h3>
-                <p
-                  className={`text-[11px] sm:text-xs md:text-sm leading-relaxed flex-1 ${
-                    feature.accent ? 'text-[#d97a4c]/80' : 'text-[#5c4b3f]'
-                  }`}
-                >
-                  {feature.description}
-                </p>
-                {isOrderNow && (
-                  <span className="mt-2 sm:mt-3 text-[10px] font-bold uppercase tracking-widest text-[#d97a4c]">
-                    Tap to order →
-                  </span>
-                )}
-              </button>
-            );
-          })}
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
