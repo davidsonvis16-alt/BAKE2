@@ -7,105 +7,145 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
   return (
-    <section className="relative overflow-hidden bg-[#1a120b]">
-      <div
-        className="absolute inset-0"
-        style={{ background: 'radial-gradient(ellipse at 30% 20%, #2b1b12 0%, #1a120b 55%, #140d07 100%)' }}
-      />
-      <div
-        className="absolute inset-0 opacity-[0.05] pointer-events-none"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #f8f1e5 1px, transparent 0)',
-          backgroundSize: '26px 26px',
-        }}
-      />
+    <section className="relative overflow-hidden bg-white">
+      <div className="absolute inset-0 pointer-events-none">
+        <svg
+          className="absolute top-[5%] left-[3%] w-16 sm:w-24 opacity-[0.12]"
+          viewBox="0 0 100 100"
+          fill="none"
+          stroke="#1a120b"
+          strokeWidth="2"
+        >
+          <ellipse cx="50" cy="50" rx="35" ry="22" />
+          <path d="M50 28 C60 28 72 40 72 50 C72 60 60 72 50 72 C40 72 28 60 28 50 C28 40 40 28 50 28Z" />
+          <path d="M50 50 L50 72" strokeDasharray="4 4" />
+        </svg>
 
-      <PencilDoodles />
+        <svg
+          className="absolute top-[12%] right-[8%] w-12 sm:w-20 opacity-[0.10]"
+          viewBox="0 0 80 120"
+          fill="none"
+          stroke="#1a120b"
+          strokeWidth="2"
+        >
+          <path d="M40 10 C20 10 10 40 10 70 C10 100 25 115 40 115 C55 115 70 100 70 70 C70 40 60 10 40 10Z" />
+          <path d="M40 30 L40 100" strokeDasharray="3 3" />
+        </svg>
 
-      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-16 pb-12 sm:pb-16 lg:pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 sm:gap-10 lg:gap-12">
-          <div className="lg:col-span-6 relative z-20 text-center lg:text-left">
+        <svg
+          className="absolute bottom-[10%] left-[6%] w-14 sm:w-28 opacity-[0.10]"
+          viewBox="0 0 120 80"
+          fill="none"
+          stroke="#1a120b"
+          strokeWidth="2"
+        >
+          <path d="M20 40 Q40 10 60 40 T100 40" />
+          <path d="M30 60 Q50 30 70 60 T110 60" />
+          <circle cx="40" cy="40" r="3" />
+          <circle cx="70" cy="50" r="2" />
+          <circle cx="90" cy="35" r="3" />
+        </svg>
+
+        <svg
+          className="absolute bottom-[15%] right-[4%] w-10 sm:w-16 opacity-[0.10] hidden sm:block"
+          viewBox="0 0 100 100"
+          fill="none"
+          stroke="#1a120b"
+          strokeWidth="2"
+        >
+          <path d="M50 15 C30 15 15 35 15 55 C15 75 30 90 50 90 C70 90 85 75 85 55 C85 35 70 15 50 15Z" />
+          <path d="M50 35 L50 75" strokeDasharray="4 4" />
+          <path d="M35 50 L65 50" strokeDasharray="4 4" />
+        </svg>
+
+        <svg
+          className="absolute top-[45%] left-[2%] w-8 sm:w-14 opacity-[0.08] hidden lg:block"
+          viewBox="0 0 60 100"
+          fill="none"
+          stroke="#1a120b"
+          strokeWidth="2"
+        >
+          <path d="M30 5 C15 5 5 25 5 50 C5 75 15 95 30 95 C45 95 55 75 55 50 C55 25 45 5 30 5Z" />
+          <path d="M30 20 L30 80" strokeDasharray="3 3" />
+        </svg>
+      </div>
+
+      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 lg:pt-16 pb-10 sm:pb-14 lg:pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 sm:gap-10 lg:gap-14">
+          <div className="lg:col-span-5 relative z-20 text-center lg:text-left">
             <div
-              className="inline-flex items-center gap-2 bg-[#f8f1e5]/10 border border-[#f8f1e5]/20 text-[#e6c98f] text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-6 sm:mb-8 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 bg-[#f8f1e5] border border-[#e6d3c2] text-[#000000] text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-5 sm:mb-6"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#d4a35a]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#d97a4c]" />
               Est. Moi Road, Nakuru
             </div>
 
-            <h1 className="font-serif font-black text-[2.5rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] text-[#fdfaf3] leading-[0.92] tracking-tight">
+            <h1 className="font-serif font-black text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] text-[#000000] leading-[0.92] tracking-tight">
               Fresh,
               <br />
-              Fire-Baked
+              Flame-Grilled
               <br />
-              <span className="text-[#d4a35a] italic font-normal text-[1.6rem] sm:text-3xl md:text-4xl lg:text-[3.5rem]">Every Day</span>
+              <span className="text-[#d97a4c] italic font-normal text-[1.5rem] sm:text-3xl md:text-4xl lg:text-[3.25rem]">Every Day</span>
             </h1>
 
-            <p className="text-[#c9b8a5] text-sm sm:text-base lg:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed mt-5 sm:mt-6">
+            <p className="text-[#5c4b3f] text-sm sm:text-base lg:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed mt-5 sm:mt-6">
               Open-kitchen cooking, honest flavour, and the kind of room that
               keeps you lingering. From flame-grilled chicken to hand-stretched
               pizza — nothing here is rushed.
             </p>
 
             <div
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-7 sm:mt-8"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-6 sm:mt-7"
             >
               <button
                 onClick={onScrollToMenu}
-                className="bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] font-black text-sm px-7 py-3.5 sm:px-8 sm:py-4 rounded-full transition-all flex items-center gap-2 shadow-[0_10px_30px_rgba(212,163,90,0.35)] active:scale-[0.97]"
+                className="bg-[#000000] hover:bg-[#2b1b12] text-white font-black text-sm px-7 py-3.5 sm:px-8 sm:py-4 rounded-full transition-all flex items-center gap-2 shadow-[0_10px_30px_rgba(0,0,0,0.25)] active:scale-[0.97]"
               >
                 View Menu
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4" style={{ color: '#d97a4c' }} />
               </button>
               <a
                 href="https://www.google.com/maps/search/?api=1&query=BakeMart+Coffee+House,Tropical+House,Moi+Road,Nakuru"
                 target="_blank"
                 rel="noreferrer"
-                className="bg-transparent hover:bg-[#f8f1e5]/10 text-[#fdfaf3] border border-[#f8f1e5]/30 font-bold text-sm px-6 py-3.5 sm:px-7 sm:py-4 rounded-full transition-all"
+                className="bg-white hover:bg-[#f8f1e5] text-[#000000] border border-[#e6d3c2] font-bold text-sm px-6 py-3.5 sm:px-7 sm:py-4 rounded-full transition-all"
               >
                 Visit Us
               </a>
             </div>
 
             <div
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 mt-7 sm:mt-8 pt-6 sm:pt-8 border-t border-[#f8f1e5]/10 max-w-md mx-auto lg:mx-0"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 mt-6 sm:mt-7 pt-5 sm:pt-6 border-t border-[#e6d3c2] max-w-md mx-auto lg:mx-0"
             >
-              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#c9b8a5]">
-                <Star className="w-3.5 h-3.5 text-[#d4a35a] fill-[#d4a35a]" />
+              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#5c4b3f]">
+                <Star className="w-3.5 h-3.5 text-[#d97a4c] fill-[#d97a4c]" />
                 5.0 on Google
               </div>
-              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#c9b8a5]">
-                <Clock className="w-3.5 h-3.5 text-[#d4a35a]" />
+              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#5c4b3f]">
+                <Clock className="w-3.5 h-3.5 text-[#d97a4c]" />
                 7 AM – 8 PM Daily
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-6 relative z-20 mt-2 sm:mt-4 lg:mt-0">
+          <div className="lg:col-span-7 relative z-20 mt-2 sm:mt-4 lg:mt-0">
             <div className="relative mx-auto max-w-xs sm:max-w-sm lg:max-w-none">
-              <div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] aspect-square pointer-events-none"
-                style={{
-                  background:
-                    'radial-gradient(circle, rgba(212,163,90,0.28) 0%, rgba(212,163,90,0.12) 34%, transparent 68%)',
-                }}
-              />
-
-              <div className="relative w-[92%] sm:w-[84%] lg:w-[96%] mx-auto">
+              <div className="relative w-[90%] sm:w-[80%] lg:w-[92%] mx-auto">
                 <img
                   src="/menu-item-cutout.png"
                   alt="Signature BakeMart dish"
                   className="w-full h-auto"
-                  style={{ filter: 'drop-shadow(0 35px 45px rgba(0,0,0,0.6))' }}
+                  style={{ filter: 'drop-shadow(0 30px 40px rgba(0,0,0,0.25))' }}
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}
                 />
               </div>
 
-              <div className="absolute top-2 right-0 sm:top-0 sm:right-4 lg:-right-2 z-30">
-                <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#d97a4c] flex items-center justify-center shadow-[0_14px_30px_rgba(0,0,0,0.4)] border-2 border-[#1a120b]">
+              <div className="absolute top-2 right-0 sm:top-0 sm:right-2 lg:right-4 z-30">
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full bg-[#d97a4c] flex items-center justify-center shadow-[0_14px_30px_rgba(0,0,0,0.35)] border-2 border-[#000000]">
                   <span
-                    className="text-center text-[11px] sm:text-[12px] font-black uppercase leading-tight text-[#1a120b] px-2"
+                    className="text-center text-[11px] sm:text-[12px] lg:text-[13px] font-black uppercase leading-tight text-[#000000] px-2"
                     style={{ fontFamily: 'Fraunces, serif' }}
                   >
                     Baked
@@ -118,24 +158,24 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               </div>
 
               <div
-                className="absolute top-[38%] -right-1 sm:-right-3 lg:-right-6 max-w-[140px] sm:max-w-[165px] bg-[#fdfaf3] rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 shadow-[0_16px_30px_rgba(0,0,0,0.4)] z-30 hidden sm:block"
+                className="absolute top-[36%] -right-1 sm:-right-3 lg:-right-6 max-w-[130px] sm:max-w-[150px] lg:max-w-[170px] bg-white rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30 hidden sm:block"
               >
                 <div className="flex gap-0.5 mb-1.5">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-2.5 h-2.5 text-[#d4a35a] fill-[#d4a35a]" />
+                    <Star key={i} className="w-2.5 h-2.5 text-[#d97a4c] fill-[#d97a4c]" />
                   ))}
                 </div>
-                <p className="text-[11px] leading-snug text-[#2b1b12] font-semibold">
+                <p className="text-[11px] leading-snug text-[#000000] font-semibold">
                   "Best flame-grilled chicken in Nakuru, hands down."
                 </p>
                 <p className="text-[9px] text-[#8c7a6c] font-bold mt-1.5">— Google review</p>
               </div>
 
               <div
-                className="absolute bottom-[4%] left-0 sm:-left-4 bg-[#fdfaf3] rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 shadow-[0_16px_30px_rgba(0,0,0,0.4)] z-30 hidden sm:block"
+                className="absolute bottom-[4%] left-0 sm:-left-4 lg:-left-6 bg-white rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30 hidden sm:block"
               >
-                <div className="font-serif font-black text-xl sm:text-2xl text-[#1a120b] leading-none">
-                  183+
+                <div className="font-serif font-black text-xl sm:text-2xl text-[#000000] leading-none">
+                  202+
                 </div>
                 <div className="text-[9px] uppercase tracking-wide text-[#8c7a6c] font-bold mt-1">
                   Menu items & counting
@@ -148,63 +188,3 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
     </section>
   );
 };
-
-function PencilDoodles() {
-  return (
-    <div className="absolute inset-0 z-10 pointer-events-none">
-      <svg
-        viewBox="0 0 200 260"
-        className="absolute top-[8%] left-[2%] sm:left-[6%] lg:left-[8%] w-40 sm:w-52 lg:w-64 opacity-[0.14]"
-      >
-        <path
-          d="M100 10C50 10 15 60 15 130s35 120 85 120 85-60 85-120S150 10 100 10z"
-          fill="none"
-          stroke="#e6c98f"
-          strokeWidth="3"
-        />
-        <path
-          d="M100 20C75 60 75 200 100 240"
-          fill="none"
-          stroke="#e6c98f"
-          strokeWidth="3"
-        />
-      </svg>
-
-      <svg
-        viewBox="0 0 120 200"
-        className="absolute top-[4%] right-[4%] sm:right-[10%] w-20 sm:w-28 opacity-[0.16] hidden sm:block"
-      >
-        <path
-          d="M30 190c-20-20 10-30-5-55s-25-15-10-45 5-40-10-60"
-          fill="none"
-          stroke="#f8f1e5"
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-        <path
-          d="M70 190c-20-25 15-35-3-60s-22-18-5-48 8-38-8-60"
-          fill="none"
-          stroke="#f8f1e5"
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-      </svg>
-
-      <svg
-        viewBox="0 0 100 180"
-        className="absolute bottom-[6%] left-[3%] sm:left-[8%] w-16 sm:w-20 opacity-[0.13] hidden lg:block"
-      >
-        <path d="M50 10v160" fill="none" stroke="#e6c98f" strokeWidth="2.5" />
-        {[30, 55, 80, 105, 130].map((y, i) => (
-          <g key={i}>
-            <ellipse cx={50 - 14} cy={y} rx="10" ry="6" fill="none" stroke="#e6c98f" strokeWidth="2" transform={`rotate(-30 ${50 - 14} ${y})`} />
-            <ellipse cx={50 + 14} cy={y} rx="10" ry="6" fill="none" stroke="#e6c98f" strokeWidth="2" transform={`rotate(30 ${50 + 14} ${y})`} />
-          </g>
-        ))}
-      </svg>
-
-      <span className="absolute top-[30%] left-[45%] text-[#e6c98f] opacity-20 text-2xl select-none hidden lg:block">✦</span>
-      <span className="absolute bottom-[20%] right-[38%] text-[#e6c98f] opacity-15 text-xl select-none hidden lg:block">✦</span>
-    </div>
-  );
-}

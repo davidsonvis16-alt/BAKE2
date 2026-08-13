@@ -16,7 +16,6 @@ import { About } from './components/About';
 import { FAQ } from './components/FAQ';
 import { FeatureCards } from './components/FeatureCards';
 import { StatsSection } from './components/StatsSection';
-import { MobileBottomNav } from './components/MobileBottomNav';
 import { CartAnimationProvider } from './components/CartAnimation';
 import { useAuth } from './components/AuthContext';
 import { useMenuData } from './hooks/useMenuData';
@@ -297,8 +296,8 @@ export default function App() {
           <FAQ />
         ) : activePage === 'specials' ? (
           <SpecialsPage onNavigateMenu={() => navigate('/menu')} onAddToCart={handleAddToCartById} onSelectCategory={handleSelectCategory} />
-        ) : (
-           <div style={{ paddingBottom: '7rem' }} className="lg:pb-8">
+         ) : (
+           <div>
               <Hero
                 onScrollToMenu={() => navigate('/menu')}
               />
@@ -391,18 +390,6 @@ export default function App() {
           </button>
         </div>
       </div>
-
-      <MobileBottomNav
-        activePage={activePage}
-        onNavigateHome={() => navigate('/')}
-        onNavigateMenu={() => navigate('/menu')}
-        onOpenCart={() => setIsCartOpen(true)}
-        onOpenWishlist={() => setIsWishlistOpen(true)}
-        onNavigateReservation={() => navigate('/reservation')}
-        onNavigateSpecials={() => navigate('/specials')}
-        cartCount={totalCartCount}
-        wishlistCount={wishlistItems.length}
-      />
     </div>
     </CartAnimationProvider>
   );
