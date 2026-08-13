@@ -22,36 +22,36 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
 
       <PencilDoodles />
 
-      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 lg:pt-14 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 lg:min-h-[88vh] items-center gap-12 lg:gap-6">
+      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-16 pb-12 sm:pb-16 lg:pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 sm:gap-10 lg:gap-12">
           <div className="lg:col-span-6 relative z-20 text-center lg:text-left">
             <div
-              className="inline-flex items-center gap-2 bg-[#f8f1e5]/10 border border-[#f8f1e5]/20 text-[#e6c98f] text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-7 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 bg-[#f8f1e5]/10 border border-[#f8f1e5]/20 text-[#e6c98f] text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-6 sm:mb-8 backdrop-blur-sm"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#d4a35a]" />
               Est. Moi Road, Nakuru
             </div>
 
-            <h1 className="font-serif font-black text-[3.4rem] sm:text-7xl lg:text-[5.5rem] text-[#fdfaf3] leading-[0.86] tracking-tight">
+            <h1 className="font-serif font-black text-[2.5rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] text-[#fdfaf3] leading-[0.92] tracking-tight">
               Fresh,
               <br />
               Fire-Baked
               <br />
-              <span className="text-[#d4a35a] italic font-normal">Every Day</span>
+              <span className="text-[#d4a35a] italic font-normal text-[1.6rem] sm:text-3xl md:text-4xl lg:text-[3.5rem]">Every Day</span>
             </h1>
 
-            <p className="text-[#c9b8a5] text-base lg:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed mt-7">
+            <p className="text-[#c9b8a5] text-sm sm:text-base lg:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed mt-5 sm:mt-6">
               Open-kitchen cooking, honest flavour, and the kind of room that
               keeps you lingering. From flame-grilled chicken to hand-stretched
               pizza — nothing here is rushed.
             </p>
 
             <div
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-9"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-7 sm:mt-8"
             >
               <button
                 onClick={onScrollToMenu}
-                className="bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] font-black text-sm px-8 py-4 rounded-full transition-all flex items-center gap-2 shadow-[0_10px_30px_rgba(212,163,90,0.35)] active:scale-[0.97]"
+                className="bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] font-black text-sm px-7 py-3.5 sm:px-8 sm:py-4 rounded-full transition-all flex items-center gap-2 shadow-[0_10px_30px_rgba(212,163,90,0.35)] active:scale-[0.97]"
               >
                 View Menu
                 <ArrowRight className="w-4 h-4" />
@@ -60,28 +60,28 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                 href="https://www.google.com/maps/search/?api=1&query=BakeMart+Coffee+House,Tropical+House,Moi+Road,Nakuru"
                 target="_blank"
                 rel="noreferrer"
-                className="bg-transparent hover:bg-[#f8f1e5]/10 text-[#fdfaf3] border border-[#f8f1e5]/30 font-bold text-sm px-7 py-4 rounded-full transition-all"
+                className="bg-transparent hover:bg-[#f8f1e5]/10 text-[#fdfaf3] border border-[#f8f1e5]/30 font-bold text-sm px-6 py-3.5 sm:px-7 sm:py-4 rounded-full transition-all"
               >
                 Visit Us
               </a>
             </div>
 
             <div
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-6 mt-10 pt-8 border-t border-[#f8f1e5]/10 max-w-md mx-auto lg:mx-0"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 mt-7 sm:mt-8 pt-6 sm:pt-8 border-t border-[#f8f1e5]/10 max-w-md mx-auto lg:mx-0"
             >
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#c9b8a5]">
+              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#c9b8a5]">
                 <Star className="w-3.5 h-3.5 text-[#d4a35a] fill-[#d4a35a]" />
                 5.0 on Google
               </div>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#c9b8a5]">
+              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#c9b8a5]">
                 <Clock className="w-3.5 h-3.5 text-[#d4a35a]" />
                 7 AM – 8 PM Daily
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-6 relative z-20 mt-4 lg:mt-0">
-            <div className="relative mx-auto max-w-sm lg:max-w-none">
+          <div className="lg:col-span-6 relative z-20 mt-2 sm:mt-4 lg:mt-0">
+            <div className="relative mx-auto max-w-xs sm:max-w-sm lg:max-w-none">
               <div
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] aspect-square pointer-events-none"
                 style={{
@@ -118,7 +118,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               </div>
 
               <div
-                className="absolute top-[42%] -right-1 sm:-right-3 lg:-right-6 max-w-[150px] sm:max-w-[165px] bg-[#fdfaf3] rounded-2xl px-4 py-3.5 shadow-[0_16px_30px_rgba(0,0,0,0.4)] z-30 hidden sm:block"
+                className="absolute top-[38%] -right-1 sm:-right-3 lg:-right-6 max-w-[140px] sm:max-w-[165px] bg-[#fdfaf3] rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 shadow-[0_16px_30px_rgba(0,0,0,0.4)] z-30 hidden sm:block"
               >
                 <div className="flex gap-0.5 mb-1.5">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -132,13 +132,13 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               </div>
 
               <div
-                className="absolute bottom-[4%] left-0 sm:-left-4 bg-[#fdfaf3] rounded-2xl px-4 py-3 shadow-[0_16px_30px_rgba(0,0,0,0.4)] z-30 hidden sm:block"
+                className="absolute bottom-[4%] left-0 sm:-left-4 bg-[#fdfaf3] rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 shadow-[0_16px_30px_rgba(0,0,0,0.4)] z-30 hidden sm:block"
               >
-                <div className="font-serif font-black text-2xl text-[#1a120b] leading-none">
-                  30+
+                <div className="font-serif font-black text-xl sm:text-2xl text-[#1a120b] leading-none">
+                  183+
                 </div>
                 <div className="text-[9px] uppercase tracking-wide text-[#8c7a6c] font-bold mt-1">
-                  Items baked daily
+                  Menu items & counting
                 </div>
               </div>
             </div>

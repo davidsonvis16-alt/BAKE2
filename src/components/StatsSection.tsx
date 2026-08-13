@@ -7,7 +7,7 @@ interface StatsItem {
 
 const stats: StatsItem[] = [
   { number: '12+', label: 'Food Categories' },
-  { number: '369+', label: 'Menu Items' },
+  { number: '183+', label: 'Menu Items' },
   { number: '5.0', label: 'Google Rating' },
   { number: 'Daily', label: 'Freshly Cooked' },
 ];
