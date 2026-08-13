@@ -49,6 +49,24 @@ export const Footer: React.FC = () => {
                 <span>Facebook</span>
               </a>
               <a
+                href="https://www.tiktok.com/@bakemartcoffeehouse"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 bg-[#000000] text-white text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#000000] transition-colors"
+              >
+                <Music2 className="w-4 h-4" />
+                <span>TikTok</span>
+              </a>
+              <a
+                href="https://www.youtube.com/@bakemartcoffeehouse"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 bg-[#000000] text-white text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#000000] transition-colors"
+              >
+                <Youtube className="w-4 h-4" />
+                <span>YouTube</span>
+              </a>
+              <a
                 href="mailto:Salesbakemart.co.ke@gmail.com"
                 className="inline-flex items-center gap-2 bg-[#f8f1e5] text-[#000000] border border-[#e6d3c2] text-xs font-bold px-4 py-2.5 rounded-full hover:bg-[#f5efe7] transition-colors"
               >

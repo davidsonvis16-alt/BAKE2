@@ -1939,11 +1939,11 @@ html {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
-  align-items: center;
+  align-items: start;
 }
 @media (min-width: 1024px) {
   .menu-page-header-inner {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr auto;
     gap: 3rem;
   }
 }

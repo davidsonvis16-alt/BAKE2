@@ -279,7 +279,6 @@ export default function App() {
                     <img
                       src="/main-bar.png"
                       alt="BakeMart signature dish"
-                      className="w-full h-full object-cover"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = '/gallery-16.jpg';
                       }}
