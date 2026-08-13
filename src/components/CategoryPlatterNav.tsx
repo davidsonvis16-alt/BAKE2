@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { Category, MenuItem } from '../types';
+import { CategoryCard } from './CategoryCard';
 
 interface CategoryPlatterNavProps {
   categories: Category[];
@@ -15,10 +16,6 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
   selectedCategory,
   onSelectCategory,
 }) => {
-  const getItemCount = (categoryId: string) => {
-    return menuItems.filter((item) => item.category === categoryId).length;
-  };
-
   const totalItems = menuItems.length;
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -29,95 +26,52 @@ export const CategoryPlatterNav: React.FC<CategoryPlatterNavProps> = ({
   };
 
   return (
-    <section className="pt-6 md:pt-12 pb-8 md:pb-12">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <div className="flex items-end justify-between">
-          <div className="max-w-2xl">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
-              EXPLORE CATEGORIES
-            </span>
-            <h2 className="font-serif font-black text-2xl sm:text-3xl text-[#000000] mt-1 tracking-tight">
-              Swipe through our menu specialties.
-            </h2>
-            <p className="text-xs sm:text-sm text-[#5c4b3f] mt-1">
-              {totalItems} items across {categories.length} categories
-            </p>
-          </div>
+    <section className="category-platter">
+      <div className="category-platter-header">
+        <div className="category-platter-title-group">
+          <span className="category-platter-eyebrow">EXPLORE CATEGORIES</span>
+          <h2 className="category-platter-title">Swipe through our menu specialties.</h2>
+          <p className="category-platter-desc">
+            {totalItems} items across {categories.length} categories
+          </p>
+        </div>
 
-          {/* Desktop carousel arrows */}
-          <div className="hidden lg:flex items-center gap-2">
-            <button
-              onClick={() => scrollBy(-1)}
-              className="w-10 h-10 rounded-full border border-[#e6d3c2] bg-white text-[#000000] flex items-center justify-center hover:bg-[#f5efe7] transition-colors"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => scrollBy(1)}
-              className="w-10 h-10 rounded-full border border-[#e6d3c2] bg-white text-[#000000] flex items-center justify-center hover:bg-[#f5efe7] transition-colors"
-              aria-label="Scroll right"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+        <div className="category-platter-arrows">
+          <button
+            onClick={() => scrollBy(-1)}
+            className="category-platter-arrow"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => scrollBy(1)}
+            className="category-platter-arrow"
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
       </div>
 
       <div className="relative max-w-[1500px] mx-auto">
         <div
           ref={scrollRef}
-          className="flex gap-4 overflow-x-auto no-scrollbar px-4 sm:px-6 lg:px-8 pb-4 scroll-smooth"
+          className="category-platter-scroll"
           style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x' }}
         >
-          {categories.map((cat) => {
-            const isSelected = selectedCategory === cat.id;
-            const itemCount = getItemCount(cat.id);
-
-            return (
-              <button
-                key={cat.id}
-                onClick={() => onSelectCategory(cat.id)}
-                className={`shrink-0 w-[calc(100vw-56px)] max-w-[360px] sm:w-[240px] lg:w-[274px] group flex flex-col rounded-2xl border bg-white transition-all duration-300 ${
-                  isSelected
-                    ? 'border-[#000000] shadow-lg'
-                    : 'border-[#e6d3c2] hover:border-[#000000]/30 hover:shadow-md'
-                }`}
-              >
-                {/* Category Image */}
-                <div className="relative h-[170px] sm:h-[180px] lg:h-[190px] overflow-hidden rounded-t-2xl bg-[#f8f1e5]">
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-4">
-                    <p className="text-[10px] uppercase tracking-widest text-[#f8f1e5] font-bold">
-                      {itemCount} {itemCount === 1 ? 'item' : 'items'}
-                    </p>
-                    <h3 className="font-serif font-black text-base sm:text-lg text-white leading-tight mt-0.5">
-                      {cat.name}
-                    </h3>
-                  </div>
-                </div>
-
-                {/* Category Description */}
-                <div className="px-4 py-3.5 text-left">
-                  <p className="text-xs text-[#5c4b3f] leading-relaxed line-clamp-2">
-                    {cat.description}
-                  </p>
-                </div>
-              </button>
-            );
-          })}
+          {categories.map((cat) => (
+            <CategoryCard
+              key={cat.id}
+              category={cat}
+              onSelectCategory={onSelectCategory}
+            />
+          ))}
         </div>
 
-        {/* Swipe indicator (mobile) */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#fdfaf3] via-[#fdfaf3]/60 to-transparent lg:hidden flex items-center justify-end pr-3">
-          <div className="flex items-center gap-1 text-[#000000]">
-            <span className="text-[10px] font-black uppercase tracking-widest">Swipe</span>
+        <div className="category-swipe-indicator">
+          <div className="category-swipe-text">
+            <span>Swipe</span>
             <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
             </svg>

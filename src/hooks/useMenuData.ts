@@ -56,9 +56,8 @@ export function useMenuData() {
                 name: (remote.name as string) || item.name,
                 price: (remote.price as number) || item.price,
                 description: (remote.description as string) ?? item.description,
-                badge: (remote.badge as string) || item.badge || null,
+                badge: ((remote.badge as string) || item.badge || null) as MenuItem['badge'],
                 category: (remote.category as string) || item.category,
-                available: (remote.available as boolean) ?? item.available,
                 image: (remote.image as string) || item.image,
               };
             }
@@ -72,9 +71,8 @@ export function useMenuData() {
                 name: (row.name as string) || 'Untitled Item',
                 price: (row.price as number) || 0,
                 description: (row.description as string) || '',
-                badge: (row.badge as string) || null,
+                badge: ((row.badge as string) || null) as MenuItem['badge'],
                 category: (row.category as string) || '',
-                available: (row.available as boolean) ?? true,
                 image: (row.image as string) || '',
                 options: [],
               });

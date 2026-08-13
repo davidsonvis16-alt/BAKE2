@@ -204,8 +204,7 @@ export const PopularItemsPopup: React.FC<PopularItemsPopupProps> = ({
                 </div>
               ))}
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

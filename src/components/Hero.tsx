@@ -1,158 +1,210 @@
 import React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
-import { ArrowRight, Clock, Star } from 'lucide-react';
+import { ArrowRight, Star, Clock } from 'lucide-react';
 
 interface HeroProps {
   onScrollToMenu: () => void;
 }
 
-const fadeUp = (reduceMotion: boolean, delay = 0) =>
-  reduceMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 16 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.5, ease: 'easeOut' as const, delay },
-      };
-
 export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
-  const reduceMotion = !!useReducedMotion();
-
   return (
-    <section className="relative overflow-hidden bg-[#fdfaf3] pt-8 sm:pt-10 lg:pt-14 pb-10 lg:pb-16">
-      {/* faint corkboard texture, ties this page to the Gallery without competing for attention */}
+    <section className="relative overflow-hidden bg-[#1a120b]">
       <div
-        className="absolute inset-0 opacity-[0.035] pointer-events-none"
+        className="absolute inset-0"
+        style={{ background: 'radial-gradient(ellipse at 30% 20%, #2b1b12 0%, #1a120b 55%, #140d07 100%)' }}
+      />
+      <div
+        className="absolute inset-0 opacity-[0.05] pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #8c4a1a 1px, transparent 0)',
-          backgroundSize: '22px 22px',
+          backgroundImage: 'radial-gradient(circle at 1px 1px, #f8f1e5 1px, transparent 0)',
+          backgroundSize: '26px 26px',
         }}
       />
 
-      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left: content on solid cream — always crisp, no overlay needed */}
-          <div className="lg:col-span-5 text-center lg:text-left order-2 lg:order-1">
-            <motion.div
-              {...fadeUp(reduceMotion, 0)}
-              className="inline-flex items-center gap-2 bg-white border border-[#e6d3c2] text-[#000000] text-[10px] font-bold px-3.5 py-1.5 rounded-full"
-            >
-              <span className="text-[#d4a35a]">●</span>
-              <span>Nakuru's Only Open-Kitchen Coffee House</span>
-            </motion.div>
+      <PencilDoodles />
 
-            <motion.h1
-              {...fadeUp(reduceMotion, 0.08)}
-              className="font-serif font-black text-[2.75rem] sm:text-5xl lg:text-[3.75rem] text-[#000000] leading-[0.95] tracking-tight mt-5"
+      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 lg:pt-14 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 lg:min-h-[88vh] items-center gap-12 lg:gap-6">
+          <div className="lg:col-span-6 relative z-20 text-center lg:text-left">
+            <div
+              className="inline-flex items-center gap-2 bg-[#f8f1e5]/10 border border-[#f8f1e5]/20 text-[#e6c98f] text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-7 backdrop-blur-sm"
             >
-              Where Every Corner
-              <span className="block text-[#d4a35a] font-serif italic font-normal text-2xl sm:text-3xl lg:text-4xl mt-2">
-                Tells a Story
-              </span>
-            </motion.h1>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#d4a35a]" />
+              Est. Moi Road, Nakuru
+            </div>
 
-            <motion.p
-              {...fadeUp(reduceMotion, 0.16)}
-              className="text-[#5c4b3f] text-sm sm:text-base max-w-lg mx-auto lg:mx-0 leading-relaxed mt-5"
-            >
-              Widely rated among the best coffee spots and restaurants in Nakuru, BakeMart serves fresh food cooked in full view of your table —
-              honest flavors, an open kitchen, and prices that keep it one of the most affordable places to eat well in the city.
-            </motion.p>
+            <h1 className="font-serif font-black text-[3.4rem] sm:text-7xl lg:text-[5.5rem] text-[#fdfaf3] leading-[0.86] tracking-tight">
+              Fresh,
+              <br />
+              Fire-Baked
+              <br />
+              <span className="text-[#d4a35a] italic font-normal">Every Day</span>
+            </h1>
 
-            <motion.div
-              {...fadeUp(reduceMotion, 0.24)}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs font-semibold text-[#5c4b3f] mt-6"
-            >
-              <span className="flex items-center gap-1.5 bg-white border border-[#e6d3c2] px-3 py-1.5 rounded-full">
-                <Star className="w-3.5 h-3.5 text-[#d4a35a] fill-[#d4a35a]" />
-                <span>Rated 5.0 on Google</span>
-              </span>
-              <span className="flex items-center gap-1.5 bg-white border border-[#e6d3c2] px-3 py-1.5 rounded-full">
-                <Clock className="w-3.5 h-3.5 text-[#d4a35a]" />
-                <span>Open Daily · 7 AM – 8 PM</span>
-              </span>
-            </motion.div>
+            <p className="text-[#c9b8a5] text-base lg:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed mt-7">
+              Open-kitchen cooking, honest flavour, and the kind of room that
+              keeps you lingering. From flame-grilled chicken to hand-stretched
+              pizza — nothing here is rushed.
+            </p>
 
-            <motion.div
-              {...fadeUp(reduceMotion, 0.32)}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-7"
+            <div
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-9"
             >
               <button
                 onClick={onScrollToMenu}
-                className="bg-[#000000] hover:bg-[#000000] text-white font-bold text-sm px-8 py-3.5 rounded-full transition-all flex items-center gap-2 shadow-sm hover:shadow-md active:scale-[0.98]"
+                className="bg-[#d4a35a] hover:bg-[#e6c98f] text-[#1a120b] font-black text-sm px-8 py-4 rounded-full transition-all flex items-center gap-2 shadow-[0_10px_30px_rgba(212,163,90,0.35)] active:scale-[0.97]"
               >
-                <span>Explore the Menu</span>
-                <ArrowRight className="w-4 h-4 text-[#d4a35a]" />
+                View Menu
+                <ArrowRight className="w-4 h-4" />
               </button>
-
               <a
                 href="https://www.google.com/maps/search/?api=1&query=BakeMart+Coffee+House,Tropical+House,Moi+Road,Nakuru"
                 target="_blank"
                 rel="noreferrer"
-                className="bg-white hover:bg-[#f8f1e5] text-[#000000] border border-[#e6d3c2] font-bold text-sm px-6 py-3.5 rounded-full transition-all flex items-center gap-2"
+                className="bg-transparent hover:bg-[#f8f1e5]/10 text-[#fdfaf3] border border-[#f8f1e5]/30 font-bold text-sm px-7 py-4 rounded-full transition-all"
               >
-                <span>Visit Us</span>
+                Visit Us
               </a>
-            </motion.div>
+            </div>
+
+            <div
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-6 mt-10 pt-8 border-t border-[#f8f1e5]/10 max-w-md mx-auto lg:mx-0"
+            >
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#c9b8a5]">
+                <Star className="w-3.5 h-3.5 text-[#d4a35a] fill-[#d4a35a]" />
+                5.0 on Google
+              </div>
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#c9b8a5]">
+                <Clock className="w-3.5 h-3.5 text-[#d4a35a]" />
+                7 AM – 8 PM Daily
+              </div>
+            </div>
           </div>
 
-          {/* Right: framed photo panel with a pinned second photo — the hero's one signature move */}
-          <div className="lg:col-span-7 order-1 lg:order-2">
-            <motion.div
-              initial={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="relative mx-auto max-w-md lg:max-w-none"
-            >
-              {/* main photo */}
-              <div className="relative rounded-[28px] overflow-hidden border border-[#e6d3c2] shadow-[0_20px_50px_rgba(26,18,11,0.18)] aspect-[4/3] lg:aspect-[16/12] bg-[#f8f1e5]">
+          <div className="lg:col-span-6 relative z-20 mt-4 lg:mt-0">
+            <div className="relative mx-auto max-w-sm lg:max-w-none">
+              <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] aspect-square pointer-events-none"
+                style={{
+                  background:
+                    'radial-gradient(circle, rgba(212,163,90,0.28) 0%, rgba(212,163,90,0.12) 34%, transparent 68%)',
+                }}
+              />
+
+              <div className="relative w-[92%] sm:w-[84%] lg:w-[96%] mx-auto">
                 <img
-                  src="/gallery-16.jpg"
-                  alt="Cozy interior of BakeMart Coffee House, one of the best restaurants in Nakuru"
-                  className="w-full h-full object-cover"
+                  src="/menu-item-cutout.png"
+                  alt="Signature BakeMart dish"
+                  className="w-full h-auto"
+                  style={{ filter: 'drop-shadow(0 35px 45px rgba(0,0,0,0.6))' }}
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}
                 />
               </div>
 
-              {/* pinned second photo — same washi-tape language as the Gallery */}
-              <motion.div
-                initial={reduceMotion ? undefined : { opacity: 0, y: 16, rotate: -10 }}
-                animate={{ opacity: 1, y: 0, rotate: -6 }}
-                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.35 }}
-                whileHover={reduceMotion ? undefined : { rotate: 0, scale: 1.05 }}
-                className="absolute -bottom-6 -left-4 sm:-bottom-8 sm:-left-8 w-[42%] sm:w-[38%] bg-white p-2 pb-6 rounded-sm shadow-[0_10px_25px_rgba(26,18,11,0.22)] border border-[#e6d3c2]"
-              >
-                <span
-                  aria-hidden
-                  className="absolute -top-3 left-1/2 h-6 w-14 -translate-x-1/2 rounded-[2px] shadow-sm"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(212,163,90,0.9), rgba(212,163,90,0.65))',
-                    transform: 'translateX(-50%) rotate(-6deg)',
-                  }}
-                />
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2px] bg-[#f8f1e5]">
-                  <img
-                    src="/breakfast.jpeg"
-                    alt="Fresh breakfast spread at BakeMart, a fresh food restaurant in Nakuru"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
-                  />
+              <div className="absolute top-2 right-0 sm:top-0 sm:right-4 lg:-right-2 z-30">
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#d97a4c] flex items-center justify-center shadow-[0_14px_30px_rgba(0,0,0,0.4)] border-2 border-[#1a120b]">
+                  <span
+                    className="text-center text-[11px] sm:text-[12px] font-black uppercase leading-tight text-[#1a120b] px-2"
+                    style={{ fontFamily: 'Fraunces, serif' }}
+                  >
+                    Baked
+                    <br />
+                    Fresh
+                    <br />
+                    Daily
+                  </span>
                 </div>
-                <p
-                  className="mt-2 text-center text-sm sm:text-base leading-none text-[#000000]"
-                  style={{ fontFamily: "'Caveat', cursive" }}
-                >
-                  Fresh every morning
+              </div>
+
+              <div
+                className="absolute top-[42%] -right-1 sm:-right-3 lg:-right-6 max-w-[150px] sm:max-w-[165px] bg-[#fdfaf3] rounded-2xl px-4 py-3.5 shadow-[0_16px_30px_rgba(0,0,0,0.4)] z-30 hidden sm:block"
+              >
+                <div className="flex gap-0.5 mb-1.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="w-2.5 h-2.5 text-[#d4a35a] fill-[#d4a35a]" />
+                  ))}
+                </div>
+                <p className="text-[11px] leading-snug text-[#2b1b12] font-semibold">
+                  "Best flame-grilled chicken in Nakuru, hands down."
                 </p>
-              </motion.div>
-            </motion.div>
+                <p className="text-[9px] text-[#8c7a6c] font-bold mt-1.5">— Google review</p>
+              </div>
+
+              <div
+                className="absolute bottom-[4%] left-0 sm:-left-4 bg-[#fdfaf3] rounded-2xl px-4 py-3 shadow-[0_16px_30px_rgba(0,0,0,0.4)] z-30 hidden sm:block"
+              >
+                <div className="font-serif font-black text-2xl text-[#1a120b] leading-none">
+                  30+
+                </div>
+                <div className="text-[9px] uppercase tracking-wide text-[#8c7a6c] font-bold mt-1">
+                  Items baked daily
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
 };
+
+function PencilDoodles() {
+  return (
+    <div className="absolute inset-0 z-10 pointer-events-none">
+      <svg
+        viewBox="0 0 200 260"
+        className="absolute top-[8%] left-[2%] sm:left-[6%] lg:left-[8%] w-40 sm:w-52 lg:w-64 opacity-[0.14]"
+      >
+        <path
+          d="M100 10C50 10 15 60 15 130s35 120 85 120 85-60 85-120S150 10 100 10z"
+          fill="none"
+          stroke="#e6c98f"
+          strokeWidth="3"
+        />
+        <path
+          d="M100 20C75 60 75 200 100 240"
+          fill="none"
+          stroke="#e6c98f"
+          strokeWidth="3"
+        />
+      </svg>
+
+      <svg
+        viewBox="0 0 120 200"
+        className="absolute top-[4%] right-[4%] sm:right-[10%] w-20 sm:w-28 opacity-[0.16] hidden sm:block"
+      >
+        <path
+          d="M30 190c-20-20 10-30-5-55s-25-15-10-45 5-40-10-60"
+          fill="none"
+          stroke="#f8f1e5"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+        <path
+          d="M70 190c-20-25 15-35-3-60s-22-18-5-48 8-38-8-60"
+          fill="none"
+          stroke="#f8f1e5"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+      </svg>
+
+      <svg
+        viewBox="0 0 100 180"
+        className="absolute bottom-[6%] left-[3%] sm:left-[8%] w-16 sm:w-20 opacity-[0.13] hidden lg:block"
+      >
+        <path d="M50 10v160" fill="none" stroke="#e6c98f" strokeWidth="2.5" />
+        {[30, 55, 80, 105, 130].map((y, i) => (
+          <g key={i}>
+            <ellipse cx={50 - 14} cy={y} rx="10" ry="6" fill="none" stroke="#e6c98f" strokeWidth="2" transform={`rotate(-30 ${50 - 14} ${y})`} />
+            <ellipse cx={50 + 14} cy={y} rx="10" ry="6" fill="none" stroke="#e6c98f" strokeWidth="2" transform={`rotate(30 ${50 + 14} ${y})`} />
+          </g>
+        ))}
+      </svg>
+
+      <span className="absolute top-[30%] left-[45%] text-[#e6c98f] opacity-20 text-2xl select-none hidden lg:block">✦</span>
+      <span className="absolute bottom-[20%] right-[38%] text-[#e6c98f] opacity-15 text-xl select-none hidden lg:block">✦</span>
+    </div>
+  );
+}

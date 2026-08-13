@@ -15,6 +15,7 @@ import { Gallery } from './components/Gallery';
 import { About } from './components/About';
 import { FAQ } from './components/FAQ';
 import { FeatureCards } from './components/FeatureCards';
+import { StatsSection } from './components/StatsSection';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { CartAnimationProvider } from './components/CartAnimation';
 import { useAuth } from './components/AuthContext';
@@ -47,7 +48,6 @@ export default function App() {
     return match ? match[1] : 'pizza-pasta';
   }, [path]);
 
-  // Cart state persisted to localStorage
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     try {
       const saved = localStorage.getItem('bakemart_cart');
@@ -57,7 +57,6 @@ export default function App() {
     }
   });
 
-  // Wishlist state persisted to localStorage
   const [wishlistIds, setWishlistIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('bakemart_wishlist');
@@ -69,7 +68,6 @@ export default function App() {
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
-  const [isPageLoading, setIsPageLoading] = useState(false);
 
   const handleReorderBatch = (orderItems: { item: MenuItem; quantity: number; optionName?: string }[]) => {
     setCartItems((prevCart) => {
@@ -123,25 +121,12 @@ export default function App() {
     }
   }, [wishlistIds]);
 
-  // Page transition loading
   const [prevPath, setPrevPath] = useState(path);
-  useEffect(() => {
-    if (path !== prevPath) {
-      setIsPageLoading(true);
-      const timer = setTimeout(() => {
-        setIsPageLoading(false);
-        setPrevPath(path);
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [path, prevPath]);
 
-  // Handle category selection - triggers unfolding category page
   const handleSelectCategory = (catId: string) => {
     navigate(`/category/${catId}`);
   };
 
-  // Add item to cart
   const handleAddToCart = (item: MenuItem, selectedOption?: MenuItemOption) => {
     const cartItemId = selectedOption ? `${item.id}-${selectedOption.name}` : item.id;
 
@@ -157,7 +142,6 @@ export default function App() {
     });
   };
 
-  // Add item by ID helper
   const handleAddToCartById = (itemId: string) => {
     const item = menuItems.find((i) => i.id === itemId);
     if (item) {
@@ -166,7 +150,6 @@ export default function App() {
     }
   };
 
-  // Update quantity in cart
   const handleUpdateQuantity = (cartItemId: string, delta: number) => {
     setCartItems((prev) =>
       prev
@@ -181,17 +164,14 @@ export default function App() {
     );
   };
 
-  // Remove item from cart
   const handleRemoveFromCart = (cartItemId: string) => {
     setCartItems((prev) => prev.filter((ci) => ci.id !== cartItemId));
   };
 
-  // Clear cart
   const handleClearCart = () => {
     setCartItems([]);
   };
 
-  // Toggle wishlist
   const handleToggleWishlist = (item: MenuItem) => {
     setWishlistIds((prev) =>
       prev.includes(item.id)
@@ -207,12 +187,11 @@ export default function App() {
   const wishlistItems = menuItems.filter((i) => wishlistIds.includes(i.id));
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
-  // Admin route protection
   if (path === '/admin') {
     if (loading) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-[#FAF3E7]">
-          <p className="text-[#000000]">Loading...</p>
+        <div className="page-transition-overlay">
+          <p style={{ color: '#000000' }}>Loading...</p>
         </div>
       );
     }
@@ -220,7 +199,7 @@ export default function App() {
       return <Login />;
     }
     return (
-      <div className="min-h-screen bg-[#FAF3E7] flex flex-col">
+      <div style={{ minHeight: '100vh', backgroundColor: '#FAF3E7', display: 'flex', flexDirection: 'column' }}>
         <AdminDashboard onCloseAdmin={() => navigate('/')} />
       </div>
     );
@@ -228,16 +207,8 @@ export default function App() {
 
   return (
     <CartAnimationProvider>
-      <div className="min-h-screen bg-[#FAF3E7] text-[#000000] flex flex-col font-sans selection:bg-black selection:text-white pb-16 lg:pb-0 overflow-x-hidden">
+      <div style={{ minHeight: '100vh', backgroundColor: '#FAF3E7', color: '#000000', display: 'flex', flexDirection: 'column', fontFamily: 'Plus Jakarta Sans, sans-serif', paddingBottom: '4rem' }} className="selection-bg-black selection-text-white overflow-x-hidden">
       
-      {/* Page Transition Loading Overlay */}
-      {isPageLoading && (
-        <div className="fixed inset-0 z-50 bg-[#FAF3E7] flex items-center justify-center page-transition-overlay">
-          <img src="/logo.jpeg" alt="BakeMart" className="w-20 h-20 rounded-full border-2 border-[#000000] object-cover logo-img" />
-        </div>
-      )}
-
-      {/* Navbar */}
       <Navbar
         searchQuery={searchQuery}
         setSearchQuery={(query) => {
@@ -263,10 +234,8 @@ export default function App() {
         onNavigateSpecials={() => navigate('/specials')}
         />
 
-      {/* Main Page Content */}
-      <main className="flex-1">
+      <main style={{ flex: 1 }}>
         {activePage === 'category' ? (
-          /* DEDICATED CATEGORY UNFOLD VIEW PAGE */
           <CategoryUnfoldView
             categoryId={selectedCategory}
             onSelectCategory={handleSelectCategory}
@@ -276,24 +245,24 @@ export default function App() {
             onToggleWishlist={handleToggleWishlist}
           />
         ) : activePage === 'menu' ? (
-          /* DEDICATED FULL MENU PAGE */
-          <div className="py-8 max-w-7xl mx-auto px-4">
-            <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-[#EADECB] shadow-xs">
+          <div style={{ paddingTop: '2rem', paddingBottom: '2rem', maxWidth: '80rem', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1rem', paddingRight: '1rem' }} className="menu-page-container">
+            <div style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', backgroundColor: 'white', padding: '1.5rem', borderRadius: '1rem', border: '1px solid #EADECB' }} className="md:flex-row md:items-center md:justify-between">
               <div>
-                 <span className="text-xs uppercase font-extrabold tracking-widest text-[#000000]">
-                  FULL DIGITAL MENU
-                </span>
-                <h1 className="font-serif font-black text-2xl md:text-3xl text-[#000000] mt-1">
-                  Complete Food & Beverage Selection
-                </h1>
-                <p className="text-xs sm:text-sm text-[#000000] mt-1">
-                  Browse all specialty dishes, beverages, pastries, and house specials in one place.
-                </p>
+                 <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.1em', color: '#000000' }}>
+                   FULL DIGITAL MENU
+                 </span>
+                 <h1 style={{ fontFamily: 'Fraunces, Georgia, serif', fontWeight: 900, fontSize: '1.5rem', color: '#000000', marginTop: '0.25rem' }} className="md:text-3xl">
+                   Complete Food & Beverage Selection
+                 </h1>
+                 <p style={{ fontSize: '0.875rem', color: '#000000', marginTop: '0.25rem' }}>
+                   Browse all specialty dishes, beverages, pastries, and house specials in one place.
+                 </p>
               </div>
 
               <button
                 onClick={() => navigate('/')}
-                className="self-start md:self-auto bg-[#FAF3E7] hover:bg-[#EADECB] text-[#000000] text-xs font-bold px-4 py-2 rounded-full border border-[#D8C7B0] transition-colors"
+                style={{ backgroundColor: '#FAF3E7', color: '#000000', fontSize: '0.75rem', fontWeight: 700, padding: '0.5rem 1rem', borderRadius: '9999px', border: '1px solid #D8C7B0', cursor: 'pointer', alignSelf: 'flex-start' }}
+                className="md:self-auto hover-bg-eadecb"
               >
                 ← Back to Home Page
               </button>
@@ -309,12 +278,11 @@ export default function App() {
             />
           </div>
         ) : activePage === 'reservation' ? (
-          /* DEDICATED RESERVATION PAGE */
-          <div className="py-8 max-w-7xl mx-auto px-4">
-            <div className="mb-6 flex items-center justify-between">
+          <div style={{ paddingTop: '2rem', paddingBottom: '2rem', maxWidth: '80rem', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1rem', paddingRight: '1rem' }}>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <button
                 onClick={() => navigate('/')}
-                className="bg-white hover:bg-[#FAF3E7] text-[#000000] text-xs font-bold px-4 py-2 rounded-full border border-[#EADECB] shadow-xs transition-colors"
+                style={{ backgroundColor: 'white', color: '#000000', fontSize: '0.75rem', fontWeight: 700, padding: '0.5rem 1rem', borderRadius: '9999px', border: '1px solid #EADECB', cursor: 'pointer' }}
               >
                 ← Back to Home
               </button>
@@ -330,18 +298,15 @@ export default function App() {
         ) : activePage === 'specials' ? (
           <SpecialsPage onNavigateMenu={() => navigate('/menu')} onAddToCart={handleAddToCartById} onSelectCategory={handleSelectCategory} />
         ) : (
-           /* MAIN HOME VIEW HUB PAGE */
-           <div className="pb-28 lg:pb-32">
-              {/* Hero Section */}
+           <div style={{ paddingBottom: '7rem' }} className="lg:pb-8">
               <Hero
                 onScrollToMenu={() => navigate('/menu')}
               />
 
-              {/* Large Desktop Search Bar */}
-              <section className="hidden lg:block max-w-[1500px] mx-auto px-8 -mt-8 mb-4 relative z-20">
-                <div className="bg-white rounded-2xl border border-[#e6d3c2] shadow-lg p-2">
-                  <div className="relative">
-                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8c7a6c]" />
+              <section className="search-bar">
+                <div className="search-bar-inner">
+                  <div className="search-bar-input-wrap">
+                    <Search className="search-bar-icon" />
                     <input
                       type="text"
                       placeholder="Search for pizza, coffee, burgers, juices..."
@@ -352,12 +317,12 @@ export default function App() {
                           navigate('/menu');
                         }
                       }}
-                      className="w-full bg-[#fdfaf3] border border-[#e6d3c2] focus:border-[#000000] text-base text-[#000000] placeholder-[#8c7a6c] rounded-xl pl-14 pr-10 py-4 outline-none transition-colors"
+                      className="search-bar-input"
                     />
                     {searchQuery && (
                       <button
                         onClick={() => setSearchQuery('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-[#e6d3c2] hover:bg-[#d8c7b0] text-[#000000] transition-colors"
+                        className="search-bar-clear"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
@@ -366,16 +331,15 @@ export default function App() {
                 </div>
               </section>
 
-            {/* Feature Cards */}
-           <FeatureCards onNavigateMenu={() => navigate('/menu')} />
+              <FeatureCards onNavigateMenu={() => navigate('/menu')} />
+
+              <StatsSection />
             </div>
         )}
       </main>
 
-      {/* Footer */}
       <Footer />
 
-      {/* Cart Drawer */}
       <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
@@ -385,7 +349,6 @@ export default function App() {
         onClearCart={handleClearCart}
       />
 
-      {/* Wishlist Drawer */}
       <WishlistDrawer
         isOpen={isWishlistOpen}
         onClose={() => setIsWishlistOpen(false)}
@@ -394,18 +357,17 @@ export default function App() {
         onAddToCart={handleAddToCart}
       />
 
-      {/* Sticky Bottom Bar — Desktop */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 hidden lg:flex w-full max-w-[1100px] px-4">
-        <div className="flex items-center justify-between gap-4 w-full bg-white border border-[#e6d3c2] shadow-[0_8px_30px_rgba(26,18,11,0.12)] rounded-full px-4 py-3">
+      <div className="sticky-bottom-bar">
+        <div className="sticky-bottom-bar-inner">
           <button
             onClick={() => setIsCartOpen(true)}
-            className="flex items-center gap-2 bg-[#000000] hover:bg-[#000000] text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all active:scale-[0.98]"
+            className="sticky-cart-btn"
           >
-            <ShoppingBag className="w-4 h-4 text-[#d97a4c]" />
+            <ShoppingBag className="w-4 h-4" style={{ color: '#d97a4c' }} />
             <span>View Cart ({totalCartCount})</span>
           </button>
 
-          <span className="hidden xl:block text-xs font-semibold text-[#5c4b3f] tracking-wide">
+          <span style={{ display: 'none', fontSize: '0.75rem', fontWeight: 600, color: '#5c4b3f', letterSpacing: '0.05em' }} className="xl:block">
             Fast &amp; Secure Checkout
           </span>
 
@@ -422,9 +384,7 @@ export default function App() {
               }).join('\n')}\n----------------------------------\n*GRAND TOTAL:* KSh ${total.toLocaleString()}\n\n*Location:* BakeMart Coffee House, Tropical House, Watalii Rd, Nakuru City`;
               window.open(`https://wa.me/254725009708?text=${encodeURIComponent(message)}`, '_blank');
             }}
-            className={`flex items-center justify-center gap-2 bg-[#d97a4c] hover:bg-[#e8a27a] text-[#000000] px-6 py-2.5 rounded-full font-bold text-sm transition-all active:scale-[0.98] ${
-              cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
+            className={`sticky-checkout-btn ${cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             <Send className="w-4 h-4" />
             <span>Checkout →</span>
@@ -432,8 +392,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* Sticky Bottom Nav for Mobile */}
-    </div>
       <MobileBottomNav
         activePage={activePage}
         onNavigateHome={() => navigate('/')}
@@ -445,6 +403,7 @@ export default function App() {
         cartCount={totalCartCount}
         wishlistCount={wishlistItems.length}
       />
+    </div>
     </CartAnimationProvider>
   );
 }

@@ -14,19 +14,22 @@ export const HamburgerIcon: React.FC<HamburgerIconProps> = ({ isOpen, onClick })
       aria-label={isOpen ? 'Close menu' : 'Open menu'}
     >
       <div className="relative w-5 h-5">
+        {/* Top line - offset left, slightly rotated */}
         <span
-          className={`absolute left-0 top-0 h-0.5 w-5 bg-current rounded-full transition-all duration-300 ease-in-out ${
-            isOpen ? 'top-[9px] rotate-45' : 'top-0'
+          className={`absolute left-0 h-[2px] w-5 bg-current rounded-full transition-all duration-300 ease-in-out ${
+            isOpen ? 'top-[10px] rotate-[40deg] origin-left' : 'top-0'
           }`}
         />
+        {/* Middle line - shorter, offset right, slightly rotated */}
         <span
-          className={`absolute left-0 top-[9px] h-0.5 w-5 bg-current rounded-full transition-all duration-300 ease-in-out ${
-            isOpen ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'
+          className={`absolute left-[3px] h-[2px] w-3 bg-current rounded-full transition-all duration-300 ease-in-out ${
+            isOpen ? 'top-[10px] opacity-0 scale-x-0' : 'top-[9px]'
           }`}
         />
+        {/* Bottom line - offset left, slightly rotated opposite direction */}
         <span
-          className={`absolute left-0 bottom-0 h-0.5 w-5 bg-current rounded-full transition-all duration-300 ease-in-out ${
-            isOpen ? 'bottom-[9px] -rotate-45' : 'bottom-0'
+          className={`absolute left-0 h-[2px] w-5 bg-current rounded-full transition-all duration-300 ease-in-out ${
+            isOpen ? 'bottom-[10px] -rotate-[40deg] origin-left' : 'bottom-0'
           }`}
         />
       </div>

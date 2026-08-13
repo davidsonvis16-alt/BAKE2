@@ -5,6 +5,7 @@ import { ProductCard } from './ProductCard';
 import { MenuItem, MenuItemOption } from '../types';
 import { ProductCardSkeleton, TicketListItemSkeleton, ImageWithSkeleton } from './Skeletons';
 import { FoodPreviewModal } from './FoodPreviewModal';
+import { CategoryCard } from './CategoryCard';
 import { useCartAnimation } from './CartAnimation';
 import { getCachedDataSync } from '../lib/dataCache';
 import {
@@ -13,18 +14,7 @@ import {
   Search,
   LayoutGrid,
   List,
-  Coffee,
-  Cake,
-  GlassWater,
-  Egg,
-  UtensilsCrossed,
-  Beef,
-  Flame,
-  Pizza,
-  Sandwich,
-  Drumstick,
-  Soup,
-  Utensils
+  Utensils,
 } from 'lucide-react';
 
 interface CategoryUnfoldViewProps {
@@ -66,28 +56,6 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
   }, [categoryId, selectedSubFilter, categorySearch]);
 
   const currentCategory = CATEGORIES.find((c) => c.id === categoryId) || CATEGORIES[0];
-
-  const getCategoryIcon = (id: string) => {
-    switch (id) {
-      case 'bakery-desserts': return <Cake className="w-5 h-5 text-[#d97a4c]" />;
-      case 'juices-cocktails': return <GlassWater className="w-5 h-5 text-[#d97a4c]" />;
-      case 'hot-cold-drinks': return <Coffee className="w-5 h-5 text-[#d97a4c]" />;
-      case 'breakfast': return <Egg className="w-5 h-5 text-[#d97a4c]" />;
-      case 'mains-meals': return <UtensilsCrossed className="w-5 h-5 text-[#d97a4c]" />;
-      case 'light-snacks': return <Beef className="w-5 h-5 text-[#d97a4c]" />;
-      case 'kienyeji-traditional': return <Flame className="w-5 h-5 text-[#d97a4c]" />;
-      case 'pizza-pasta': return <Pizza className="w-5 h-5 text-[#d97a4c]" />;
-      case 'sandwiches-wraps': return <Sandwich className="w-5 h-5 text-[#d97a4c]" />;
-      case 'bbq-platters': return <Drumstick className="w-5 h-5 text-[#d97a4c]" />;
-      case 'soups-salads': return <Soup className="w-5 h-5 text-[#d97a4c]" />;
-      default: return <Utensils className="w-5 h-5 text-[#d97a4c]" />;
-    }
-  };
-
-  const getCategoryHeroImage = (id: string) => {
-    const cat = CATEGORIES.find(c => c.id === id);
-    return cat?.image || '/open-kitchen.jpeg';
-  };
 
   const subFilters = [
     { id: 'all', label: 'All' },
@@ -161,7 +129,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                   Categories
                 </span>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <button
                   onClick={() => {
                     onSelectCategory('all');
@@ -184,34 +152,19 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                 </button>
 
                 {CATEGORIES.map((cat) => {
-                  const icon = getCategoryIcon(cat.id);
                   const itemCount = menuItems.filter((i) => i.category === cat.id).length;
                   const isActive = cat.id === categoryId;
 
                   return (
-                    <button
+                    <CategoryCard
                       key={cat.id}
-                      onClick={() => {
-                        onSelectCategory(cat.id);
+                      category={cat}
+                      onSelectCategory={(id) => {
+                        onSelectCategory(id);
                         setSelectedSubFilter('all');
                         setCategorySearch('');
                       }}
-                      className={`flex items-center gap-3 w-full text-left rounded-xl border px-3.5 py-2.5 text-sm font-semibold transition min-w-0 ${
-                        isActive
-                          ? 'border-[#000000] bg-[#000000] text-white'
-                          : 'border-[#e6d3c2] bg-[#fdfaf3] text-[#000000] hover:border-[#000000]'
-                      }`}
-                    >
-                      <span className={`shrink-0 ${isActive ? 'text-[#d97a4c]' : 'text-[#8c7a6c]'}`}>
-                        {icon}
-                      </span>
-                      <span className="flex-1 min-w-0">
-                        <span className="block truncate">{cat.name}</span>
-                          <span className={`block text-[11px] ${isActive ? 'text-white' : 'text-[#8c7a6c]'}`}>
-                          {itemCount} {itemCount === 1 ? 'item' : 'items'}
-                        </span>
-                      </span>
-                    </button>
+                    />
                   );
                 })}
               </div>
@@ -225,7 +178,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
               <div className="grid gap-6 p-5 sm:gap-8 sm:p-6 lg:grid-cols-[1.6fr_1fr] lg:p-8 grid-cols-1 min-w-0">
                 <div className="space-y-4 min-w-0">
                   <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-widest text-[#d97a4c] font-bold">
-                    {getCategoryIcon(currentCategory.id)}
+                    <Utensils className="w-3.5 h-3.5" />
                     <span>Open Kitchen Specialty</span>
                   </div>
 
@@ -249,7 +202,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
 
                 <div className="hidden lg:block min-w-0 relative overflow-hidden rounded-xl border border-white/10 bg-[#0f0a05]">
                   <ImageWithSkeleton
-                    src={getCategoryHeroImage(currentCategory.id)}
+                    src={currentCategory.image}
                     alt={currentCategory.name}
                     referrerPolicy="no-referrer"
                     containerClassName="w-full h-full aspect-[4/3]"
@@ -269,37 +222,17 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                 >
                   {CATEGORIES.map((cat) => {
                     const isActive = cat.id === categoryId;
-                    const itemCount = menuItems.filter((item) => item.category === cat.id).length;
 
                     return (
-                      <button
+                      <CategoryCard
                         key={cat.id}
-                        onClick={() => {
-                          onSelectCategory(cat.id);
+                        category={cat}
+                        onSelectCategory={(id) => {
+                          onSelectCategory(id);
                           setSelectedSubFilter('all');
                           setCategorySearch('');
                         }}
-                        type="button"
-                        className={`shrink-0 min-w-[120px] rounded-xl border bg-white p-3 text-left transition-all duration-200 ${
-                          isActive
-                            ? 'border-[#000000] bg-[#000000] text-white shadow-md'
-                            : 'border-[#e6d3c2] text-[#000000] hover:border-[#000000]'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${isActive ? 'bg-[#d97a4c] text-white' : 'bg-[#f8f1e5] text-[#8c7a6c]'}`}>
-                            {getCategoryIcon(cat.id)}
-                          </span>
-                          <div className="min-w-0">
-                            <p className="text-xs font-semibold leading-tight line-clamp-1">
-                              {cat.name}
-                            </p>
-                            <p className={`text-[10px] mt-0.5 ${isActive ? 'text-white' : 'text-[#8c7a6c]'}`}>
-                              {itemCount} items
-                            </p>
-                          </div>
-                        </div>
-                      </button>
+                      />
                     );
                   })}
                 </div>
