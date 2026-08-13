@@ -6,7 +6,7 @@ interface StatsItem {
 }
 
 const stats: StatsItem[] = [
-  { number: '12+', label: 'YEARS OF CRAFT' },
+  { number: '4', label: 'YEARS OF CRAFT' },
   { number: '202+', label: 'MENU FAVOURITES' },
   { number: '5.0', label: 'CUSTOMER RATING' },
   { number: 'DAILY', label: 'FRESHLY PREPARED' },

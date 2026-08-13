@@ -17,6 +17,7 @@ import { FAQ } from './components/FAQ';
 import { FeatureCards } from './components/FeatureCards';
 import { StatsSection } from './components/StatsSection';
 import { CartAnimationProvider } from './components/CartAnimation';
+import { CartPill } from './components/CartPill';
 import { useAuth } from './components/AuthContext';
 import { useMenuData } from './hooks/useMenuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
@@ -376,6 +377,8 @@ export default function App() {
             </div>
         )}
       </main>
+
+      <CartPill cartCount={totalCartCount} onOpenCart={() => setIsCartOpen(true)} />
 
       <Footer />
 

@@ -2056,22 +2056,26 @@ html {
   position: relative;
   border-radius: 0;
   overflow: visible;
-  aspect-ratio: 4/3;
   background-color: transparent;
   box-shadow: none;
+  aspect-ratio: auto;
+  display: inline-block;
 }
 @media (min-width: 1024px) {
   .menu-page-header-image {
-    aspect-ratio: 5/4;
+    aspect-ratio: auto;
   }
 }
 
 .menu-page-header-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 1.25rem;
-  box-shadow: 0 20px 40px rgba(26, 18, 11, 0.12);
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  object-fit: none;
+  border-radius: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.25));
 }
 
 /* Menu Page Map */
@@ -2291,4 +2295,64 @@ html {
   color: #5c4b3f;
   margin-top: 0.5rem;
   max-width: 32rem;
+}
+
+/* Cart Pill */
+.cart-pill-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 40;
+  animation: slideInFromRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.cart-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #17130F;
+  color: #FFFFFF;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: all 200ms ease;
+}
+.cart-pill:hover {
+  background-color: #D97745;
+  transform: translateY(-2px);
+}
+.cart-pill:active {
+  transform: scale(0.96);
+}
+
+.cart-pill-count {
+  background-color: #D97745;
+  color: #17130F;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.4rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-pill-text {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
