@@ -2072,46 +2072,6 @@ html {
   background-color: #f5efe7;
   border-color: #000000;
 }
-
-.menu-page-header-image {
-  position: relative;
-  border-radius: 0;
-  overflow: visible;
-  background-color: transparent;
-  box-shadow: none;
-  aspect-ratio: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-@media (min-width: 1024px) {
-  .menu-page-header-inner {
-    grid-template-columns: 1fr auto;
-    gap: 3rem;
-    align-items: start;
-  }
-}
-
-.menu-page-header-image img {
-  display: block;
-  width: auto;
-  max-width: 90%;
-  height: auto;
-  object-fit: none;
-  border-radius: 0;
-  box-shadow: none;
-  filter: drop-shadow(0 25px 35px rgba(0,0,0,0.25));
-}
-
-.menu-page-hero-img {
-  width: 100%;
-  height: auto;
-  max-width: 100%;
-  object-fit: none;
-  border-radius: 0;
-  box-shadow: none;
-  filter: drop-shadow(0 25px 35px rgba(0,0,0,0.25));
-}
 .menu-map-section {
   margin-top: 2rem;
 }
