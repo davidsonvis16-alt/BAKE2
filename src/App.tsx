@@ -275,7 +275,7 @@ export default function App() {
                       </button>
                     </div>
                  </div>
-                    <div className="relative mx-auto max-w-[85%] sm:max-w-sm lg:max-w-none bg-[#fdfaf3] rounded-3xl p-4">
+                    <div className="relative mx-auto max-w-[85%] sm:max-w-sm lg:max-w-none">
                       <div className="relative w-full mx-auto">
                         <img
                           src="/main-bar.png"

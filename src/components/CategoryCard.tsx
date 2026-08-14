@@ -34,7 +34,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       </div>
 
       {/* Image, hard-cropped, thick bottom border to feel like a printed card not a photo card */}
-      <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-[#1a120b] border-b-[3px] border-[#1a120b]">
+      <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-[#f8f1e5] border-b-[3px] border-[#e6d3c2]">
         <ImageWithSkeleton
           src={category.image}
           alt={category.name}

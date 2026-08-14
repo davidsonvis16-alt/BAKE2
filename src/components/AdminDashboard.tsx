@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { supabase, uploadMenuItemImage, validateImageFile } from '../lib/supabase';
+import { supabase, uploadMenuItemImage, validateImageFile, deleteMenuItemImage } from '../lib/supabase';
 import { CATEGORIES } from '../data/menuData';
 import { useAuth } from '../components/AuthContext';
 import { getCachedData, invalidateCache, setCachedData } from '../lib/dataCache';
@@ -58,6 +58,7 @@ export const AdminDashboard: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const [newItemImage, setNewItemImage] = useState<File | null>(null);
   const [editImage, setEditImage] = useState<File | null>(null);
+  const [removeImage, setRemoveImage] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [stats, setStats] = useState<ItemStat[]>([]);
   const [statsLoading, setStatsLoading] = useState(true);
@@ -217,12 +218,14 @@ export const AdminDashboard: React.FC = () => {
     setEditingId(item.id);
     setEditForm(item);
     setEditImage(null);
+    setRemoveImage(false);
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setEditForm({});
     setEditImage(null);
+    setRemoveImage(false);
   };
 
   const saveEdit = async () => {
@@ -230,7 +233,12 @@ export const AdminDashboard: React.FC = () => {
     setUploading(true);
     try {
       let imageUrl = editForm.image || null;
-      if (editImage) {
+      if (removeImage) {
+        if (editForm.image) {
+          await deleteMenuItemImage(editForm.image as string);
+        }
+        imageUrl = null;
+      } else if (editImage) {
         imageUrl = await uploadMenuItemImage(editImage, editingId);
       }
       const updateData: Record<string, unknown> = {
@@ -240,7 +248,7 @@ export const AdminDashboard: React.FC = () => {
         badge: editForm.badge || null,
         category: editForm.category,
       };
-      if (imageUrl !== undefined && imageUrl !== null) {
+      if (imageUrl !== undefined) {
         updateData.image = imageUrl;
       }
       const { error } = await supabase.from('menu_items').update(updateData).eq('id', editingId);
@@ -555,20 +563,34 @@ export const AdminDashboard: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {groupedItems[catId].map((item) => (
                     <div key={item.id} className="bg-white rounded-xl p-4 shadow-sm border border-[#EADECB] flex flex-col">
-                       {editingId === item.id ? (
-                        <div className="space-y-2">
-                          {editForm.image && (
-                            <div className="relative w-full h-40 rounded-lg overflow-hidden bg-[#FAF3E7] border border-[#EADECB]">
-                              <img
-                                src={editForm.image}
-                                alt={editForm.name || 'Item'}
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                  (e.target as HTMLImageElement).style.display = 'none';
-                                }}
-                              />
-                            </div>
-                          )}
+                        {editingId === item.id ? (
+                         <div className="space-y-2">
+                           {editForm.image && !removeImage ? (
+                             <div className="relative w-full h-40 rounded-lg overflow-hidden bg-[#FAF3E7] border border-[#EADECB]">
+                               <img
+                                 src={editForm.image}
+                                 alt={editForm.name || 'Item'}
+                                 className="w-full h-full object-cover"
+                                 onError={(e) => {
+                                   (e.target as HTMLImageElement).style.display = 'none';
+                                 }}
+                               />
+                               <button
+                                 onClick={() => {
+                                   setRemoveImage(true);
+                                   setEditImage(null);
+                                 }}
+                                 className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 text-white p-1.5 rounded-full transition-all active:scale-95"
+                                 title="Remove image"
+                               >
+                                 <X className="w-3.5 h-3.5" />
+                               </button>
+                             </div>
+                           ) : removeImage ? (
+                             <div className="w-full h-40 rounded-lg overflow-hidden bg-[#FAF3E7] border border-[#EADECB] flex items-center justify-center">
+                               <span className="text-[10px] font-bold uppercase tracking-wider text-[#000000]/30">Image Removed</span>
+                             </div>
+                           ) : null}
                           <input value={editForm.name || ''}
                             onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                             className="border border-[#D8C7B0] rounded-lg px-3 py-2 w-full font-semibold text-sm text-[#000000] placeholder-[#000000]/40 outline-none focus:border-[#000000] transition-colors" />

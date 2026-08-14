@@ -1,4 +1,4 @@
-import { Category, MenuItem } from '../types';
+﻿import { Category, MenuItem } from '../types';
 
 export const CATEGORIES: Category[] = [
   {
