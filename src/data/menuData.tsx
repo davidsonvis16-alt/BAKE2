@@ -268,7 +268,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 's6', name: 'Chips Masala', category: 'light-snacks', price: 300, description: 'Crispy chips tossed in a warm, spiced masala.' },
   { id: 's7', name: 'Chips', category: 'light-snacks', price: 200, image: '/Chips-Masala.jpg', description: 'Classic golden fries, lightly salted and hot.' },
   { id: 's8', name: 'Smokie Special', category: 'light-snacks', price: 250, description: 'Smoky grilled smokie with a side of greens.' },
-  { id: 's9', name: 'Chips Kubwa', category: 'light-snacks', price: 300, image: '/Chips-masala-Sausage.jpg', description: 'A large serving of crispy chips for sharing.' },
+  { id: 's9', name: 'Chips Kubwa', category: 'light-snacks', price: 300, description: 'A large serving of crispy chips for sharing.' },
   { id: 's10', name: 'Home Fries', category: 'light-snacks', price: 300, description: 'Rustic home-style fried potatoes with herbs.' },
   { id: 's11', name: 'Chapati Roll', category: 'light-snacks', price: 150, description: 'Soft chapati rolled with spiced filling.' },
   { id: 's12', name: 'Mixed Grill Skewers', category: 'light-snacks', price: 150, description: 'Charcoal-grilled mshikaki skewers, one piece.' },

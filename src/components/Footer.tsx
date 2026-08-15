@@ -190,6 +190,32 @@ export const Footer: React.FC = () => {
               Chat on WhatsApp
               <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
+
+            <div className="flex items-center gap-3 pt-2">
+              <a
+                href="https://wa.me/254725009708?text=Hello%20BakeMart%20Coffee%20House,%20I%20would%20like%20to%20order..."
+                target="_blank"
+                rel="noreferrer"
+                aria-label="WhatsApp"
+                className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center hover:scale-110 transition-transform"
+              >
+                <img src="/icons/whatsapp.svg" alt="WhatsApp" className="w-5 h-5" />
+              </a>
+              <a
+                href="mailto:Salesbakemart.co.ke@gmail.com"
+                aria-label="Email"
+                className="w-10 h-10 rounded-full bg-[#d97a4c] flex items-center justify-center hover:scale-110 transition-transform"
+              >
+                <img src="/icons/chat.svg" alt="Email" className="w-5 h-5" />
+              </a>
+              <a
+                href="tel:+254725009708"
+                aria-label="Call"
+                className="w-10 h-10 rounded-full bg-black border border-neutral-700 flex items-center justify-center hover:scale-110 transition-transform"
+              >
+                <img src="/icons/phone.svg" alt="Call" className="w-5 h-5" />
+              </a>
+            </div>
           </div>
 
         </div>

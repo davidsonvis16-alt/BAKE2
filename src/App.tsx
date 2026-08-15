@@ -18,6 +18,7 @@ import { FeatureCards } from './components/FeatureCards';
 import { StatsSection } from './components/StatsSection';
 import { CartAnimationProvider } from './components/CartAnimation';
 import { CartPill } from './components/CartPill';
+import { FloatingContactButtons } from './components/FloatingContactButtons';
 import { useAuth } from './components/AuthContext';
 import { useMenuData } from './hooks/useMenuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
@@ -436,6 +437,7 @@ export default function App() {
         </div>
       </div>
     </div>
-    </CartAnimationProvider>
-  );
+    <FloatingContactButtons />
+  </CartAnimationProvider>
+);
 }
