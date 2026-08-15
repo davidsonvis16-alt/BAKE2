@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { supabase, uploadMenuItemImage, validateImageFile, deleteMenuItemImage } from '../lib/supabase';
-import { CATEGORIES } from '../data/menuData';
+import { CATEGORIES, MENU_ITEMS } from '../data/menuData';
 import { useAuth } from '../components/AuthContext';
 import { getCachedData, invalidateCache, setCachedData } from '../lib/dataCache';
 import { Trash2, Plus, Save, X, Check, LogOut, Search } from 'lucide-react';
@@ -44,6 +44,12 @@ const statusColor = (status: string | null) => {
     case 'completed': return 'bg-gray-200 text-gray-600';
     default: return 'bg-gray-100 text-gray-500';
   }
+};
+
+const getEffectiveImage = (item: MenuItemRow): string | null => {
+  if (item.image) return item.image;
+  const staticItem = MENU_ITEMS.find((mi) => mi.id === item.id);
+  return staticItem?.image || null;
 };
 
 export const AdminDashboard: React.FC = () => {
@@ -259,6 +265,7 @@ export const AdminDashboard: React.FC = () => {
       }
       setEditingId(null);
       setEditImage(null);
+      invalidateCache('admin-menu-items');
       fetchItems();
       window.dispatchEvent(new Event('menu-updated'));
     } catch (err) {
@@ -272,6 +279,7 @@ export const AdminDashboard: React.FC = () => {
   const toggleAvailable = async (item: MenuItemRow) => {
     if (!supabase) return;
     await supabase.from('menu_items').update({ available: !item.available }).eq('id', item.id);
+    invalidateCache('admin-menu-items');
     fetchItems();
     window.dispatchEvent(new Event('menu-updated'));
   };
@@ -280,6 +288,7 @@ export const AdminDashboard: React.FC = () => {
     if (!supabase) return;
     if (!confirm('Delete this item permanently?')) return;
     await supabase.from('menu_items').delete().eq('id', id);
+    invalidateCache('admin-menu-items');
     fetchItems();
     window.dispatchEvent(new Event('menu-updated'));
   };
@@ -300,6 +309,7 @@ export const AdminDashboard: React.FC = () => {
       setNewItem({ id: '', name: '', category: '', price: 0, description: '', badge: '' });
       setNewItemImage(null);
       setShowAddForm(false);
+      invalidateCache('admin-menu-items');
       fetchItems();
       window.dispatchEvent(new Event('menu-updated'));
     } catch (err) {
@@ -565,16 +575,21 @@ export const AdminDashboard: React.FC = () => {
                     <div key={item.id} className="bg-white rounded-xl p-4 shadow-sm border border-[#EADECB] flex flex-col">
                         {editingId === item.id ? (
                          <div className="space-y-2">
-                           {editForm.image && !removeImage ? (
-                             <div className="relative w-full h-40 rounded-lg overflow-hidden bg-[#FAF3E7] border border-[#EADECB]">
-                               <img
-                                 src={editForm.image}
-                                 alt={editForm.name || 'Item'}
-                                 className="w-full h-full object-cover"
-                                 onError={(e) => {
-                                   (e.target as HTMLImageElement).style.display = 'none';
-                                 }}
-                               />
+                            {getEffectiveImage(editForm as MenuItemRow) && !removeImage ? (
+                              <div className="relative w-full h-40 rounded-lg overflow-hidden bg-[#FAF3E7] border border-[#EADECB]">
+                                <img
+                                  src={getEffectiveImage(editForm as MenuItemRow) || ''}
+                                  alt={editForm.name || 'Item'}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    const staticItem = MENU_ITEMS.find((mi) => mi.id === (editForm as MenuItemRow).id);
+                                    if (staticItem?.image) {
+                                      (e.target as HTMLImageElement).src = staticItem.image;
+                                    } else {
+                                      (e.target as HTMLImageElement).style.display = 'none';
+                                    }
+                                  }}
+                                />
                                <button
                                  onClick={() => {
                                    setRemoveImage(true);
@@ -634,23 +649,28 @@ export const AdminDashboard: React.FC = () => {
                         </div>
                        ) : (
                         <>
-                          <div className="relative w-full h-40 rounded-lg overflow-hidden bg-[#FAF3E7] mb-3 border border-[#EADECB]">
-                            {item.image ? (
-                              <img
-                                src={item.image}
-                                alt={item.name}
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                  (e.target as HTMLImageElement).src = '';
-                                  (e.target as HTMLImageElement).style.display = 'none';
-                                }}
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-[#000000]/30">
-                                <span className="text-[10px] font-bold uppercase tracking-wider">No Image</span>
-                              </div>
-                            )}
-                          </div>
+                           <div className="relative w-full h-40 rounded-lg overflow-hidden bg-[#FAF3E7] mb-3 border border-[#EADECB]">
+                             {getEffectiveImage(item) ? (
+                               <img
+                                 src={getEffectiveImage(item) || ''}
+                                 alt={item.name}
+                                 className="w-full h-full object-cover"
+                                 onError={(e) => {
+                                   const staticItem = MENU_ITEMS.find((mi) => mi.id === item.id);
+                                   if (staticItem?.image) {
+                                     (e.target as HTMLImageElement).src = staticItem.image;
+                                   } else {
+                                     (e.target as HTMLImageElement).src = '';
+                                     (e.target as HTMLImageElement).style.display = 'none';
+                                   }
+                                 }}
+                               />
+                             ) : (
+                               <div className="w-full h-full flex items-center justify-center text-[#000000]/30">
+                                 <span className="text-[10px] font-bold uppercase tracking-wider">No Image</span>
+                               </div>
+                             )}
+                           </div>
                           <div className="flex-1">
                             <div className="flex flex-wrap items-center gap-1.5 mb-1">
                               <span className="font-semibold text-sm text-[#000000]">{item.name}</span>
