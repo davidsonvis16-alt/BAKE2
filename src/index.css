@@ -2336,10 +2336,10 @@ html {
   font-weight: 700;
 }
 
-@keyframes slideInFromRight {
+@keyframes slideInFromLeft {
   from {
     opacity: 0;
-    transform: translateX(120%);
+    transform: translateX(-120%);
   }
   to {
     opacity: 1;
