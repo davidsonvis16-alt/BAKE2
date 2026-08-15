@@ -54,6 +54,8 @@ const getEffectiveImage = (item: MenuItemRow): string | null => {
 
 export const AdminDashboard: React.FC = () => {
   const [items, setItems] = useState<MenuItemRow[]>([]);
+  const [staticOnlyIds, setStaticOnlyIds] = useState<Set<string>>(new Set());
+  const [deletedStaticIds, setDeletedStaticIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<MenuItemRow>>({});
@@ -78,7 +80,18 @@ export const AdminDashboard: React.FC = () => {
 
   const fetchItems = async () => {
     if (!supabase) {
-      setItems([]);
+      setItems(
+        MENU_ITEMS.map((item) => ({
+          id: item.id,
+          name: item.name,
+          category: item.category,
+          price: item.price,
+          description: item.description || '',
+          badge: item.badge || null,
+          available: true,
+          image: item.image || null,
+        }))
+      );
       setLoading(false);
       return;
     }
@@ -100,10 +113,35 @@ export const AdminDashboard: React.FC = () => {
         },
         { ttlMs: 10 * 60 * 1000 }
       );
-      setItems(data);
+
+      const dbIds = new Set((data || []).map((row) => row.id));
+      const staticOnly: MenuItemRow[] = MENU_ITEMS.filter((item) => !dbIds.has(item.id) && !deletedStaticIds.has(item.id)).map((item) => ({
+        id: item.id,
+        name: item.name,
+        category: item.category,
+        price: item.price,
+        description: item.description || '',
+        badge: item.badge || null,
+        available: true,
+        image: item.image || null,
+      }));
+
+      setItems([...(data || []), ...staticOnly]);
+      setStaticOnlyIds(new Set(staticOnly.map((i) => i.id)));
     } catch (err) {
       console.error('AdminDashboard: menu_items fetch exception', err);
-      setItems([]);
+      setItems(
+        MENU_ITEMS.map((item) => ({
+          id: item.id,
+          name: item.name,
+          category: item.category,
+          price: item.price,
+          description: item.description || '',
+          badge: item.badge || null,
+          available: true,
+          image: item.image || null,
+        }))
+      );
     } finally {
       setLoading(false);
     }
@@ -240,31 +278,45 @@ export const AdminDashboard: React.FC = () => {
     try {
       let imageUrl = editForm.image || null;
       if (removeImage) {
-        if (editForm.image) {
+        if (editForm.image && editForm.image.startsWith('http')) {
           await deleteMenuItemImage(editForm.image as string);
         }
         imageUrl = null;
       } else if (editImage) {
         imageUrl = await uploadMenuItemImage(editImage, editingId);
       }
+
       const updateData: Record<string, unknown> = {
         name: editForm.name,
         price: editForm.price,
         description: editForm.description,
         badge: editForm.badge || null,
         category: editForm.category,
+        available: true,
       };
       if (imageUrl !== undefined) {
         updateData.image = imageUrl;
       }
-      const { error } = await supabase.from('menu_items').update(updateData).eq('id', editingId);
-      if (error) {
-        console.error('Supabase update error:', error);
-        alert('Failed to save item: ' + error.message);
-        return;
+
+      if (staticOnlyIds.has(editingId)) {
+        const { error } = await supabase.from('menu_items').insert([{ id: editingId, ...updateData }]);
+        if (error) {
+          console.error('Supabase insert error:', error);
+          alert('Failed to add item to database: ' + error.message);
+          return;
+        }
+      } else {
+        const { error } = await supabase.from('menu_items').update(updateData).eq('id', editingId);
+        if (error) {
+          console.error('Supabase update error:', error);
+          alert('Failed to save item: ' + error.message);
+          return;
+        }
       }
+
       setEditingId(null);
       setEditImage(null);
+      setRemoveImage(false);
       invalidateCache('admin-menu-items');
       fetchItems();
       window.dispatchEvent(new Event('menu-updated'));
@@ -278,6 +330,11 @@ export const AdminDashboard: React.FC = () => {
 
   const toggleAvailable = async (item: MenuItemRow) => {
     if (!supabase) return;
+    if (staticOnlyIds.has(item.id)) {
+      setItems((prev) => prev.map((i) => i.id === item.id ? { ...i, available: !i.available } : i));
+      window.dispatchEvent(new Event('menu-updated'));
+      return;
+    }
     await supabase.from('menu_items').update({ available: !item.available }).eq('id', item.id);
     invalidateCache('admin-menu-items');
     fetchItems();
@@ -287,6 +344,12 @@ export const AdminDashboard: React.FC = () => {
   const deleteItem = async (id: string) => {
     if (!supabase) return;
     if (!confirm('Delete this item permanently?')) return;
+    if (staticOnlyIds.has(id)) {
+      setDeletedStaticIds((prev) => new Set(prev).add(id));
+      setItems((prev) => prev.filter((item) => item.id !== id));
+      window.dispatchEvent(new Event('menu-updated'));
+      return;
+    }
     await supabase.from('menu_items').delete().eq('id', id);
     invalidateCache('admin-menu-items');
     fetchItems();
