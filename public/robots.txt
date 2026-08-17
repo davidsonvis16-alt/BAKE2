@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bakemart.co.ke/sitemap.xml
+Sitemap: https://www.bakemart.co.ke/sitemap.xml
