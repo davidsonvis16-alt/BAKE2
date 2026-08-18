@@ -55,14 +55,14 @@ const getEffectiveImage = (item: MenuItemRow): string | null => {
 export const AdminDashboard: React.FC = () => {
   const [items, setItems] = useState<MenuItemRow[]>([]);
   const [staticOnlyIds, setStaticOnlyIds] = useState<Set<string>>(new Set());
-  const [deletedStaticIds, setDeletedStaticIds] = useState<Set<string>>(new Set(() => {
+  const [deletedStaticIds, setDeletedStaticIds] = useState<Set<string>>(() => {
     try {
       const saved = localStorage.getItem('bakemart_deleted_static_items');
       return saved ? new Set(JSON.parse(saved)) : new Set();
     } catch {
       return new Set();
     }
-  }));
+  });
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<MenuItemRow>>({});
@@ -415,11 +415,15 @@ export const AdminDashboard: React.FC = () => {
 
   const filteredItems = items.filter((item) => {
     const q = searchQuery.toLowerCase();
+    const name = (item.name || '').toLowerCase();
+    const category = (item.category || '').toLowerCase();
+    const description = (item.description || '').toLowerCase();
+    const badge = item.badge ? item.badge.toLowerCase() : '';
     return (
-      item.name.toLowerCase().includes(q) ||
-      item.category.toLowerCase().includes(q) ||
-      item.description.toLowerCase().includes(q) ||
-      (item.badge && item.badge.toLowerCase().includes(q))
+      name.includes(q) ||
+      category.includes(q) ||
+      description.includes(q) ||
+      badge.includes(q)
     );
   });
 
@@ -778,8 +782,8 @@ export const AdminDashboard: React.FC = () => {
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-[#000000]/50 line-clamp-2 mb-2">{item.description}</p>
-                            <span className="font-mono font-bold text-[#000000] text-sm">KSh {item.price.toLocaleString()}</span>
+                             <p className="text-xs text-[#000000]/50 line-clamp-2 mb-2">{item.description || ''}</p>
+                             <span className="font-mono font-bold text-[#000000] text-sm">KSh {(item.price || 0).toLocaleString()}</span>
                           </div>
 
                            <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-[#EADECB]">
