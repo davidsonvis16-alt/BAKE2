@@ -55,7 +55,14 @@ const getEffectiveImage = (item: MenuItemRow): string | null => {
 export const AdminDashboard: React.FC = () => {
   const [items, setItems] = useState<MenuItemRow[]>([]);
   const [staticOnlyIds, setStaticOnlyIds] = useState<Set<string>>(new Set());
-  const [deletedStaticIds, setDeletedStaticIds] = useState<Set<string>>(new Set());
+  const [deletedStaticIds, setDeletedStaticIds] = useState<Set<string>>(new Set(() => {
+    try {
+      const saved = localStorage.getItem('bakemart_deleted_static_items');
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch {
+      return new Set();
+    }
+  }));
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<MenuItemRow>>({});
@@ -258,6 +265,14 @@ export const AdminDashboard: React.FC = () => {
     fetchOrders();
   }, []);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('bakemart_deleted_static_items', JSON.stringify([...deletedStaticIds]));
+    } catch {
+      // ignore storage errors
+    }
+  }, [deletedStaticIds]);
+
   const startEdit = (item: MenuItemRow) => {
     setEditingId(item.id);
     setEditForm(item);
@@ -292,7 +307,7 @@ export const AdminDashboard: React.FC = () => {
         description: editForm.description,
         badge: editForm.badge || null,
         category: editForm.category,
-        available: true,
+        available: editForm.available ?? true,
       };
       if (imageUrl !== undefined) {
         updateData.image = imageUrl;
@@ -305,6 +320,11 @@ export const AdminDashboard: React.FC = () => {
           alert('Failed to add item to database: ' + error.message);
           return;
         }
+        setStaticOnlyIds((prev) => {
+          const next = new Set(prev);
+          next.delete(editingId);
+          return next;
+        });
       } else {
         const { error } = await supabase.from('menu_items').update(updateData).eq('id', editingId);
         if (error) {
@@ -335,10 +355,15 @@ export const AdminDashboard: React.FC = () => {
       window.dispatchEvent(new Event('menu-updated'));
       return;
     }
-    await supabase.from('menu_items').update({ available: !item.available }).eq('id', item.id);
-    invalidateCache('admin-menu-items');
-    fetchItems();
-    window.dispatchEvent(new Event('menu-updated'));
+    try {
+      await supabase.from('menu_items').update({ available: !item.available }).eq('id', item.id);
+      invalidateCache('admin-menu-items');
+      fetchItems();
+      window.dispatchEvent(new Event('menu-updated'));
+    } catch (err) {
+      console.error('AdminDashboard: toggle available error', err);
+      alert('Failed to update availability');
+    }
   };
 
   const deleteItem = async (id: string) => {
@@ -350,10 +375,15 @@ export const AdminDashboard: React.FC = () => {
       window.dispatchEvent(new Event('menu-updated'));
       return;
     }
-    await supabase.from('menu_items').delete().eq('id', id);
-    invalidateCache('admin-menu-items');
-    fetchItems();
-    window.dispatchEvent(new Event('menu-updated'));
+    try {
+      await supabase.from('menu_items').delete().eq('id', id);
+      invalidateCache('admin-menu-items');
+      fetchItems();
+      window.dispatchEvent(new Event('menu-updated'));
+    } catch (err) {
+      console.error('AdminDashboard: delete item error', err);
+      alert('Failed to delete item');
+    }
   };
 
   const addItem = async () => {
