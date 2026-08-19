@@ -74,13 +74,13 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-6 sm:gap-8 lg:gap-14">
           <div className="lg:col-span-5 relative z-20 text-center lg:text-left">
             <div
-              className="inline-flex items-center gap-2 bg-[#f8f1e5] border border-[#e6d3c2] text-[#000000] text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-5 sm:mb-6"
+              className="inline-flex items-center gap-2 bg-[#f8f1e5] border border-[#e6d3c2] text-[#000000] text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-5 sm:mb-6 hero-charcoal"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#d97a4c]" />
               Est. Moi Road, Nakuru
             </div>
 
-            <h1 className="font-serif font-black text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] text-[#000000] leading-[0.92] tracking-tight">
+            <h1 className="font-black text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] text-[#000000] leading-[0.92] tracking-tight hero-charcoal">
               Fresh,
               <br />
               Flame-Grilled
@@ -88,7 +88,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               <span className="text-[#d97a4c] italic font-normal text-[1.5rem] sm:text-3xl md:text-4xl lg:text-[3.25rem]">Every Day</span>
             </h1>
 
-            <p className="text-[#5c4b3f] text-sm sm:text-base lg:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed mt-5 sm:mt-6">
+            <p className="text-[#5c4b3f] text-sm sm:text-base lg:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed mt-5 sm:mt-6 hero-charcoal">
               Open-kitchen cooking, honest flavour, and the kind of room that
               keeps you lingering. From flame-grilled chicken to hand-stretched
               pizza — nothing here is rushed.
@@ -145,8 +145,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               <div className="absolute top-1 right-0 sm:top-0 sm:right-2 lg:right-4 z-30">
                 <div className="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 rounded-full bg-[#d97a4c] flex items-center justify-center shadow-[0_14px_30px_rgba(0,0,0,0.35)] border-2 border-[#000000]">
                   <span
-                    className="text-center text-[10px] sm:text-[11px] lg:text-[13px] font-black uppercase leading-tight text-[#000000] px-2"
-                    style={{ fontFamily: 'Fraunces, serif' }}
+                    className="text-center text-[10px] sm:text-[11px] lg:text-[13px] font-black uppercase leading-tight text-[#000000] px-2 hero-charcoal"
                   >
                     Baked
                     <br />
@@ -165,7 +164,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                     <Star key={i} className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-[#d97a4c] fill-[#d97a4c]" />
                   ))}
                 </div>
-                <p className="text-[10px] sm:text-[11px] leading-snug text-[#000000] font-semibold">
+                <p className="text-[10px] sm:text-[11px] leading-snug text-[#000000] font-semibold hero-charcoal">
                   "Best flame-grilled chicken in Nakuru, hands down."
                 </p>
                 <p className="text-[8px] sm:text-[9px] text-[#8c7a6c] font-bold mt-1">— Google review</p>
@@ -174,7 +173,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
               <div
                 className="absolute bottom-[2%] left-0 sm:-left-4 lg:-left-6 bg-white rounded-2xl px-2.5 py-2 sm:px-4 sm:py-3 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30"
               >
-                <div className="font-serif font-black text-lg sm:text-2xl text-[#000000] leading-none">
+                <div className="hero-charcoal font-black text-lg sm:text-2xl leading-none">
                   202+
                 </div>
                 <div className="text-[8px] sm:text-[9px] uppercase tracking-wide text-[#8c7a6c] font-bold mt-1">
