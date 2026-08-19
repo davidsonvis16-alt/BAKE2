@@ -176,7 +176,7 @@ const StickyNoteHero: React.FC<{ onOpen: (src: string) => void }> = ({ onOpen })
           <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             GALLERY
           </span>
-          <h1 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-3 leading-tight">
+          <h1 className="text-charcoal-lg font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-3 leading-tight">
             The Wall Behind the Counter
           </h1>
           <p className="mt-3 max-w-md mx-auto text-sm sm:text-base text-[#5c4b3f] leading-relaxed">
@@ -431,7 +431,7 @@ export const Gallery: React.FC = () => {
               <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
                 SEE YOU AT BAKEMART
               </span>
-              <h2 className="mt-4 font-serif font-black text-3xl sm:text-4xl text-[#000000] leading-tight">
+              <h2 className="mt-4 text-charcoal font-black text-3xl sm:text-4xl text-[#000000] leading-tight">
                 Come hungry. Leave happy.
               </h2>
               <p className="mt-4 text-sm sm:text-base text-[#5c4b3f] leading-relaxed">

@@ -33,7 +33,7 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
           <span className="text-[10px] font-black uppercase tracking-wider text-[#8c7a6c]">
             COMBOS & DEALS
           </span>
-          <h2 className="font-serif font-black text-2xl sm:text-3xl text-[#000000] mt-2 tracking-tight">
+          <h2 className="text-charcoal-lg font-black text-2xl sm:text-3xl text-[#000000] mt-2 tracking-tight">
             Handpicked Combos
           </h2>
           <p className="text-sm text-[#5c4b3f] mt-3 max-w-lg mx-auto leading-relaxed">
@@ -59,7 +59,7 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
             </div>
 
             <div className="p-5 sm:p-6 flex-1 flex flex-col">
-              <h3 className="font-serif font-bold text-lg sm:text-xl text-[#000000] leading-tight mb-1.5">
+              <h3 className="text-charcoal font-bold text-lg sm:text-xl text-[#000000] leading-tight mb-1.5">
                 Barbecue Grand Feast #2
               </h3>
               <p className="text-xs text-[#5c4b3f] leading-relaxed line-clamp-2 mb-3 flex-1">
@@ -105,7 +105,7 @@ export const ComboGrid: React.FC<ComboGridProps> = ({ onAddToCart }) => {
             </div>
 
             <div className="p-5 sm:p-6 flex-1 flex flex-col">
-              <h3 className="font-serif font-bold text-lg sm:text-xl text-[#000000] leading-tight mb-1.5">
+              <h3 className="text-charcoal font-bold text-lg sm:text-xl text-[#000000] leading-tight mb-1.5">
                 Chicken Tikka Pizza Deal
               </h3>
               <p className="text-xs text-[#5c4b3f] leading-relaxed line-clamp-2 mb-3 flex-1">

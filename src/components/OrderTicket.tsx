@@ -112,7 +112,7 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
                 <img src="/logo.jpeg" alt="BakeMart Logo" className="w-full h-full object-cover" />
               </div>
               <div>
-                <h2 className="font-serif font-bold text-lg leading-tight tracking-tight">Order Ticket</h2>
+                <h2 className="text-charcoal font-bold text-lg leading-tight tracking-tight">Order Ticket</h2>
                 <p className="text-[11px] text-[#d97a4c] font-mono leading-tight mt-0.5 tracking-wider">{orderId}</p>
               </div>
             </div>
@@ -129,7 +129,7 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
           <div className="p-5 space-y-5">
             {/* Store Info */}
             <div className="text-center space-y-1 pb-4 border-b-2 border-dashed border-[#d9c4ab]">
-              <h3 className="font-serif font-bold text-base text-[#000000] tracking-tight">BakeMart Coffee House</h3>
+              <h3 className="text-charcoal font-bold text-base text-[#000000] tracking-tight">BakeMart Coffee House</h3>
               <p className="text-[11px] text-[#5c4b3f]">Tropical House, Moi Road, Nakuru</p>
               <p className="text-[11px] text-[#5c4b3f]">Tel: 0725 009708</p>
               <p className="text-[11px] text-[#5c4b3f]">{orderTime}</p>

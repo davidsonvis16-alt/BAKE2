@@ -446,7 +446,7 @@ export const AdminDashboard: React.FC = () => {
     <div className="min-h-screen bg-[#FAF3E7] pb-20">
       <header className="bg-white border-b border-[#EADECB] sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="font-serif text-xl font-bold text-[#000000]">BakeMart Menu Manager</h1>
+          <h1 className="text-charcoal text-xl font-bold text-[#000000]">BakeMart Menu Manager</h1>
           <button
             onClick={logout}
             className="flex items-center gap-2 text-sm text-[#000000]/60 hover:text-[#000000] font-semibold"
@@ -476,7 +476,7 @@ export const AdminDashboard: React.FC = () => {
 
         {activeTab === 'orders' && (
           <div className="bg-white rounded-2xl p-6 mb-8 shadow-sm border border-[#EADECB]">
-            <h2 className="font-serif text-lg font-bold text-[#000000] mb-4">Orders</h2>
+            <h2 className="text-charcoal text-lg font-bold text-[#000000] mb-4">Orders</h2>
 
             {ordersLoading ? (
               <p className="text-[#000000]/60 text-sm">Loading orders...</p>
@@ -547,7 +547,7 @@ export const AdminDashboard: React.FC = () => {
 
         {activeTab === 'stats' && (
           <div className="bg-white rounded-2xl p-6 mb-8 shadow-sm border border-[#EADECB]">
-            <h2 className="font-serif text-lg font-bold text-[#000000] mb-4">Popular Items</h2>
+            <h2 className="text-charcoal text-lg font-bold text-[#000000] mb-4">Popular Items</h2>
 
             {statsLoading ? (
               <p className="text-[#000000]/60 text-sm">Loading stats...</p>

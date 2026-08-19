@@ -48,9 +48,9 @@ ${formData.specialRequests ? `*Special Request:* ${formData.specialRequests}\n` 
               <span>Open Kitchen Dining</span>
             </div>
 
-            <h2 className="font-serif font-bold text-2xl sm:text-3xl lg:text-4xl text-[#FAF3E7] leading-tight">
+            <h2 className="text-charcoal-lg font-bold text-2xl sm:text-3xl lg:text-4xl text-[#FAF3E7] leading-tight">
               Reserve Your Table <br />
-              <span className="text-orange-300 font-serif italic font-normal">
+              <span className="text-orange-300 italic font-normal">
                 at BakeMart Coffee House
               </span>
             </h2>

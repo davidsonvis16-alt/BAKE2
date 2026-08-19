@@ -19,7 +19,7 @@ export const SpecialsPage: React.FC<SpecialsPageProps> = ({ onNavigateMenu, onAd
             <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#d97a4c]">
               COMPLETE LISTINGS
             </span>
-            <h3 className="font-serif font-bold text-2xl sm:text-3xl">
+            <h3 className="text-charcoal font-bold text-2xl sm:text-3xl">
               Prefer to view our full menu on a single page?
             </h3>
             <p className="text-xs sm:text-sm text-[#d97a4c]/80 max-w-xl">

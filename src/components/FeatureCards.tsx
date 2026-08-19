@@ -70,7 +70,7 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateMenu }) =>
           <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
             WHY BAKEMART
           </span>
-          <h2 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-3 tracking-tight">
+          <h2 className="text-charcoal-lg font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-3 tracking-tight">
             THE OPEN-KITCHEN EXPERIENCE
           </h2>
           <div className="w-10 h-1 bg-[#d97a4c] rounded-full mx-auto mt-4" />
@@ -114,7 +114,7 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ onNavigateMenu }) =>
                     </span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-3">
-                        <h3 className="font-serif font-black text-base sm:text-lg text-[#000000] tracking-tight">
+                        <h3 className="text-charcoal font-black text-base sm:text-lg text-[#000000] tracking-tight">
                           {feature.title}
                         </h3>
                         <ArrowRight className="w-4 h-4 text-[#d97a4c] transition-transform duration-200 group-hover:translate-x-1 shrink-0 mt-0.5" />

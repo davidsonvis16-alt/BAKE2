@@ -50,7 +50,7 @@ export const CategoryQuickNav: React.FC<CategoryQuickNavProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.05 }}
-          className="font-serif font-black text-4xl sm:text-5xl lg:text-6xl text-[#1a120b] leading-[0.95] tracking-tight"
+          className="text-charcoal-lg font-black text-4xl sm:text-5xl lg:text-6xl text-[#1a120b] leading-[0.95] tracking-tight"
         >
           Pick Your
           <span className="block text-[#d97a4c] italic font-normal">Craving</span>

@@ -26,7 +26,7 @@ export const Login: React.FC = () => {
         className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm space-y-5"
       >
         <div className="text-center mb-2">
-          <h1 className="font-serif-display text-2xl font-bold text-[#000000]">BakeMart Admin</h1>
+          <h1 className="text-charcoal-lg text-2xl font-bold text-[#000000]">BakeMart Admin</h1>
           <p className="text-sm text-[#000000]/60 mt-1">Sign in to manage your menu</p>
         </div>
 

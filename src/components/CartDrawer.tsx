@@ -163,7 +163,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           <div className="p-4 bg-white border-b border-[#e6d3c2] flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-5 h-5 text-[#d97a4c]" />
-              <h2 className="font-serif font-bold text-base text-[#000000]">
+              <h2 className="text-charcoal font-bold text-base text-[#000000]">
                 Your Order ({cartItems.reduce((a, b) => a + b.quantity, 0)})
               </h2>
             </div>
@@ -180,7 +180,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             {cartItems.length === 0 ? (
               <div className="text-center py-16 space-y-3">
                 <ShoppingBag className="w-12 h-12 text-[#8c7a6c] mx-auto" />
-                <h3 className="font-serif font-bold text-lg text-[#000000]">
+                <h3 className="text-charcoal font-bold text-lg text-[#000000]">
                   Your cart is empty
                 </h3>
                 <p className="text-xs text-[#5c4b3f] max-w-xs mx-auto">
@@ -219,7 +219,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                         )}
 
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-serif font-bold text-xs sm:text-sm text-[#000000] truncate">
+                           <h4 className="text-charcoal font-bold text-xs sm:text-sm text-[#000000] truncate">
                             {ci.item.name}
                           </h4>
                           {ci.selectedOption && (

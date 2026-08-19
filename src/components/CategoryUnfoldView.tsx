@@ -288,7 +288,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
             {categoryItems.length === 0 ? (
               <div className="bg-white rounded-2xl p-10 text-center border border-[#e6d3c2]">
                 <Search className="w-10 h-10 text-[#8c7a6c] mx-auto mb-3" />
-                <h3 className="font-serif font-bold text-lg text-[#000000]">No items found in this section</h3>
+                <h3 className="text-charcoal font-bold text-lg text-[#000000]">No items found in this section</h3>
                 <p className="text-xs text-[#5c4b3f] mt-1">
                   Try clearing your search or switching sub-filters.
                 </p>
@@ -365,7 +365,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
             <span className="text-[10px] uppercase font-bold text-[#8c7a6c] tracking-wider">
               Explore Next Category
             </span>
-            <h4 className="font-serif font-bold text-lg text-[#000000] mt-1">
+            <h4 className="text-charcoal font-bold text-lg text-[#000000] mt-1">
               {nextCategory.name}
             </h4>
             <p className="text-xs text-[#5c4b3f] line-clamp-1">

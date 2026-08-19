@@ -1891,13 +1891,18 @@ html {
   cursor: not-allowed;
 }
 
-/* Charcoal / pencil text style for hero black writings */
-.hero-charcoal {
+/* Charcoal / pencil text style for big black writings */
+.text-charcoal {
   font-family: 'Caveat', cursive;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+.text-charcoal-lg {
+  font-family: 'Caveat', cursive;
+  letter-spacing: 0.08em;
   line-height: 1.05;
-  color: #000000;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.22);
 }
 
 /* Page transition overlay */

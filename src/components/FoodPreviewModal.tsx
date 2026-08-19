@@ -68,7 +68,7 @@ export const FoodPreviewModal: React.FC<FoodPreviewModalProps> = ({
 
         <div className="flex-1 overflow-y-auto p-6 space-y-5">
           <div className="space-y-2">
-            <h2 className="font-serif font-black text-2xl text-[#000000] leading-tight">
+            <h2 className="text-charcoal font-black text-2xl text-[#000000] leading-tight">
               {item.name}
             </h2>
             {item.description && (
