@@ -122,6 +122,17 @@ export default function App() {
     }
   }, [wishlistIds]);
 
+  useEffect(() => {
+    const canonical = `https://www.bakemart.co.ke${location.pathname}`;
+    let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'canonical';
+      document.head.appendChild(link);
+    }
+    link.href = canonical;
+  }, [location.pathname]);
+
   const [prevPath, setPrevPath] = useState(path);
 
   const handleSelectCategory = (catId: string) => {
