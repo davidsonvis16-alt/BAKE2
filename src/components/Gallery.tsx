@@ -15,23 +15,23 @@ const galleryCategories = [
 const galleryImages = [
   { src: '/gallery-16.jpg', alt: 'Cozy dining booths decked out with balloons and roses', category: 'space', label: 'Balloon corner' },
   { src: '/coffee bar.jpeg', alt: 'Open kitchen coffee bar', category: 'coffee', label: 'The coffee bar' },
-  { src: '/pizza-pasta.jpeg', alt: 'Wood-fired pizza and pasta plate', category: 'pizza-pasta', label: 'Fresh off the fire' },
+  { src: '/fresh off the fire.jpeg', alt: 'Wood-fired pizza and pasta plate', category: 'pizza-pasta', label: 'Fresh off the fire' },
   { src: '/happy-hour_1.jpg', alt: 'Bakemart serves happy hour food', category: 'food', label: 'Happy hour!' },
   { src: '/bakery-desserts.jpeg', alt: 'Assorted bakery desserts and pastries', category: 'food', label: 'Bakery haul' },
   { src: '/morning specila.jpeg', alt: 'Breakfast spread with coffee and pastries', category: 'food', label: 'Morning spread' },
-  { src: '/juices-cocktails.jpeg', alt: 'Fresh juices and cocktails served cold', category: 'coffee', label: 'Cold + fresh' },
+  { src: '/cold-and-fresh.jpeg', alt: 'Fresh juices and cocktails served cold', category: 'coffee', label: 'Cold + fresh' },
   { src: '/kienyeji-traditional.jpeg', alt: 'Traditional Kenyan specialty dish', category: 'food', label: 'Kienyeji special' },
-  { src: '/mains-meal.jpeg', alt: 'Hearty main meal plated with care', category: 'food', label: 'Sunday mains' },
+  { src: '/sunday mains.jpeg', alt: 'Hearty main meal plated with care', category: 'food', label: 'Sunday mains' },
   { src: '/a good momento.jpeg', alt: 'A warm café moment at BakeMart', category: 'moments', label: 'A good moment' },
   { src: '/table setting.jpeg', alt: 'Soft interior lighting and ceramic tableware', category: 'space', label: 'Table setting' },
   { src: '/gallery-5.jpg', alt: 'Intimate dining corner with warm textures', category: 'space', label: 'Quiet corner' },
   { src: '/gallery-9.jpg', alt: 'Chef plating a fresh dish in the kitchen', category: 'moments', label: 'Plating up' },
   { src: '/gallery-10.jpg', alt: 'Interior view with curated seating and warmth', category: 'space', label: 'Where to sit' },
   { src: '/gallery-11.jpg', alt: 'Coffee cup and pastry with a premium finish', category: 'coffee', label: 'Coffee + pastry' },
-  { src: '/gallery-12.jpg', alt: 'Golden morning light on a café table', category: 'space', label: 'Golden hour' },
+  { src: '/Golden-hour.jpeg', alt: 'Golden morning light on a café table', category: 'space', label: 'Golden hour' },
   { src: '/gallery-13.jpg', alt: 'Friends enjoying a meal in the café', category: 'moments', label: 'Good company' },
   { src: '/gallery-14.jpg', alt: 'Café interior with premium materials', category: 'space', label: 'The space' },
-  { src: '/gallery-15.jpg', alt: 'Close-up of a plated dish and drink', category: 'moments', label: 'Close-up' },
+  { src: '/close-up.jpeg', alt: 'Close-up of a plated dish and drink', category: 'moments', label: 'Close-up' },
 ];
 
 // Curated set + placement for the scattered "pinned to the corkboard" hero stack.
