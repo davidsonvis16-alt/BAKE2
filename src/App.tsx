@@ -290,7 +290,7 @@ export default function App() {
                     <div className="relative mx-auto max-w-[85%] sm:max-w-sm lg:max-w-none">
                       <div className="relative w-full mx-auto">
                         <img
-                          src="/full menu image.jpeg"
+                          src="/gallery-16.jpg"
                           alt="BakeMart signature dish"
                           className="w-full h-auto"
                           onError={(e) => {
