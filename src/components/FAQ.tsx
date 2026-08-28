@@ -44,7 +44,7 @@ export const FAQ: React.FC = () => {
             FAQ
           </span>
           <h1 className="text-charcoal-lg font-black text-3xl sm:text-4xl text-[#000000] mt-4 leading-tight">
-            FAQ — BakeMart Coffee House &amp; Bakery in Nakuru
+            Frequently Asked Questions
           </h1>
           <p className="text-sm text-[#5c4b3f] mt-3 max-w-xl">
             Everything you need to know about visiting and ordering from BakeMart Coffee House in Nakuru. — <a href="/menu" className="text-charcoal-link">View our menu</a> or <a href="/reservation" className="text-charcoal-link">book a table</a>.

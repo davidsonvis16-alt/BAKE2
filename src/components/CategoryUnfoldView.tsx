@@ -184,7 +184,7 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                </div>
 
                 <h1 className="font-serif font-black text-[2.25rem] sm:text-[2.75rem] lg:text-[3.25rem] text-[#F5EFE4] leading-[0.95] tracking-tight">
-                  {currentCategory.name} in Nakuru
+                  {currentCategory.name}
                 </h1>
 
                <p className="text-sm sm:text-base text-[#F5EFE4]/80 leading-relaxed max-w-2xl">

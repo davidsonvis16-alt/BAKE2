@@ -177,7 +177,7 @@ const StickyNoteHero: React.FC<{ onOpen: (src: string) => void }> = ({ onOpen })
             GALLERY
           </span>
           <h1 className="text-charcoal-lg font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-3 leading-tight">
-            Cafe &amp; Bakery Gallery in Nakuru
+            The Wall Behind the Counter
           </h1>
           <p className="mt-3 max-w-md mx-auto text-sm sm:text-base text-[#5c4b3f] leading-relaxed">
             Every photo we've pinned up — the mornings, the plates, the regulars. Tap one to look closer.

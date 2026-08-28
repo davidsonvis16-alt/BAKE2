@@ -347,7 +347,7 @@ export default function App() {
                     <h1 className="menu-page-title">
                       COFFEE, PASTRIES &amp;
                       <br />
-                      <span className="text-[#d97a4c]">FRESH FOOD IN NAKURU</span>
+                      <span className="text-[#d97a4c]">FRESH FOOD</span>
                     </h1>
                     <p className="menu-page-description">
                       Freshly prepared food, coffee, pastries and everyday favourites from our open kitchen in Nakuru. — <button onClick={() => navigate('/specials')} className="menu-page-link">See specials</button> and <button onClick={() => navigate('/gallery')} className="menu-page-link">gallery</button>.
