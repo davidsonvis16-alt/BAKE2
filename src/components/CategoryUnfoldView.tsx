@@ -183,9 +183,9 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
                  </span>
                </div>
 
-               <h1 className="font-serif font-black text-[2.25rem] sm:text-[2.75rem] lg:text-[3.25rem] text-[#F5EFE4] leading-[0.95] tracking-tight">
-                 {currentCategory.name}
-               </h1>
+                <h1 className="font-serif font-black text-[2.25rem] sm:text-[2.75rem] lg:text-[3.25rem] text-[#F5EFE4] leading-[0.95] tracking-tight">
+                  {currentCategory.name} in Nakuru
+                </h1>
 
                <p className="text-sm sm:text-base text-[#F5EFE4]/80 leading-relaxed max-w-2xl">
                  Brewed fresh. Made to slow you down.
@@ -207,14 +207,14 @@ export const CategoryUnfoldView: React.FC<CategoryUnfoldViewProps> = ({
 
              <div className="min-w-0">
                <div className="relative overflow-hidden rounded-[20px] border border-[#e6d3c2]/20 aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3]">
-                 <img
-                   src={currentCategory.image}
-                   alt={currentCategory.name}
-                   className="w-full h-full object-cover"
-                   onError={(e) => {
-                     (e.target as HTMLImageElement).src = '/gallery-16.jpg';
-                   }}
-                 />
+                  <img
+                    src={currentCategory.image}
+                    alt={`${currentCategory.name} at BakeMart Coffee House in Nakuru`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/gallery-16.jpg';
+                    }}
+                  />
                </div>
              </div>
            </div>

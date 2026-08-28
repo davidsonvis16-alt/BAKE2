@@ -9,12 +9,12 @@ export const About: React.FC = () => {
             ABOUT US
           </span>
           <h1 className="text-charcoal-lg font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-4 leading-tight">
-            The only open-kitchen coffee shop in Nakuru City
+            About BakeMart Coffee House — Open Kitchen Bakery &amp; Cafe in Nakuru
           </h1>
           <p className="mt-4 text-sm sm:text-base text-[#5c4b3f] leading-relaxed max-w-2xl">
             Bakemart Coffee House is located on Moi Road at Tropical House, behind Gilanis Supermarket and besides Nakuru GPO in Nakuru City, Kenya.
-            We're often named among the best coffee spots and best restaurants in Nakuru, and we've built our menu around fresh food at prices
-            that keep BakeMart one of the most affordable places to eat well in the city.
+            We&apos;re often named among the best coffee spots and best restaurants in Nakuru, and we&apos;ve built our menu around fresh food at prices
+            that keep BakeMart one of the most affordable places to eat well in the city. — <a href="/menu" className="text-charcoal-link">View our full menu</a> or <a href="/gallery" className="text-charcoal-link">see our gallery</a>.
           </p>
         </div>
 

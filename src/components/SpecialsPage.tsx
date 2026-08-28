@@ -17,13 +17,13 @@ export const SpecialsPage: React.FC<SpecialsPageProps> = ({ onNavigateMenu, onAd
         <div className="bg-[#000000] text-[#fdfaf3] p-8 rounded-3xl border border-[#000000] flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
           <div className="space-y-2 text-center md:text-left">
             <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#d97a4c]">
-              COMPLETE LISTINGS
+              SPECIALS &amp; COMBOS
             </span>
-            <h3 className="text-charcoal font-bold text-2xl sm:text-3xl">
-              Prefer to view our full menu on a single page?
-            </h3>
+            <h1 className="text-charcoal font-bold text-2xl sm:text-3xl">
+              Specials &amp; Combos — BakeMart Coffee House Nakuru
+            </h1>
             <p className="text-xs sm:text-sm text-[#d97a4c]/80 max-w-xl">
-              Explore all 12 food categories with live instant search, dietary tags, portion selection, and clean list layouts.
+              Explore all 12 food categories with live instant search, dietary tags, portion selection, and clean list layouts. — <button onClick={onNavigateMenu} className="text-[#fdfaf3] underline underline-offset-4 decoration-[#d97a4c] hover:decoration-white transition-colors">View full menu</button> and <button onClick={() => onSelectCategory('bbq-platters')} className="text-[#fdfaf3] underline underline-offset-4 decoration-[#d97a4c] hover:decoration-white transition-colors">browse BBQ platters</button>.
             </p>
           </div>
 

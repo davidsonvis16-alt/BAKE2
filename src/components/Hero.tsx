@@ -81,17 +81,17 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
             </div>
 
             <h1 className="font-black text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] text-[#000000] leading-[0.92] tracking-tight text-charcoal-lg">
-              Fresh,
+              Coffee House &amp;
               <br />
-              Flame-Grilled
+              Bakery in
               <br />
-              <span className="text-[#d97a4c] italic font-normal text-[1.5rem] sm:text-3xl md:text-4xl lg:text-[3.25rem]">Every Day</span>
+              <span className="text-[#d97a4c] italic font-normal text-[1.5rem] sm:text-3xl md:text-4xl lg:text-[3.25rem]">Nakuru</span>
             </h1>
 
             <p className="text-[#5c4b3f] text-sm sm:text-base lg:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed mt-5 sm:mt-6 text-charcoal">
-              Open-kitchen cooking, honest flavour, and the kind of room that
-              keeps you lingering. From flame-grilled chicken to hand-stretched
-              pizza — nothing here is rushed.
+              Open-kitchen cooking, fresh pastries, honest flavour, and the kind of room that
+              keeps you lingering. From coffee and flame-grilled chicken to hand-stretched
+              pizza — nothing here is rushed. Located on Moi Road, Tropical House, Nakuru.
             </p>
 
             <div

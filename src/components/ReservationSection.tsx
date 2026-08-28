@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { Calendar, Clock, Users, Phone, User, MessageSquare, CheckCircle2 } from 'lucide-react';
 import { ReservationFormData } from '../types';
 
-export const ReservationSection: React.FC = () => {
+interface ReservationSectionProps {
+  headingLevel?: 1 | 2;
+}
+
+export const ReservationSection: React.FC<ReservationSectionProps> = ({ headingLevel = 2 }) => {
   const [formData, setFormData] = useState<ReservationFormData>({
     name: '',
     phone: '',
@@ -48,15 +52,24 @@ ${formData.specialRequests ? `*Special Request:* ${formData.specialRequests}\n` 
               <span>Open Kitchen Dining</span>
             </div>
 
-            <h2 className="text-charcoal-lg font-bold text-2xl sm:text-3xl lg:text-4xl text-[#FAF3E7] leading-tight">
-              Reserve Your Table <br />
-              <span className="text-orange-300 italic font-normal">
-                at BakeMart Coffee House
-              </span>
-            </h2>
+             {headingLevel === 1 ? (
+               <h1 className="text-charcoal-lg font-bold text-2xl sm:text-3xl lg:text-4xl text-[#FAF3E7] leading-tight">
+                 Reserve Your Table <br />
+                 <span className="text-orange-300 italic font-normal">
+                   at BakeMart Coffee House Nakuru
+                 </span>
+               </h1>
+             ) : (
+               <h2 className="text-charcoal-lg font-bold text-2xl sm:text-3xl lg:text-4xl text-[#FAF3E7] leading-tight">
+                 Reserve Your Table <br />
+                 <span className="text-orange-300 italic font-normal">
+                   at BakeMart Coffee House Nakuru
+                 </span>
+               </h2>
+             )}
 
             <p className="text-orange-200/80 text-xs sm:text-sm leading-relaxed">
-              Planning a coffee date, family meal, or business lunch in Nakuru City? Book a table in advance. Your reservation details will be sent directly to our team via WhatsApp.
+              Planning a coffee date, family meal, or business lunch in Nakuru City? Book a table in advance. Your reservation details will be sent directly to our team via WhatsApp. — <a href="/menu" className="text-orange-100 underline underline-offset-4 decoration-orange-400 hover:decoration-white transition-colors">View our menu</a>.
             </p>
 
             <div className="space-y-2.5 pt-2 text-xs text-orange-300">
