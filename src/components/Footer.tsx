@@ -1,5 +1,159 @@
-import React from 'react';
-import { MapPin, Phone, Clock, Instagram, Facebook, Youtube, Music2, ArrowUpRight, Flame } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Phone, Clock, Instagram, Facebook, Youtube, Music2, ArrowUpRight, Flame, Copy, Check, ChevronRight } from 'lucide-react';
+
+const PAYBILL = { business: '247247', account: '0752114450' };
+const TILL = '5170287';
+const USSD = '*334#';
+
+const CopyRow: React.FC<{
+  label: string;
+  value: string;
+  copiedField: string | null;
+  fieldKey: string;
+  onCopy: (value: string, field: string) => void;
+}> = ({ label, value, copiedField, fieldKey, onCopy }) => {
+  const copied = copiedField === fieldKey;
+  return (
+    <button
+      onClick={() => onCopy(value, fieldKey)}
+      className="w-full flex items-center justify-between gap-3 rounded-lg border border-neutral-700 bg-black/40 px-3 py-2.5 text-left hover:border-[#00A651]/60 transition-colors"
+    >
+      <span className="min-w-0">
+        <span className="block text-[10px] uppercase tracking-wide text-neutral-400">
+          {label}
+        </span>
+        <span className="block font-mono font-bold text-white text-base tracking-wide">
+          {value}
+        </span>
+      </span>
+      <span
+        className={`shrink-0 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide rounded-full px-2.5 py-1.5 transition-colors ${
+          copied ? 'bg-[#00A651] text-black' : 'bg-neutral-800 text-neutral-300'
+        }`}
+      >
+        {copied ? (
+          <>
+            <Check className="w-3.5 h-3.5" /> Copied
+          </>
+        ) : (
+          <>
+            <Copy className="w-3.5 h-3.5" /> Copy
+          </>
+        )}
+      </span>
+    </button>
+  );
+};
+
+const MpesaPayment: React.FC = () => {
+  const [tab, setTab] = useState<'paybill' | 'till'>('paybill');
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+
+  const handleCopy = async (value: string, field: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      const el = document.createElement('textarea');
+      el.value = value;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    setCopiedField(field);
+    setTimeout(() => setCopiedField((f) => (f === field ? null : f)), 1800);
+  };
+
+  const steps =
+    tab === 'paybill'
+      ? [
+          'Go to M-Pesa > Lipa na M-Pesa > Pay Bill',
+          `Business number: ${PAYBILL.business}`,
+          `Account number: ${PAYBILL.account}`,
+          'Enter amount, confirm with PIN',
+        ]
+      : [
+          'Go to M-Pesa > Lipa na M-Pesa > Buy Goods & Services',
+          `Till number: ${TILL}`,
+          'Enter amount, confirm with PIN',
+        ];
+
+  return (
+    <div className="rounded-xl border border-neutral-700 bg-black/40 p-3 text-xs text-[#D9C4A8] space-y-3">
+      <div className="flex items-center gap-2">
+        <img
+          src="/mpesa-logo.png"
+          alt="M-Pesa"
+          className="h-6 w-auto rounded-sm"
+        />
+        <span className="font-bold text-white text-sm">Pay with M-Pesa</span>
+      </div>
+
+      <div className="flex rounded-lg bg-neutral-900 p-1 border border-neutral-800">
+        {[
+          { key: 'paybill' as const, label: 'Pay Bill' },
+          { key: 'till' as const, label: 'Buy Goods' },
+        ].map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`flex-1 rounded-md py-1.5 text-[11px] font-black uppercase tracking-wide transition-colors ${
+              tab === t.key ? 'bg-[#00A651] text-black' : 'text-neutral-400 hover:text-white'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="space-y-2">
+        {tab === 'paybill' ? (
+          <>
+            <CopyRow
+              label="Business number"
+              value={PAYBILL.business}
+              copiedField={copiedField}
+              fieldKey="business"
+              onCopy={handleCopy}
+            />
+            <CopyRow
+              label="Account number"
+              value={PAYBILL.account}
+              copiedField={copiedField}
+              fieldKey="account"
+              onCopy={handleCopy}
+            />
+          </>
+        ) : (
+          <CopyRow
+            label="Till number"
+            value={TILL}
+            copiedField={copiedField}
+            fieldKey="till"
+            onCopy={handleCopy}
+          />
+        )}
+      </div>
+
+      <ul className="space-y-1 pt-1">
+        {steps.map((s, i) => (
+          <li key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-400">
+            <ChevronRight className="w-3 h-3 mt-0.5 text-[#00A651] shrink-0" />
+            <span>{s}</span>
+          </li>
+        ))}
+      </ul>
+
+      <a
+        href={`tel:${USSD}`}
+        className="w-full flex items-center justify-center gap-2 bg-[#00A651] hover:bg-[#00c25f] text-black text-xs font-black uppercase tracking-wide py-2.5 rounded-full transition-colors"
+      >
+        <Phone className="w-3.5 h-3.5" />
+        Dial {USSD} now
+      </a>
+    </div>
+  );
+};
 
 export const Footer: React.FC = () => {
   return (
@@ -181,6 +335,9 @@ export const Footer: React.FC = () => {
             <p className="text-xs text-[#D9C4A8] leading-relaxed">
               Delivery available via Glovo — search "BakeMart Coffee House Nakuru" to order straight to your door.
             </p>
+
+            <MpesaPayment />
+
             <a
               href="https://wa.me/254725009708?text=Hello%20BakeMart%20Coffee%20House,%20I%20would%20like%20to%20order..."
               target="_blank"

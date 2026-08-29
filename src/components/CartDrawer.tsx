@@ -249,9 +249,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                           >
                             <Plus className="w-3 h-3" />
                           </button>
-                        </div>
+                 </div>
 
-                        <button
+                <button
                           onClick={() => onRemoveItem(ci.id)}
                           className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                           title="Remove item"
@@ -360,17 +360,50 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     KSh {grandTotal.toLocaleString()}
                   </span>
                 </div>
-              </div>
+                </div>
 
-              <button
-                onClick={handleCheckoutWhatsApp}
-                className="w-full bg-[#000000] hover:bg-[#000000] text-white font-bold text-sm py-3 rounded-full transition-all flex items-center justify-center gap-2"
-              >
-                <Send className="w-4 h-4 text-[#d97a4c]" />
-                <span>Review Ticket & Order</span>
-              </button>
-            </div>
-          )}
+                <div className="rounded-xl border border-[#e6d3c2] bg-[#f8f1e5] p-3 text-xs text-[#5c4b3f] space-y-2">
+                  <div className="flex items-center gap-2">
+                    <img src="/mpesa-logo.png" alt="M-Pesa" className="h-5 w-auto" />
+                    <span className="font-bold text-[#000000]">Pay with M-Pesa</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <span className="block text-[10px] uppercase tracking-wide text-[#8c7a6c]">Paybill</span>
+                      <span className="font-mono font-bold text-[#000000]">247247</span>
+                      <span className="block text-[10px] text-[#8c7a6c]">Account: 0752114450</span>
+                    </div>
+                    <div>
+                      <span className="block text-[10px] uppercase tracking-wide text-[#8c7a6c]">Till</span>
+                      <span className="font-mono font-bold text-[#000000]">5170287</span>
+                      <span className="block text-[10px] text-[#8c7a6c]">Buy Goods & Services</span>
+                    </div>
+                  </div>
+                  <ul className="space-y-1 pt-1">
+                    <li className="flex items-start gap-1.5 text-[11px] text-[#5c4b3f]">
+                      <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#d97a4c]" />
+                      <span>Go to <span className="font-bold">M-Pesa &gt; Lipa na M-Pesa</span></span>
+                    </li>
+                    <li className="flex items-start gap-1.5 text-[11px] text-[#5c4b3f]">
+                      <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#d97a4c]" />
+                      <span>Choose <span className="font-bold">Pay Bill</span> or <span className="font-bold">Buy Goods & Services</span></span>
+                    </li>
+                    <li className="flex items-start gap-1.5 text-[11px] text-[#5c4b3f]">
+                      <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#d97a4c]" />
+                      <span>Enter number and account where needed, then confirm with PIN</span>
+                    </li>
+                  </ul>
+                </div>
+
+               <button
+                 onClick={handleCheckoutWhatsApp}
+                 className="w-full bg-[#000000] hover:bg-[#000000] text-white font-bold text-sm py-3 rounded-full transition-all flex items-center justify-center gap-2"
+               >
+                 <Send className="w-4 h-4 text-[#d97a4c]" />
+                 <span>Review Ticket & Order</span>
+               </button>
+             </div>
+           )}
 
         </div>
       </div>

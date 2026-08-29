@@ -30,7 +30,7 @@ const galleryImages = [
   { src: '/gallery-11.jpg', alt: 'Coffee cup and pastry with a premium finish', category: 'coffee', label: 'Coffee + pastry' },
   { src: '/Golden-hour.jpeg', alt: 'Golden morning light on a café table', category: 'space', label: 'Golden hour' },
   { src: '/goodcompany.jpeg', alt: 'Friends enjoying a meal in the café', category: 'moments', label: 'Good company' },
-  { src: '/gallery-14.jpg', alt: 'Café interior with premium materials', category: 'space', label: 'The space' },
+  { src: '/gallery-16.jpg', alt: 'Café interior with premium materials', category: 'space', label: 'The space' },
   { src: '/close-up.jpeg', alt: 'Close-up of a plated dish and drink', category: 'moments', label: 'Close-up' },
 ];
 
