@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, Trash2, Plus, ShoppingBag, MapPin, Send, Minus } from 'lucide-react';
+import { X, Trash2, Plus, ShoppingBag, MapPin, Send, Minus, Copy, Check, Phone } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { CartItem } from '../types';
 import { OrderTicket } from './OrderTicket';
 import { generateSecureOrderId } from '../utils/ids';
@@ -22,6 +23,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onRemoveItem,
   onClearCart,
 }) => {
+  const navigate = useNavigate();
   const [orderType, setOrderType] = useState<'dine-in' | 'takeaway' | 'delivery'>('dine-in');
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
@@ -30,6 +32,22 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const [orderNotes, setOrderNotes] = useState('');
   const [showTicket, setShowTicket] = useState(false);
   const [sentStatus, setSentStatus] = useState<'idle' | 'sent'>('idle');
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+
+  const handleCopy = async (value: string, field: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      const el = document.createElement('textarea');
+      el.value = value;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    setCopiedField(field);
+    setTimeout(() => setCopiedField((f) => (f === field ? null : f)), 1800);
+  };
 
   if (!isOpen) return null;
 
@@ -187,7 +205,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   Explore our open-kitchen menu and add your favorite coffee, pizzas, or barbecue platters.
                 </p>
                 <button
-                  onClick={onClose}
+                  onClick={() => {
+                    onClose();
+                    navigate('/menu');
+                  }}
                   className="mt-2 bg-[#000000] text-white text-xs font-bold px-5 py-2.5 rounded-full hover:bg-[#000000] transition-colors"
                 >
                   Explore Menu
@@ -367,16 +388,66 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     <img src="/mpesa-logo.png" alt="M-Pesa" className="h-5 w-auto" />
                     <span className="font-bold text-[#000000]">Pay with M-Pesa</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <span className="block text-[10px] uppercase tracking-wide text-[#8c7a6c]">Paybill</span>
-                      <span className="font-mono font-bold text-[#000000]">247247</span>
-                      <span className="block text-[10px] text-[#8c7a6c]">Account: 0752114450</span>
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between gap-2 rounded-lg border border-[#e6d3c2] bg-white px-2.5 py-2">
+                      <div>
+                        <span className="block text-[10px] uppercase tracking-wide text-[#8c7a6c]">Paybill</span>
+                        <span className="font-mono font-bold text-[#000000]">247247</span>
+                      </div>
+                      <button
+                        onClick={() => handleCopy('247247', 'paybill')}
+                        className="flex items-center gap-1 rounded-full border border-[#e6d3c2] px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-[#000000] hover:border-[#000000] transition-colors"
+                      >
+                        {copiedField === 'paybill' ? (
+                          <>
+                            <Check className="w-3 h-3" /> Copied
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" /> Copy
+                          </>
+                        )}
+                      </button>
                     </div>
-                    <div>
-                      <span className="block text-[10px] uppercase tracking-wide text-[#8c7a6c]">Till</span>
-                      <span className="font-mono font-bold text-[#000000]">5170287</span>
-                      <span className="block text-[10px] text-[#8c7a6c]">Buy Goods & Services</span>
+                    <div className="flex items-center justify-between gap-2 rounded-lg border border-[#e6d3c2] bg-white px-2.5 py-2">
+                      <div>
+                        <span className="block text-[10px] uppercase tracking-wide text-[#8c7a6c]">Account</span>
+                        <span className="font-mono font-bold text-[#000000]">0752114450</span>
+                      </div>
+                      <button
+                        onClick={() => handleCopy('0752114450', 'account')}
+                        className="flex items-center gap-1 rounded-full border border-[#e6d3c2] px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-[#000000] hover:border-[#000000] transition-colors"
+                      >
+                        {copiedField === 'account' ? (
+                          <>
+                            <Check className="w-3 h-3" /> Copied
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" /> Copy
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between gap-2 rounded-lg border border-[#e6d3c2] bg-white px-2.5 py-2">
+                      <div>
+                        <span className="block text-[10px] uppercase tracking-wide text-[#8c7a6c]">Till</span>
+                        <span className="font-mono font-bold text-[#000000]">5170287</span>
+                      </div>
+                      <button
+                        onClick={() => handleCopy('5170287', 'till')}
+                        className="flex items-center gap-1 rounded-full border border-[#e6d3c2] px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-[#000000] hover:border-[#000000] transition-colors"
+                      >
+                        {copiedField === 'till' ? (
+                          <>
+                            <Check className="w-3 h-3" /> Copied
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" /> Copy
+                          </>
+                        )}
+                      </button>
                     </div>
                   </div>
                   <ul className="space-y-1 pt-1">
@@ -388,11 +459,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                       <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#d97a4c]" />
                       <span>Choose <span className="font-bold">Pay Bill</span> or <span className="font-bold">Buy Goods & Services</span></span>
                     </li>
-                    <li className="flex items-start gap-1.5 text-[11px] text-[#5c4b3f]">
-                      <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#d97a4c]" />
-                      <span>Enter number and account where needed, then confirm with PIN</span>
-                    </li>
                   </ul>
+                  <a
+                    href="tel:*334#"
+                    className="flex items-center justify-center gap-2 bg-[#00A651] hover:bg-[#00c25f] text-black text-xs font-black uppercase tracking-wide py-2.5 rounded-full transition-colors"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    Dial *334# now
+                  </a>
                 </div>
 
                <button
