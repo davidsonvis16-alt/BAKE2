@@ -12,7 +12,7 @@ export const FAQ: React.FC = () => {
     },
     {
       question: 'What kind of food and drinks do you serve?',
-      answer: 'We serve coffee & hot drinks (cappuccino, white/black coffee, masala tea, milo, etc.), milkshakes, smoothies, iced coffee, frappuccinos, mojitos, lemonades, fresh juices, detox cocktails, waffles, pizzas, burgers, sandwiches, chapati wraps, pastas, salads, soups, light meals, breakfast, healthy low-carb/no-sugar/no-oil meals, kienyeji meals, bakery items, cookies, desserts (trifles, ice cream, banana split, apple delight), and more.'
+      answer: 'We serve coffee & hot drinks (cappuccino, white/black coffee, masala tea, milo, etc.), milkshakes, smoothies, iced coffee, frappuccinos, mojitos, lemonades, fresh juices, detox cocktails, waffles, pizzas, burgers, sandwiches, chapati wraps, pastas, salads, soups, light meals, breakfast, healthy low-carb/no-sugar/no-oil meals, kienyeji meals, desserts, cookies, cakes, and more.'
     },
     {
       question: 'Do you offer delivery?',

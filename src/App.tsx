@@ -142,9 +142,9 @@ export default function App() {
 
     const pageMeta: Record<string, { title: string; description: string; ogTitle: string; ogDescription: string }> = {
       home: {
-        title: 'Coffee House & Bakery in Nakuru | BakeMart Coffee House',
-        description: 'BakeMart Coffee House is a coffee house and bakery in Nakuru, Kenya. Located on Moi Road, Tropical House. Fresh coffee, pastries, cakes, and meals. Open daily 7AM–8PM. Order via Glovo or WhatsApp.',
-        ogTitle: 'Coffee House & Bakery in Nakuru | BakeMart Coffee House',
+        title: 'Coffee House & Restaurant in Nakuru | BakeMart Coffee House',
+        description: 'BakeMart Coffee House is a coffee house and restaurant in Nakuru, Kenya. Located on Moi Road, Tropical House. Fresh coffee, pastries, cakes, and meals. Open daily 7AM–8PM. Order via Glovo or WhatsApp.',
+        ogTitle: 'Coffee House & Restaurant in Nakuru | BakeMart Coffee House',
         ogDescription: 'BakeMart Coffee House: fresh coffee, pastries, cakes, and meals in Nakuru. Open kitchen on Moi Road, Tropical House.',
       },
       menu: {
@@ -160,16 +160,16 @@ export default function App() {
         ogDescription: `${catName} at BakeMart Coffee House Nakuru — fresh, open-kitchen, and locally loved.`,
       },
       gallery: {
-        title: 'Cafe & Bakery Gallery in Nakuru | BakeMart Coffee House',
+        title: 'Cafe & Restaurant Gallery in Nakuru | BakeMart Coffee House',
         description: 'Browse photos of BakeMart Coffee House in Nakuru — our open kitchen, fresh pastries, coffee, and cozy dining space on Moi Road.',
-        ogTitle: 'Cafe & Bakery Gallery in Nakuru | BakeMart Coffee House',
+        ogTitle: 'Cafe & Restaurant Gallery in Nakuru | BakeMart Coffee House',
         ogDescription: 'Photos of BakeMart Coffee House in Nakuru — open kitchen, fresh pastries, coffee, and cozy dining.',
       },
       about: {
         title: 'About Us — BakeMart Coffee House Nakuru',
-        description: 'Learn about BakeMart Coffee House, Nakuru\'s open-kitchen coffee shop and bakery on Moi Road. Fresh food, affordable prices, and local flavors.',
+        description: 'Learn about BakeMart Coffee House, Nakuru\'s open-kitchen coffee shop and restaurant on Moi Road. Fresh food, affordable prices, and local flavors.',
         ogTitle: 'About Us — BakeMart Coffee House Nakuru',
-        ogDescription: 'BakeMart Coffee House: Nakuru\'s open-kitchen coffee shop and bakery on Moi Road, Tropical House.',
+        ogDescription: 'BakeMart Coffee House: Nakuru\'s open-kitchen coffee shop and restaurant on Moi Road, Tropical House.',
       },
       faq: {
         title: 'FAQ — BakeMart Coffee House Nakuru',
@@ -338,11 +338,19 @@ export default function App() {
             onAddToCart={handleAddToCart}
             onToggleWishlist={handleToggleWishlist}
           />
-         ) : activePage === 'menu' ? (
-           <div className="menu-page-container">
-             <div className="menu-page-header">
-               <div className="menu-page-header-inner">
-                 <div className="menu-page-header-content">
+          ) : activePage === 'menu' ? (
+            <div className="menu-page-container">
+              <div
+                className="menu-page-header"
+                style={{
+                  backgroundImage: "url('/gallery-16.jpg')",
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              >
+                <div className="menu-page-header-overlay" />
+                <div className="menu-page-header-inner">
+                  <div className="menu-page-header-content">
                     <span className="menu-page-eyebrow">BAKEMART MENU</span>
                     <h1 className="menu-page-title">
                       COFFEE, PASTRIES &amp;
@@ -368,21 +376,9 @@ export default function App() {
                         Order Now
                       </button>
                     </div>
-                 </div>
-                    <div className="relative mx-auto max-w-[85%] sm:max-w-sm lg:max-w-none">
-                      <div className="relative w-full mx-auto">
-                        <img
-                          src="/gallery-16.jpg"
-                          alt="Signature dish from BakeMart Coffee House open kitchen in Nakuru"
-                          className="w-full h-auto"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = '/gallery-16.jpg';
-                          }}
-                        />
-                      </div>
-                    </div>
-               </div>
-             </div>
+                  </div>
+                </div>
+              </div>
 
               <MenuSection
                searchQuery={searchQuery}

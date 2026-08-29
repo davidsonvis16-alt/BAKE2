@@ -1973,14 +1973,29 @@ html {
 }
 
 .menu-page-header {
+  position: relative;
+  min-height: 70vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 1.5rem;
+  overflow: hidden;
   margin-bottom: 2rem;
 }
-
+.menu-page-header-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 10, 6, 0.45);
+}
 .menu-page-header-inner {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
-  align-items: start;
+  align-items: center;
+  min-height: 70vh;
+  padding: 4rem 2rem;
 }
 @media (min-width: 1024px) {
   .menu-page-header-inner {
@@ -1988,7 +2003,6 @@ html {
     gap: 3rem;
   }
 }
-
 .menu-page-header-content {
   text-align: center;
 }
@@ -1997,24 +2011,22 @@ html {
     text-align: left;
   }
 }
-
 .menu-page-eyebrow {
   font-size: 0.6875rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: #8c7a6c;
+  color: rgba(250, 243, 231, 0.9);
   display: block;
   margin-bottom: 0.75rem;
 }
-
 .menu-page-title {
   font-family: var(--font-serif);
   font-weight: 900;
   font-size: 2rem;
   line-height: 1.05;
   letter-spacing: -0.02em;
-  color: #000000;
+  color: #fdfaf3;
   margin-bottom: 1rem;
 }
 @media (min-width: 640px) {
@@ -2027,10 +2039,9 @@ html {
     font-size: 3.5rem;
   }
 }
-
 .menu-page-description {
   font-size: 0.875rem;
-  color: #5c4b3f;
+  color: rgba(250, 243, 231, 0.85);
   line-height: 1.6;
   max-width: 32rem;
   margin-left: auto;
@@ -2050,7 +2061,7 @@ html {
   font-size: inherit;
 }
 .menu-page-link:hover {
-  color: #000000;
+  color: #f8f1e5;
 }
 @media (min-width: 1024px) {
   .menu-page-description {
@@ -2058,7 +2069,6 @@ html {
     margin-right: 0;
   }
 }
-
 .menu-page-actions {
   display: flex;
   flex-wrap: wrap;
@@ -2070,7 +2080,6 @@ html {
     justify-content: flex-start;
   }
 }
-
 .menu-page-btn-primary {
   background-color: #d97a4c;
   color: #000000;
@@ -2088,11 +2097,10 @@ html {
 .menu-page-btn-primary:hover {
   background-color: #e8a27a;
 }
-
 .menu-page-btn-secondary {
-  background-color: #fdfaf3;
-  color: #000000;
-  border: 1px solid #e6d3c2;
+  background-color: rgba(250, 243, 231, 0.15);
+  color: #fdfaf3;
+  border: 1px solid rgba(230, 211, 194, 0.6);
   font-weight: 700;
   font-size: 0.875rem;
   padding: 0.75rem 1.5rem;
@@ -2102,10 +2110,11 @@ html {
   align-items: center;
   gap: 0.5rem;
   transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
 }
 .menu-page-btn-secondary:hover {
-  background-color: #f5efe7;
-  border-color: #000000;
+  background-color: rgba(250, 243, 231, 0.25);
+  border-color: rgba(230, 211, 194, 0.9);
 }
 .menu-map-section {
   margin-top: 2rem;

@@ -66,12 +66,6 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
   const showLoading = isLoading || dataLoading;
   const isSearching = searchQuery.trim().length > 0;
 
-  const popularItems = useMemo(() => {
-    return menuItems
-      .filter((item) => item.badge === 'Popular' || item.badge === 'Chef Special')
-      .slice(0, 4);
-  }, [menuItems]);
-
   if (isSearching) {
     return (
       <section id="full-menu" className="menu-section">
@@ -228,38 +222,6 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
             </div>
           </div>
         </div>
-
-        {/* Popular Items Section */}
-        {!isSearching && selectedCategory === 'all' && popularItems.length > 0 && (
-          <div className="popular-section">
-            <div className="popular-section-inner">
-              <div className="popular-header">
-                <span className="popular-eyebrow">CUSTOMER FAVOURITES</span>
-                <h2 className="popular-title">
-                  THE ONES
-                  <br />
-                  EVERYONE ORDERS.
-                </h2>
-                <p className="popular-description">
-                  A few BakeMart favourites worth starting with.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                {popularItems.map((item) => (
-                  <ProductCard
-                    key={item.id}
-                    item={item}
-                    isWishlisted={wishlistIds.includes(item.id)}
-                    onAddToCart={onAddToCart}
-                    onToggleWishlist={onToggleWishlist}
-                    onOpenPreview={setPreviewItem}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Main Product Grid */}
         <div className="mt-8 sm:mt-10">

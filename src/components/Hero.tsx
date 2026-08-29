@@ -83,7 +83,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
             <h1 className="font-black text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] text-[#000000] leading-[0.92] tracking-tight text-charcoal-lg">
               Coffee House &amp;
               <br />
-              Bakery in
+              Restaurant in
               <br />
               <span className="text-[#d97a4c] italic font-normal text-[1.5rem] sm:text-3xl md:text-4xl lg:text-[3.25rem]">Nakuru</span>
             </h1>
