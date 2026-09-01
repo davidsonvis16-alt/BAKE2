@@ -17,7 +17,7 @@ const galleryImages = [
   { src: '/coffee bar.jpeg', alt: 'Open kitchen coffee bar', category: 'coffee', label: 'The coffee bar' },
   { src: '/fresh off the fire.jpeg', alt: 'Wood-fired pizza and pasta plate', category: 'pizza-pasta', label: 'Fresh off the fire' },
   { src: '/happy-hour_1.jpg', alt: 'Bakemart serves happy hour food', category: 'food', label: 'Happy hour!' },
-  { src: '/freshly-baked.jpeg', alt: 'Assorted bakery desserts and pastries', category: 'food', label: 'Bakery haul' },
+  { src: '/freshly-baked.jpeg', alt: 'Assorted bakery desserts and pastries', category: 'food', label: 'Freshly baked' },
   { src: '/morning specila.jpeg', alt: 'Breakfast spread with coffee and pastries', category: 'food', label: 'Morning spread' },
   { src: '/cold-and-fresh.jpeg', alt: 'Fresh juices and cocktails served cold', category: 'coffee', label: 'Cold + fresh' },
   { src: '/kienyeji-traditional.jpeg', alt: 'Traditional Kenyan specialty dish', category: 'food', label: 'Kienyeji special' },
@@ -63,7 +63,7 @@ const heroStack = [
   {
     src: '/freshly-baked.jpeg',
     alt: 'Assorted bakery desserts and pastries',
-    label: 'Bakery haul',
+    label: 'Freshly baked',
     style: { top: '62%', left: '58%', width: '40%', rotate: 5, z: 15 },
   },
   {
