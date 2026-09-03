@@ -26,7 +26,7 @@ const galleryImages = [
   { src: '/table setting.jpeg', alt: 'Soft interior lighting and ceramic tableware', category: 'space', label: 'Table setting' },
   { src: '/quiet corner.jpeg', alt: 'Intimate dining corner with warm textures', category: 'space', label: 'Quiet corner' },
   { src: '/plating up.jpeg', alt: 'Chef plating a fresh dish in the kitchen', category: 'moments', label: 'Plating up' },
-  { src: '/gallery-10.jpg', alt: 'Interior view with curated seating and warmth', category: 'space', label: 'Where to sit' },
+  { src: '/where2sit.jpg', alt: 'Interior view with curated seating and warmth', category: 'space', label: 'Where to sit' },
   { src: '/coffee-and-pastry.jpeg', alt: 'Coffee cup and pastry with a premium finish', category: 'coffee', label: 'Coffee + pastry' },
   { src: '/Golden-hour.jpeg', alt: 'Golden morning light on a café table', category: 'space', label: 'Golden hour' },
   { src: '/goodcompany.jpeg', alt: 'Friends enjoying a meal in the café', category: 'moments', label: 'Good company' },
