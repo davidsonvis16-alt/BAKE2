@@ -227,8 +227,8 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      <div className="overflow-hidden border-t border-white/10" aria-hidden="true">
-        <p className="select-none whitespace-nowrap text-center font-display text-[23vw] leading-[0.78] tracking-[0.02em] text-white/[0.05] lg:text-[17rem]">
+      <div className="overflow-hidden border-t border-white/10 px-4 pb-[0.2em] pt-8 text-[20vw] sm:pt-12 lg:text-[15rem]" aria-hidden="true">
+        <p className="bm-extrude select-none whitespace-nowrap text-center font-display leading-[0.9] tracking-[0.03em] text-white">
           BAKEMART
         </p>
       </div>

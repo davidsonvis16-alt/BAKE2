@@ -62,7 +62,10 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, active
       <div className="bg-bm-coal text-[12px] font-semibold text-white/75">
         <div className="mx-auto flex h-9 max-w-[1320px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <span className="flex items-center gap-2">
-            <span className={`h-1.5 w-1.5 rounded-full ${status.open ? 'bg-emerald-400' : 'bg-white/40'}`} />
+            <span
+              className={`h-2 w-2 rounded-full ${status.open ? 'bg-emerald-500' : 'bg-red-500'}`}
+              aria-hidden="true"
+            />
             {status.label}
           </span>
           <a href={whatsappLink()} target="_blank" rel="noreferrer" className="hidden items-center gap-1.5 hover:text-bm-orange sm:flex">

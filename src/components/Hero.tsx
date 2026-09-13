@@ -17,9 +17,12 @@ interface Slide {
   eyebrow: string;
   lines: [string, string];
   body: string;
+  /** Full photo, used as a poster when there is no cut-out. */
   image: string;
+  /** Background-removed PNG: the food is mounted straight onto the black, like a sticker. */
+  cutout?: string;
   categoryId: string;
-  /** Price the burst shows: a specific item, or the cheapest in the category. */
+  /** Price the tag shows: a specific item, or the cheapest in the category. */
   priceItemId?: string;
   priceLabel: string;
 }
@@ -81,6 +84,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateMenu, onSelectCategory }) 
   const status = useMemo(() => openStatus(), []);
 
   const slide = SLIDES[index];
+  const mounted = !!slide.cutout;
   const TagIcon = categoryIcon(slide.categoryId);
 
   const price = useMemo(() => {
@@ -109,35 +113,56 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateMenu, onSelectCategory }) 
       aria-roledescription="carousel"
       aria-label="Featured at BakeMart"
     >
-      {/* Poster photo: printed straight onto the black, edges melting into it — no card. */}
-      <div className="relative h-[58svh] min-h-[340px] w-full sm:h-[62svh] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[64%]">
-        {previous !== null && (
-          <img src={SLIDES[previous].image} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
+      <div
+        className={`relative w-full lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto ${
+          mounted ? 'h-[46svh] min-h-[300px] sm:h-[54svh] lg:w-[56%]' : 'h-[58svh] min-h-[340px] sm:h-[62svh] lg:w-[64%]'
+        }`}
+      >
+        {mounted ? (
+          // Cut-out food mounted straight onto the matte black — no card, no frame, no fades.
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={slide.id}
+              src={slide.cutout}
+              alt={`${slide.tag} at BakeMart Coffee House`}
+              className="absolute inset-0 m-auto h-[86%] w-[90%] object-contain lg:h-[76%] lg:w-[88%]"
+              initial={{ opacity: 0, y: 48, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -32, scale: 0.97 }}
+              transition={{ duration: 0.7, ease: EASE }}
+            />
+          </AnimatePresence>
+        ) : (
+          <>
+            {previous !== null && (
+              <img src={SLIDES[previous].image} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
+            )}
+            <SplitImage
+              key={`${slide.id}-${cycle}`}
+              src={slide.image}
+              alt={`${slide.tag} at BakeMart Coffee House`}
+              strips={6}
+              trigger="mount"
+              priority
+              className="absolute inset-0"
+            />
+            {/* Poster fades only touch the edges, so the food itself is shown as shot. */}
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,#000_0%,rgba(0,0,0,0.85)_18%,rgba(0,0,0,0)_55%)] lg:hidden" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent" />
+            <div className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_right,#000_0%,rgba(0,0,0,0.8)_14%,rgba(0,0,0,0)_48%)] lg:block" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-48 bg-gradient-to-t from-black to-transparent lg:block" />
+          </>
         )}
-        <SplitImage
-          key={`${slide.id}-${cycle}`}
-          src={slide.image}
-          alt={`${slide.tag} at BakeMart Coffee House`}
-          strips={6}
-          trigger="mount"
-          priority
-          className="absolute inset-0"
-        />
-        {/* Fades only touch the edges, so the food itself is shown as shot. */}
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,#000_0%,rgba(0,0,0,0.85)_18%,rgba(0,0,0,0)_55%)] lg:hidden" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent" />
-        <div className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_right,#000_0%,rgba(0,0,0,0.8)_14%,rgba(0,0,0,0)_48%)] lg:block" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-48 bg-gradient-to-t from-black to-transparent lg:block" />
 
         <AnimatePresence mode="wait">
           {price !== null && (
             <motion.div
               key={slide.id}
               className="absolute right-4 top-4 sm:right-6 sm:top-6 lg:right-10 lg:top-10"
-              initial={{ scale: 0, rotate: -120 }}
-              animate={{ scale: 1, rotate: 0 }}
-              exit={{ scale: 0, rotate: 60 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.35 }}
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.45, ease: EASE, delay: 0.35 }}
             >
               <PriceBurst price={price} label={slide.priceLabel} size={100} className="sm:hidden" />
               <PriceBurst price={price} label={slide.priceLabel} size={140} className="hidden sm:grid" />
@@ -161,15 +186,18 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateMenu, onSelectCategory }) 
         </button>
       </div>
 
-      {/* Copy sits on the black, overlapping the photo's faded edge */}
-      <div className="relative mx-auto -mt-32 max-w-[1320px] px-4 pb-10 sm:-mt-40 sm:px-6 lg:mt-0 lg:flex lg:min-h-[calc(100svh-7.75rem)] lg:items-center lg:px-8 lg:py-16">
+      {/* Copy sits on the black; over a poster photo it overlaps the faded edge */}
+      <div
+        className={`relative mx-auto max-w-[1320px] px-4 pb-10 sm:px-6 lg:mt-0 lg:flex lg:min-h-[calc(100svh-7.75rem)] lg:items-center lg:px-8 lg:py-16 ${
+          mounted ? '-mt-2' : '-mt-32 sm:-mt-40'
+        }`}
+      >
         <div className="lg:max-w-[600px]">
           <span
             className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.16em] ${
               status.open ? 'bg-emerald-400/10 text-emerald-300' : 'bg-white/10 text-white/70'
             }`}
           >
-            <span className={`h-2 w-2 rounded-full ${status.open ? 'animate-pulse bg-emerald-400' : 'bg-white/50'}`} />
             {status.label} · Moi Road, Nakuru
           </span>
 

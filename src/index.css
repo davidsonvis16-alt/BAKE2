@@ -2417,24 +2417,27 @@ html {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-@keyframes bm-spin {
-  to { transform: rotate(360deg); }
-}
 .bm-marquee { animation: bm-marquee 32s linear infinite; }
-.bm-spin-slow { animation: bm-spin 26s linear infinite; }
 .bm-fade-x {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent);
   mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent);
 }
-.bm-outline-text {
-  color: transparent;
-  -webkit-text-stroke: 1px currentColor;
-}
-.bm-grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* Drawn 3D block letters: white face, stepped grey sides, soft ground shadow. Steps are in em so depth scales with the type. */
+.bm-extrude {
+  text-shadow:
+    0.006em 0.006em 0 #d6d6d6,
+    0.012em 0.012em 0 #c4c4c4,
+    0.018em 0.018em 0 #b2b2b2,
+    0.024em 0.024em 0 #a0a0a0,
+    0.03em 0.03em 0 #8e8e8e,
+    0.036em 0.036em 0 #7c7c7c,
+    0.042em 0.042em 0 #6a6a6a,
+    0.048em 0.048em 0 #585858,
+    0.054em 0.054em 0 #464646,
+    0.06em 0.078em 0.05em rgba(0, 0, 0, 0.65);
 }
 @media (prefers-reduced-motion: reduce) {
-  .bm-marquee, .bm-spin-slow { animation: none; }
+  .bm-marquee { animation: none; }
 }
 @keyframes bm-progress {
   from { transform: scaleX(0); }

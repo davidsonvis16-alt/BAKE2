@@ -1,55 +1,55 @@
-import React, { useMemo } from 'react';
+import React, { useId } from 'react';
 
 interface PriceBurstProps {
   price: number;
   label?: string;
+  /** Tag height-ish scale in px; the tag is wider than it is tall. */
   size?: number;
   tone?: 'orange' | 'gold' | 'ink';
   className?: string;
 }
 
 const TONES = {
-  orange: { fill: 'var(--color-bm-orange)', text: 'text-bm-ink' },
-  gold: { fill: 'var(--color-bm-gold)', text: 'text-bm-ink' },
-  ink: { fill: 'var(--color-bm-ink)', text: 'text-bm-orange' },
+  orange: { fill: 'var(--color-bm-orange)', text: 'text-bm-ink', sub: 'text-bm-ink/70' },
+  gold: { fill: 'var(--color-bm-gold)', text: 'text-bm-ink', sub: 'text-bm-ink/70' },
+  ink: { fill: 'var(--color-bm-ink)', text: 'text-white', sub: 'text-bm-orange' },
 };
 
-/** Starburst price stamp — "FROM KSh 1,500". The star spins slowly; the text stays put. */
+/** Still price tag — notched end with an eyelet, tilted slightly. "FROM · KSh 1,800". */
 export const PriceBurst: React.FC<PriceBurstProps> = ({ price, label = 'From', size = 112, tone = 'orange', className = '' }) => {
-  const points = useMemo(() => {
-    const spikes = 20;
-    const pts: string[] = [];
-    for (let i = 0; i < spikes * 2; i++) {
-      const r = i % 2 === 0 ? 50 : 44;
-      const a = (Math.PI * i) / spikes - Math.PI / 2;
-      pts.push(`${(50 + r * Math.cos(a)).toFixed(2)},${(50 + r * Math.sin(a)).toFixed(2)}`);
-    }
-    return pts.join(' ');
-  }, []);
+  const maskId = useId();
   const palette = TONES[tone];
-  // `relative` would override a caller's `absolute` placement and drop the stamp into normal flow.
+  const width = Math.round(size * 1.45);
+  const height = Math.round(size * 0.68);
+  // `relative` would override a caller's `absolute` placement and drop the tag into normal flow.
   const position = /\b(absolute|fixed)\b/.test(className) ? '' : 'relative';
 
   return (
     <div
-      className={`${position} grid place-items-center select-none ${className}`}
-      style={{ width: size, height: size }}
+      className={`${position} grid select-none place-items-center ${className}`}
+      style={{ width, height }}
       aria-label={`${label} KSh ${price.toLocaleString()}`}
       role="img"
     >
-      <svg viewBox="0 0 100 100" className="bm-spin-slow absolute inset-0 h-full w-full" aria-hidden="true">
-        <polygon points={points} fill={palette.fill} />
-      </svg>
-      <div className={`relative -rotate-[8deg] text-center leading-[0.9] ${palette.text}`} aria-hidden="true">
-        <span className="block font-sans font-extrabold uppercase tracking-[0.2em]" style={{ fontSize: size * 0.095 }}>
-          {label}
-        </span>
-        <span className="block font-display" style={{ fontSize: size * 0.13 }}>
-          KSh
-        </span>
-        <span className="block font-display" style={{ fontSize: size * (price >= 10000 ? 0.2 : 0.25) }}>
-          {price.toLocaleString()}
-        </span>
+      <div className="absolute inset-0 -rotate-6">
+        <svg viewBox="0 0 145 68" className="h-full w-full" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <mask id={maskId}>
+              <rect width="145" height="68" fill="white" />
+              {/* eyelet punched through the tag */}
+              <circle cx="22" cy="34" r="5" fill="black" />
+            </mask>
+          </defs>
+          <path d="M26 0H137a8 8 0 0 1 8 8V60a8 8 0 0 1-8 8H26L0 34Z" fill={palette.fill} mask={`url(#${maskId})`} />
+        </svg>
+        <div className={`absolute inset-y-0 left-[24%] right-[6%] flex flex-col justify-center leading-none ${palette.text}`} aria-hidden="true">
+          <span className={`font-sans font-extrabold uppercase tracking-[0.16em] ${palette.sub}`} style={{ fontSize: size * 0.09 }}>
+            {label}
+          </span>
+          <span className="mt-[0.12em] whitespace-nowrap font-display" style={{ fontSize: size * (price >= 10000 ? 0.2 : 0.24) }}>
+            KSh {price.toLocaleString()}
+          </span>
+        </div>
       </div>
     </div>
   );
