@@ -1,49 +1,30 @@
-import React, { useState } from 'react';
-import { MapPin, Phone, Clock, Instagram, Facebook, Youtube, Music2, ArrowUpRight, Flame, Copy, Check, ChevronRight } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowUpRight, Check, Clock, Copy, Facebook, Instagram, Mail, MapPin, Music2, Phone, Youtube } from 'lucide-react';
+import { CATEGORIES } from '../data/menuData';
+import { orderCategories, PHONE_DISPLAY, PHONE_TEL, shortCategoryName, whatsappLink } from '../lib/menuMeta';
 
 const PAYBILL = { business: '247247', account: '0752114450' };
 const TILL = '5170287';
 const USSD = '*334#';
+const EMAIL = 'Salesbakemart.co.ke@gmail.com';
 
-const CopyRow: React.FC<{
-  label: string;
-  value: string;
-  copiedField: string | null;
-  fieldKey: string;
-  onCopy: (value: string, field: string) => void;
-}> = ({ label, value, copiedField, fieldKey, onCopy }) => {
-  const copied = copiedField === fieldKey;
-  return (
-    <button
-      onClick={() => onCopy(value, fieldKey)}
-      className="w-full flex items-center justify-between gap-3 rounded-lg border border-neutral-700 bg-black/40 px-3 py-2.5 text-left hover:border-[#00A651]/60 transition-colors"
-    >
-      <span className="min-w-0">
-        <span className="block text-[10px] uppercase tracking-wide text-neutral-400">
-          {label}
-        </span>
-        <span className="block font-mono font-bold text-white text-base tracking-wide">
-          {value}
-        </span>
-      </span>
-      <span
-        className={`shrink-0 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide rounded-full px-2.5 py-1.5 transition-colors ${
-          copied ? 'bg-[#00A651] text-black' : 'bg-neutral-800 text-neutral-300'
-        }`}
-      >
-        {copied ? (
-          <>
-            <Check className="w-3.5 h-3.5" /> Copied
-          </>
-        ) : (
-          <>
-            <Copy className="w-3.5 h-3.5" /> Copy
-          </>
-        )}
-      </span>
-    </button>
-  );
-};
+const SOCIALS = [
+  { href: 'https://www.instagram.com/bakemartcoffeehouse/', label: 'Instagram', icon: Instagram },
+  { href: 'https://www.facebook.com/BakemartCoffeeHouse/', label: 'Facebook', icon: Facebook },
+  { href: 'https://www.tiktok.com/@bakemartcoffeehouse', label: 'TikTok', icon: Music2 },
+  { href: 'https://www.youtube.com/@bakemartcoffeehouse', label: 'YouTube', icon: Youtube },
+];
+
+const EXPLORE = [
+  { to: '/', label: 'Home' },
+  { to: '/menu', label: 'Full menu' },
+  { to: '/specials', label: 'Deals & combos' },
+  { to: '/reservation', label: 'Reserve a table' },
+  { to: '/gallery', label: 'Gallery' },
+  { to: '/about', label: 'About us' },
+  { to: '/faq', label: 'FAQ' },
+];
 
 const MpesaPayment: React.FC = () => {
   const [tab, setTab] = useState<'paybill' | 'till'>('paybill');
@@ -64,91 +45,64 @@ const MpesaPayment: React.FC = () => {
     setTimeout(() => setCopiedField((f) => (f === field ? null : f)), 1800);
   };
 
-  const steps =
+  const rows =
     tab === 'paybill'
       ? [
-          'Go to M-Pesa > Lipa na M-Pesa > Pay Bill',
-          `Business number: ${PAYBILL.business}`,
-          `Account number: ${PAYBILL.account}`,
-          'Enter amount, confirm with PIN',
+          { key: 'business', label: 'Business number', value: PAYBILL.business },
+          { key: 'account', label: 'Account number', value: PAYBILL.account },
         ]
-      : [
-          'Go to M-Pesa > Lipa na M-Pesa > Buy Goods & Services',
-          `Till number: ${TILL}`,
-          'Enter amount, confirm with PIN',
-        ];
+      : [{ key: 'till', label: 'Till number', value: TILL }];
 
   return (
-    <div className="rounded-xl border border-neutral-700 bg-black/40 p-3 text-xs text-[#D9C4A8] space-y-3">
-      <div className="flex items-center gap-2">
-        <img
-          src="/mpesa-logo.png"
-          alt="M-Pesa"
-          className="h-6 w-auto rounded-sm"
-        />
-        <span className="font-bold text-white text-sm">Pay with M-Pesa</span>
+    <div className="rounded-2xl bg-white/[0.04] p-4 ring-1 ring-white/10">
+      <div className="flex items-center justify-between gap-3">
+        <span className="flex items-center gap-2 text-sm font-extrabold text-white">
+          <img src="/mpesa-logo.png" alt="M-Pesa" className="h-6 w-auto rounded-sm" />
+          Pay with M-Pesa
+        </span>
+        <div className="flex rounded-full bg-white/5 p-0.5">
+          {(['paybill', 'till'] as const).map((key) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setTab(key)}
+              className={`rounded-full px-3 py-1 text-[11px] font-extrabold uppercase ${
+                tab === key ? 'bg-[#00A651] text-white' : 'text-white/55 hover:text-white'
+              }`}
+            >
+              {key === 'paybill' ? 'Pay Bill' : 'Buy Goods'}
+            </button>
+          ))}
+        </div>
       </div>
-
-      <div className="flex rounded-lg bg-neutral-900 p-1 border border-neutral-800">
-        {[
-          { key: 'paybill' as const, label: 'Pay Bill' },
-          { key: 'till' as const, label: 'Buy Goods' },
-        ].map((t) => (
+      <div className="mt-3 space-y-2">
+        {rows.map((row) => (
           <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`flex-1 rounded-md py-1.5 text-[11px] font-black uppercase tracking-wide transition-colors ${
-              tab === t.key ? 'bg-[#00A651] text-black' : 'text-neutral-400 hover:text-white'
-            }`}
+            key={row.key}
+            type="button"
+            onClick={() => handleCopy(row.value, row.key)}
+            className="flex w-full items-center justify-between gap-3 rounded-xl bg-black/30 px-3 py-2.5 text-left hover:bg-black/50"
           >
-            {t.label}
+            <span>
+              <span className="block text-[10px] font-bold uppercase tracking-wider text-white/45">{row.label}</span>
+              <span className="font-mono text-base font-bold tracking-wide text-white">{row.value}</span>
+            </span>
+            <span
+              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-extrabold uppercase ${
+                copiedField === row.key ? 'bg-[#00A651] text-white' : 'bg-white/10 text-white/70'
+              }`}
+            >
+              {copiedField === row.key ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+              {copiedField === row.key ? 'Copied' : 'Copy'}
+            </span>
           </button>
         ))}
       </div>
-
-      <div className="space-y-2">
-        {tab === 'paybill' ? (
-          <>
-            <CopyRow
-              label="Business number"
-              value={PAYBILL.business}
-              copiedField={copiedField}
-              fieldKey="business"
-              onCopy={handleCopy}
-            />
-            <CopyRow
-              label="Account number"
-              value={PAYBILL.account}
-              copiedField={copiedField}
-              fieldKey="account"
-              onCopy={handleCopy}
-            />
-          </>
-        ) : (
-          <CopyRow
-            label="Till number"
-            value={TILL}
-            copiedField={copiedField}
-            fieldKey="till"
-            onCopy={handleCopy}
-          />
-        )}
-      </div>
-
-      <ul className="space-y-1 pt-1">
-        {steps.map((s, i) => (
-          <li key={i} className="flex items-start gap-1.5 text-[11px] text-neutral-400">
-            <ChevronRight className="w-3 h-3 mt-0.5 text-[#00A651] shrink-0" />
-            <span>{s}</span>
-          </li>
-        ))}
-      </ul>
-
       <a
         href={`tel:${USSD}`}
-        className="w-full flex items-center justify-center gap-2 bg-[#00A651] hover:bg-[#00c25f] text-black text-xs font-black uppercase tracking-wide py-2.5 rounded-full transition-colors"
+        className="mt-3 flex items-center justify-center gap-2 rounded-full bg-[#00A651] py-2.5 text-xs font-extrabold uppercase tracking-wide text-white hover:bg-[#009245]"
       >
-        <Phone className="w-3.5 h-3.5" />
+        <Phone className="h-3.5 w-3.5" />
         Dial {USSD} now
       </a>
     </div>
@@ -156,266 +110,147 @@ const MpesaPayment: React.FC = () => {
 };
 
 export const Footer: React.FC = () => {
+  const categories = useMemo(() => orderCategories(CATEGORIES).slice(0, 7), []);
+
   return (
-    <footer className="relative bg-black text-[#FAF3E7] pt-0 pb-24 md:pb-0">
-      <style>{`
-        @keyframes bm-marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .bm-marquee-track {
-          animation: bm-marquee 22s linear infinite;
-        }
-      `}</style>
-
-      {/* Torn / flame edge divider — signature move, nods to the open-kitchen "fresh, hot" identity */}
-      <div className="w-full leading-[0] -mb-px" aria-hidden="true">
-        <svg
-          viewBox="0 0 1200 40"
-          preserveAspectRatio="none"
-          className="w-full h-8 md:h-10"
-        >
-          <polygon
-            fill="#C2410C"
-            points="0,40 0,10 40,26 80,4 120,22 160,2 200,24 240,8 280,28 320,6 360,20 400,2 440,26 480,10 520,30 560,4 600,22 640,8 680,26 720,2 760,20 800,10 840,28 880,4 920,24 960,8 1000,26 1040,2 1080,22 1120,6 1160,28 1200,10 1200,40"
-          />
-        </svg>
-      </div>
-
-      {/* CTA Band — the loud, confident chain-style promo strip */}
-      <div className="bg-[#C2410C] text-black">
-        <div className="max-w-7xl mx-auto px-4 py-8 md:py-10 flex flex-col md:flex-row items-center md:items-end justify-between gap-6">
-          <div className="text-center md:text-left">
-            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-black/60 mb-1">
-              Nakuru's own open kitchen
-            </p>
-            <h2 className="font-black uppercase text-3xl sm:text-4xl md:text-5xl leading-[0.95] tracking-tight">
-              Hungry? We're<br className="hidden sm:block" /> open till 8.
+    <footer className="bg-bm-ink pb-[calc(4rem+env(safe-area-inset-bottom))] text-white lg:pb-0">
+      <div className="bg-bm-orange text-bm-ink">
+        <div className="mx-auto flex max-w-[1320px] flex-col gap-6 px-4 py-12 sm:px-6 md:flex-row md:items-end md:justify-between lg:px-8 lg:py-16">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.22em]">Nakuru's own open kitchen</p>
+            <h2 className="mt-2 font-display text-[3rem] uppercase leading-[0.88] text-bm-ink sm:text-6xl lg:text-7xl">
+              Hungry? We're
+              <br />
+              open till 8.
             </h2>
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <a
-              href="https://wa.me/254725009708?text=Hello%20BakeMart%20Coffee%20House,%20I%20would%20like%20to%20order..."
+              href={whatsappLink()}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center justify-center gap-2 bg-black text-[#FAF3E7] text-sm font-black uppercase tracking-wide px-6 py-3.5 rounded-full hover:bg-neutral-900 transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-bm-ink px-7 py-4 text-sm font-extrabold uppercase tracking-wide text-white hover:bg-bm-ember"
             >
               Order on WhatsApp
-              <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight className="h-4 w-4" />
             </a>
             <a
               href="https://www.glovoapp.com"
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center justify-center gap-2 bg-[#FAF3E7] text-black text-sm font-black uppercase tracking-wide px-6 py-3.5 rounded-full border-2 border-black/10 hover:bg-white transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-extrabold uppercase tracking-wide text-bm-ink hover:bg-bm-cream"
             >
               Get it on Glovo
-              <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
         </div>
       </div>
 
-      {/* Main columns */}
-      <div className="max-w-7xl mx-auto px-4 pt-12 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
-
-          {/* Brand Info */}
-          <div className="space-y-4 lg:pr-6 lg:border-r lg:border-neutral-800">
-            <div className="flex items-center gap-3">
-              <img
-                src="/logo.jpeg"
-                alt="BakeMart Logo"
-                className="w-11 h-11 rounded-full border-2 border-[#C2410C] object-cover"
-              />
-              <div>
-                <h3 className="font-black uppercase text-lg tracking-tight text-white leading-none">
-                  BakeMart<br />Coffee House
-                </h3>
-              </div>
-            </div>
-
-            <p className="text-xs text-[#C2410C] font-bold uppercase tracking-wide">
-              Beyond sweetness — it's fresh and nutritional
-            </p>
-
-            <p className="text-xs text-[#D9C4A8] leading-relaxed">
-              The only open-kitchen coffee shop in Nakuru City. On Moi Road at Tropical House, behind Gilanis Supermarket and beside Nakuru GPO. Watch every plate come together in a trendy, relaxed, cozy space.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-2 pt-1">
+      <div className="mx-auto grid max-w-[1320px] gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.3fr_0.8fr_0.9fr_1.3fr] lg:gap-12 lg:px-8">
+        <div>
+          <Link to="/" className="flex items-center gap-3">
+            <img src="/logo.jpeg" alt="BakeMart Coffee House logo" className="h-14 w-14 rounded-full object-cover" />
+            <span className="leading-none">
+              <span className="block font-display text-3xl tracking-[0.04em] text-white">BAKEMART</span>
+              <span className="mt-1 block text-[10px] font-extrabold uppercase tracking-[0.3em] text-bm-orange">Coffee House</span>
+            </span>
+          </Link>
+          <p className="mt-4 font-script text-3xl text-bm-orange">Beyond sweetness</p>
+          <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/60">
+            The only open-kitchen coffee shop in Nakuru City. On Moi Road at Tropical House, behind Gilanis Supermarket and beside
+            Nakuru GPO.
+          </p>
+          <div className="mt-5 flex gap-2">
+            {SOCIALS.map(({ href, label, icon: Icon }) => (
               <a
-                href="https://www.instagram.com/bakemartcoffeehouse/"
+                key={label}
+                href={href}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Instagram"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-neutral-700 text-[#FAF3E7] hover:bg-[#C2410C] hover:border-[#C2410C] hover:text-black transition-colors"
+                aria-label={label}
+                className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] text-white hover:bg-bm-orange hover:text-bm-ink"
               >
-                <Instagram className="w-4 h-4" />
+                <Icon className="h-4 w-4" />
               </a>
-              <a
-                href="https://www.facebook.com/BakemartCoffeeHouse/"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Facebook"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-neutral-700 text-[#FAF3E7] hover:bg-[#C2410C] hover:border-[#C2410C] hover:text-black transition-colors"
-              >
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a
-                href="https://www.tiktok.com/@bakemartcoffeehouse"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="TikTok"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-neutral-700 text-[#FAF3E7] hover:bg-[#C2410C] hover:border-[#C2410C] hover:text-black transition-colors"
-              >
-                <Music2 className="w-4 h-4" />
-              </a>
-              <a
-                href="https://www.youtube.com/@bakemartcoffeehouse"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="YouTube"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-neutral-700 text-[#FAF3E7] hover:bg-[#C2410C] hover:border-[#C2410C] hover:text-black transition-colors"
-              >
-                <Youtube className="w-4 h-4" />
-              </a>
-              <a
-                href="mailto:Salesbakemart.co.ke@gmail.com"
-                className="text-[11px] font-bold uppercase tracking-wide text-[#D9C4A8] underline underline-offset-4 decoration-neutral-700 hover:text-[#C2410C] hover:decoration-[#C2410C] transition-colors ml-1"
-              >
-                Email us
-              </a>
-            </div>
+            ))}
           </div>
-
-          {/* Quick Links */}
-          <div className="space-y-4">
-            <h4 className="font-black uppercase text-xs tracking-[0.2em] text-[#C2410C] pb-2 border-b-2 border-[#C2410C] inline-block">
-              Quick Links
-            </h4>
-            <ul className="space-y-2.5 text-sm text-[#D9C4A8]">
-              <li><a href="/" className="hover:text-[#C2410C] transition-colors">Home</a></li>
-              <li><a href="/menu" className="hover:text-[#C2410C] transition-colors">Menu</a></li>
-              <li><a href="/specials" className="hover:text-[#C2410C] transition-colors">Specials</a></li>
-              <li><a href="/gallery" className="hover:text-[#C2410C] transition-colors">Gallery</a></li>
-              <li><a href="/about" className="hover:text-[#C2410C] transition-colors">About us</a></li>
-              <li><a href="/faq" className="hover:text-[#C2410C] transition-colors">FAQ</a></li>
-            </ul>
-          </div>
-
-          {/* Visit Us */}
-          <div className="space-y-4">
-            <h4 className="font-black uppercase text-xs tracking-[0.2em] text-[#C2410C] pb-2 border-b-2 border-[#C2410C] inline-block">
-              Visit Us
-            </h4>
-            <ul className="space-y-3 text-sm text-[#D9C4A8]">
-              <li className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-[#C2410C] shrink-0 mt-0.5" />
-                <span>Moi Road, Tropical House, Nakuru — behind Gilanis Supermarket, beside Nakuru GPO</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-[#C2410C] shrink-0" />
-                <span>Open daily · closes 8:00 PM</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-[#C2410C] shrink-0" />
-                <a href="tel:+254725009708" className="hover:text-[#C2410C] transition-colors font-semibold">0725 009 708</a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Order & Delivery */}
-          <div className="space-y-4 bg-[#171310] p-5 rounded-2xl border border-neutral-800">
-            <h4 className="font-black uppercase text-xs tracking-[0.2em] text-white flex items-center gap-2">
-              <Flame className="w-4 h-4 text-[#C2410C]" />
-              Order & Delivery
-            </h4>
-            <p className="text-xs text-[#D9C4A8] leading-relaxed">
-              Delivery available via Glovo — search "BakeMart Coffee House Nakuru" to order straight to your door.
-            </p>
-
-            <MpesaPayment />
-
-            <a
-              href="https://wa.me/254725009708?text=Hello%20BakeMart%20Coffee%20House,%20I%20would%20like%20to%20order..."
-              target="_blank"
-              rel="noreferrer"
-              className="w-full bg-[#C2410C] hover:bg-[#EA580C] text-black text-xs font-black uppercase tracking-wide py-3 rounded-full flex items-center justify-center gap-2 transition-colors"
-            >
-              Chat on WhatsApp
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
-
-            <div className="flex items-center gap-3 pt-2">
-              <a
-                href="https://wa.me/254725009708?text=Hello%20BakeMart%20Coffee%20House,%20I%20would%20like%20to%20order..."
-                target="_blank"
-                rel="noreferrer"
-                aria-label="WhatsApp"
-                className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center hover:scale-110 transition-transform"
-              >
-                <img src="/icons/whatsapp.svg" alt="WhatsApp" className="w-5 h-5" />
-              </a>
-              <a
-                href="mailto:Salesbakemart.co.ke@gmail.com"
-                aria-label="Email"
-                className="w-10 h-10 rounded-full bg-[#d97a4c] flex items-center justify-center hover:scale-110 transition-transform"
-              >
-                <img src="/icons/chat.svg" alt="Email" className="w-5 h-5" />
-              </a>
-              <a
-                href="tel:+254725009708"
-                aria-label="Call"
-                className="w-10 h-10 rounded-full bg-black border border-neutral-700 flex items-center justify-center hover:scale-110 transition-transform"
-              >
-                <img src="/icons/phone.svg" alt="Call" className="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-
         </div>
-      </div>
 
-      {/* Marquee ticker */}
-      <div className="border-y border-neutral-800 bg-black overflow-hidden">
-        <div className="flex whitespace-nowrap py-3 bm-marquee-track w-max">
-          {[0, 1].map((rep) => (
-            <div key={rep} className="flex items-center shrink-0">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <span
-                  key={i}
-                  className="mx-4 text-xs font-black uppercase tracking-[0.25em] text-[#C2410C] flex items-center gap-4"
-                >
-                  Nakuru's own
-                  <span className="text-neutral-700">✦</span>
-                  Open kitchen
-                  <span className="text-neutral-700">✦</span>
-                  Fresh daily
-                  <span className="text-neutral-700">✦</span>
-                </span>
-              ))}
-            </div>
+        <FooterColumn title="Explore">
+          {EXPLORE.map((link) => (
+            <li key={link.to}>
+              <Link to={link.to} className="text-white/65 hover:text-bm-orange">
+                {link.label}
+              </Link>
+            </li>
           ))}
+        </FooterColumn>
+
+        <FooterColumn title="On the menu">
+          {categories.map((c) => (
+            <li key={c.id}>
+              <Link to={`/category/${c.id}`} className="text-white/65 hover:text-bm-orange">
+                {shortCategoryName(c)}
+              </Link>
+            </li>
+          ))}
+        </FooterColumn>
+
+        <div>
+          <h3 className="text-xs font-extrabold uppercase tracking-[0.22em] text-bm-orange">Visit & pay</h3>
+          <ul className="mt-4 space-y-3 text-sm text-white/70">
+            <li className="flex gap-2.5">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-bm-orange" />
+              Tropical House, Moi Road, Nakuru
+            </li>
+            <li className="flex gap-2.5">
+              <Clock className="mt-0.5 h-4 w-4 shrink-0 text-bm-orange" />
+              Open daily · 7AM – 8PM
+            </li>
+            <li className="flex gap-2.5">
+              <Phone className="mt-0.5 h-4 w-4 shrink-0 text-bm-orange" />
+              <a href={PHONE_TEL} className="font-bold text-white hover:text-bm-orange">
+                {PHONE_DISPLAY}
+              </a>
+            </li>
+            <li className="flex gap-2.5">
+              <Mail className="mt-0.5 h-4 w-4 shrink-0 text-bm-orange" />
+              <a href={`mailto:${EMAIL}`} className="break-all hover:text-bm-orange">
+                {EMAIL}
+              </a>
+            </li>
+          </ul>
+          <div className="mt-5">
+            <MpesaPayment />
+          </div>
         </div>
       </div>
 
-      {/* Bottom copyright */}
-      <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between text-[11px] text-neutral-500 gap-2">
-        <p>© {new Date().getFullYear()} BakeMart Coffee House. All rights reserved.</p>
-        <p>
-          Website by{' '}
-          <a
-            href="https://portfolio-e-mu.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-neutral-300 hover:text-[#C2410C] transition-colors underline underline-offset-2 decoration-neutral-700 hover:decoration-[#C2410C]"
-          >
-            Eden
-          </a>
+      <div className="overflow-hidden border-t border-white/10" aria-hidden="true">
+        <p className="select-none whitespace-nowrap text-center font-display text-[23vw] leading-[0.78] tracking-[0.02em] text-white/[0.05] lg:text-[17rem]">
+          BAKEMART
         </p>
+      </div>
+
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-[1320px] flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-white/45 sm:flex-row sm:px-6 lg:px-8">
+          <p>© {new Date().getFullYear()} BakeMart Coffee House. All rights reserved.</p>
+          <p>
+            Website by{' '}
+            <a href="https://portfolio-e-mu.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-white/75 underline underline-offset-2 hover:text-bm-orange">
+              Eden
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );
 };
+
+const FooterColumn: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div>
+    <h3 className="text-xs font-extrabold uppercase tracking-[0.22em] text-bm-orange">{title}</h3>
+    <ul className="mt-4 space-y-2.5 text-sm">{children}</ul>
+  </div>
+);

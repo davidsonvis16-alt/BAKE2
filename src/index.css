@@ -28,9 +28,24 @@
   --color-text-secondary: #5c4b3f;
   --color-text-tertiary: #8c7a6c;
 
+  /* ========= BRAND (logo black + orange) ========= */
+  --color-bm-ink: #0e0a07;
+  --color-bm-coal: #1a130e;
+  --color-bm-ember: #2a1d14;
+  --color-bm-orange: #f7941d;
+  --color-bm-orange-hot: #ff7a00;
+  --color-bm-flame: #c2410c;
+  --color-bm-gold: #ffc24b;
+  --color-bm-cream: #fff7ea;
+  --color-bm-sand: #f3e6d0;
+  --color-bm-line: #e7d6bc;
+  --color-bm-muted: #6f5b4b;
+
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'Fraunces', Georgia, Cambria, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Anton', 'Oswald', Impact, 'Arial Narrow', sans-serif;
+  --font-script: 'Caveat', 'Segoe Script', cursive;
 
   --radius-card: 1.5rem;
   --radius-card-lg: 2rem;
@@ -53,13 +68,13 @@
     overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, .font-display {
+  h1, h2, h3, h4 {
     font-family: var(--font-serif);
     font-weight: 700;
     color: var(--color-espresso);
   }
 
-  h1, h2, .font-display {
+  h1, h2 {
     font-weight: 900;
   }
 
@@ -123,8 +138,11 @@
     text-decoration: none;
   }
 
+  /* Colour-only transitions: a blanket `transition: all` fights motion's per-frame transforms. */
   button, a, input, select, textarea {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: color, background-color, border-color, box-shadow, opacity;
+    transition-duration: 0.2s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   *:focus-visible {
@@ -2392,4 +2410,42 @@ html {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+/* ===== BRAND 2026 — motion helpers ===== */
+@keyframes bm-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes bm-spin {
+  to { transform: rotate(360deg); }
+}
+.bm-marquee { animation: bm-marquee 32s linear infinite; }
+.bm-spin-slow { animation: bm-spin 26s linear infinite; }
+.bm-fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+}
+.bm-outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px currentColor;
+}
+.bm-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media (prefers-reduced-motion: reduce) {
+  .bm-marquee, .bm-spin-slow { animation: none; }
+}
+@keyframes bm-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.bm-progress {
+  transform-origin: left center;
+  animation-name: bm-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bm-progress { animation: none; transform: scaleX(1); }
 }

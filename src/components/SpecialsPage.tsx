@@ -1,52 +1,68 @@
 import React from 'react';
-import { ComboGrid } from './ComboGrid';
-import { PromoBanner } from './PromoBanner';
+import { ArrowRight } from 'lucide-react';
+import { MenuItem, MenuItemOption } from '../types';
+import { useMenuData } from '../hooks/useMenuData';
+import { DealsBand } from './home/DealsBand';
 import { ReservationSection } from './ReservationSection';
+import { SplitImage } from './brand/SplitImage';
+import { PriceBurst } from './brand/PriceBurst';
+import { startingPrice } from '../lib/menuMeta';
 
 interface SpecialsPageProps {
-  onNavigateMenu: () => void;
-  onAddToCart: (itemId: string) => void;
-  onSelectCategory: (categoryId: string) => void;
+  onNavigate: (path: string) => void;
+  onAddToCart: (item: MenuItem, selectedOption?: MenuItemOption) => void;
 }
 
-export const SpecialsPage: React.FC<SpecialsPageProps> = ({ onNavigateMenu, onAddToCart, onSelectCategory }) => {
-  return (
-    <div className="pb-16 lg:pb-20">
-      {/* Full Menu Callout Banner */}
-      <section className="max-w-7xl mx-auto px-4 py-8 sm:py-12 lg:py-14">
-        <div className="bg-[#000000] text-[#fdfaf3] p-8 rounded-3xl border border-[#000000] flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
-          <div className="space-y-2 text-center md:text-left">
-            <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#d97a4c]">
-              SPECIALS &amp; COMBOS
-            </span>
-            <h1 className="text-charcoal font-bold text-2xl sm:text-3xl">
-              Specials &amp; Combos — BakeMart Coffee House Nakuru
-            </h1>
-            <p className="text-xs sm:text-sm text-[#d97a4c]/80 max-w-xl">
-              Explore all 12 food categories with live instant search, dietary tags, portion selection, and clean list layouts. — <button onClick={onNavigateMenu} className="text-[#fdfaf3] underline underline-offset-4 decoration-[#d97a4c] hover:decoration-white transition-colors">View full menu</button> and <button onClick={() => onSelectCategory('bbq-platters')} className="text-[#fdfaf3] underline underline-offset-4 decoration-[#d97a4c] hover:decoration-white transition-colors">browse BBQ platters</button>.
-            </p>
-          </div>
+export const SpecialsPage: React.FC<SpecialsPageProps> = ({ onNavigate, onAddToCart }) => {
+  const { menuItems } = useMenuData();
+  const bbqFrom = startingPrice(menuItems.filter((i) => i.category === 'bbq-platters'));
 
-          <button
-            onClick={onNavigateMenu}
-            className="bg-[#d97a4c] hover:bg-[#e8a27a] text-[#000000] font-bold text-sm px-6 py-3 rounded-full transition-all flex items-center gap-2 shadow-sm"
-          >
-            <span>Open Full Menu Page →</span>
-          </button>
+  return (
+    <div className="bg-bm-cream">
+      <section className="mx-auto grid max-w-[1320px] items-center gap-8 px-4 py-10 sm:px-6 md:grid-cols-2 md:py-16 lg:gap-16 lg:px-8">
+        <div>
+          <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-bm-flame">Specials & combos</p>
+          <h1 className="mt-3 font-display text-[3.5rem] uppercase leading-[0.86] text-bm-ink sm:text-7xl lg:text-8xl">
+            Deals worth <span className="text-bm-flame">sharing</span>
+            <span className="sr-only"> — Specials & Combos at BakeMart Coffee House Nakuru</span>
+          </h1>
+          <p className="mt-5 max-w-md text-base leading-relaxed text-bm-muted">
+            Barbecue platters for the table, pizzas for the group and plates that fill you up — all cooked fresh in our open
+            kitchen on Moi Road.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => onNavigate('/category/bbq-platters')}
+              className="group inline-flex items-center gap-2 rounded-full bg-bm-ink px-7 py-4 text-[15px] font-extrabold text-white hover:bg-bm-ember"
+            >
+              BBQ platters
+              <ArrowRight className="h-4 w-4 text-bm-orange transition-transform group-hover:translate-x-1" />
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('/menu')}
+              className="inline-flex items-center rounded-full border-2 border-bm-ink px-7 py-4 text-[15px] font-extrabold text-bm-ink hover:bg-bm-ink hover:text-white"
+            >
+              Full menu
+            </button>
+          </div>
+        </div>
+        <div className="relative">
+          <SplitImage
+            src="/Choma-Platter.jpg"
+            alt="Choma platter at BakeMart Coffee House"
+            trigger="mount"
+            priority
+            className="aspect-[4/3] rounded-[2rem]"
+          />
+          {bbqFrom !== null && <PriceBurst price={bbqFrom} size={124} className="absolute -left-3 -top-6 sm:-left-6" />}
         </div>
       </section>
 
-      {/* BBQ Promo Banner */}
-      <PromoBanner
-        onAddToCart={onAddToCart}
-        onScrollToMenu={() => onSelectCategory('bbq-platters')}
-      />
+      <DealsBand onAddToCart={onAddToCart} onSelectCategory={(id) => onNavigate(`/category/${id}`)} extraIds={['p4', 's5', 'm1_6']} />
 
-      {/* Combos Grid */}
-      <ComboGrid onAddToCart={onAddToCart} />
-
-      {/* Table Reservation Section */}
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:py-14">
         <ReservationSection />
       </div>
     </div>

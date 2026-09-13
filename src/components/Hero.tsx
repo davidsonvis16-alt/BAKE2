@@ -1,186 +1,265 @@
-import React from 'react';
-import { ArrowRight, Star, Clock } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { useMenuData } from '../hooks/useMenuData';
+import { SplitImage } from './brand/SplitImage';
+import { PriceBurst } from './brand/PriceBurst';
+import { categoryIcon, lowestPrice, openStatus, startingPrice } from '../lib/menuMeta';
 
 interface HeroProps {
-  onScrollToMenu: () => void;
+  onNavigateMenu: () => void;
+  onSelectCategory: (categoryId: string) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
+interface Slide {
+  id: string;
+  tag: string;
+  eyebrow: string;
+  lines: [string, string];
+  body: string;
+  image: string;
+  categoryId: string;
+  /** Price the burst shows: a specific item, or the cheapest in the category. */
+  priceItemId?: string;
+  priceLabel: string;
+}
+
+const SLIDES: Slide[] = [
+  {
+    id: 'bbq',
+    tag: 'BBQ Platters',
+    eyebrow: 'Flame-grilled · built for sharing',
+    lines: ['Fired up.', 'Piled high.'],
+    body: 'Mbuzi choma, kuku choma, sausages, chips and ugali — barbecue platters made for the whole table.',
+    image: '/fresh off the fire.jpeg',
+    categoryId: 'bbq-platters',
+    priceLabel: 'From',
+  },
+  {
+    id: 'coffee',
+    tag: 'Coffee & Bakes',
+    eyebrow: 'Brewed and baked every morning',
+    lines: ['Brew. Bake.', 'Repeat.'],
+    body: 'Fresh coffee, masala chai, cakes, muffins and waffles — straight from the open kitchen.',
+    image: '/coffee-and-pastry.jpeg',
+    categoryId: 'hot-cold-drinks',
+    priceItemId: 'hb2',
+    priceLabel: 'Coffee',
+  },
+  {
+    id: 'pizza',
+    tag: 'Pizza & Pasta',
+    eyebrow: 'Hand-stretched in the open kitchen',
+    lines: ['Hand-made.', 'Oven-hot.'],
+    body: 'Margherita, chicken tikka, BBQ mix and more — stretched, topped and fired while you watch.',
+    image: '/Pizza-Margarita.jpg',
+    categoryId: 'pizza-pasta',
+    priceItemId: 'p1',
+    priceLabel: 'Pizza from',
+  },
+  {
+    id: 'kienyeji',
+    tag: 'Kienyeji',
+    eyebrow: 'Nakuru flavours, done right',
+    lines: ['Nakuru', 'on a plate.'],
+    body: 'Mukimo, matoke, githeri and slow-cooked stews — the comfort food you grew up on.',
+    image: '/kienyeji-traditional.jpeg',
+    categoryId: 'kienyeji-traditional',
+    priceLabel: 'From',
+  },
+];
+
+const SLIDE_SECONDS = 7;
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+export const Hero: React.FC<HeroProps> = ({ onNavigateMenu, onSelectCategory }) => {
+  const { menuItems } = useMenuData();
+  const [index, setIndex] = useState(0);
+  const [previous, setPrevious] = useState<number | null>(null);
+  const [cycle, setCycle] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const status = useMemo(() => openStatus(), []);
+
+  const slide = SLIDES[index];
+  const TagIcon = categoryIcon(slide.categoryId);
+
+  const price = useMemo(() => {
+    if (slide.priceItemId) {
+      const item = menuItems.find((i) => i.id === slide.priceItemId);
+      if (item) return lowestPrice(item);
+    }
+    return startingPrice(menuItems.filter((i) => i.category === slide.categoryId));
+  }, [menuItems, slide]);
+
+  const goTo = (next: number) => {
+    if (next === index) return;
+    setPrevious(index);
+    setIndex(next);
+    setCycle((c) => c + 1);
+  };
+  const advance = () => goTo((index + 1) % SLIDES.length);
+
   return (
-    <section className="relative overflow-hidden bg-white">
-      <div className="absolute inset-0 pointer-events-none">
-        <svg
-          className="absolute top-[5%] left-[3%] w-16 sm:w-24 opacity-[0.12]"
-          viewBox="0 0 100 100"
-          fill="none"
-          stroke="#1a120b"
-          strokeWidth="2"
-        >
-          <ellipse cx="50" cy="50" rx="35" ry="22" />
-          <path d="M50 28 C60 28 72 40 72 50 C72 60 60 72 50 72 C40 72 28 60 28 50 C28 40 40 28 50 28Z" />
-          <path d="M50 50 L50 72" strokeDasharray="4 4" />
-        </svg>
+    <section
+      className="relative overflow-hidden bg-black text-white"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+      aria-roledescription="carousel"
+      aria-label="Featured at BakeMart"
+    >
+      {/* Poster photo: printed straight onto the black, edges melting into it — no card. */}
+      <div className="relative h-[58svh] min-h-[340px] w-full sm:h-[62svh] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[64%]">
+        {previous !== null && (
+          <img src={SLIDES[previous].image} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
+        )}
+        <SplitImage
+          key={`${slide.id}-${cycle}`}
+          src={slide.image}
+          alt={`${slide.tag} at BakeMart Coffee House`}
+          strips={6}
+          trigger="mount"
+          priority
+          className="absolute inset-0"
+        />
+        {/* Fades only touch the edges, so the food itself is shown as shot. */}
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,#000_0%,rgba(0,0,0,0.85)_18%,rgba(0,0,0,0)_55%)] lg:hidden" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_right,#000_0%,rgba(0,0,0,0.8)_14%,rgba(0,0,0,0)_48%)] lg:block" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-48 bg-gradient-to-t from-black to-transparent lg:block" />
 
-        <svg
-          className="absolute top-[12%] right-[8%] w-12 sm:w-20 opacity-[0.10]"
-          viewBox="0 0 80 120"
-          fill="none"
-          stroke="#1a120b"
-          strokeWidth="2"
-        >
-          <path d="M40 10 C20 10 10 40 10 70 C10 100 25 115 40 115 C55 115 70 100 70 70 C70 40 60 10 40 10Z" />
-          <path d="M40 30 L40 100" strokeDasharray="3 3" />
-        </svg>
+        <AnimatePresence mode="wait">
+          {price !== null && (
+            <motion.div
+              key={slide.id}
+              className="absolute right-4 top-4 sm:right-6 sm:top-6 lg:right-10 lg:top-10"
+              initial={{ scale: 0, rotate: -120 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, rotate: 60 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.35 }}
+            >
+              <PriceBurst price={price} label={slide.priceLabel} size={100} className="sm:hidden" />
+              <PriceBurst price={price} label={slide.priceLabel} size={140} className="hidden sm:grid" />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <svg
-          className="absolute bottom-[10%] left-[6%] w-14 sm:w-28 opacity-[0.10]"
-          viewBox="0 0 120 80"
-          fill="none"
-          stroke="#1a120b"
-          strokeWidth="2"
+        <button
+          type="button"
+          onClick={() => onSelectCategory(slide.categoryId)}
+          className="group absolute left-4 top-4 flex items-center gap-3 rounded-full bg-white py-1.5 pl-1.5 pr-4 text-bm-ink sm:left-6 sm:top-6 lg:bottom-10 lg:left-auto lg:right-28 lg:top-auto lg:py-2 lg:pl-2 lg:pr-5"
         >
-          <path d="M20 40 Q40 10 60 40 T100 40" />
-          <path d="M30 60 Q50 30 70 60 T110 60" />
-          <circle cx="40" cy="40" r="3" />
-          <circle cx="70" cy="50" r="2" />
-          <circle cx="90" cy="35" r="3" />
-        </svg>
-
-        <svg
-          className="absolute bottom-[15%] right-[4%] w-10 sm:w-16 opacity-[0.10] sm:block hidden"
-          viewBox="0 0 100 100"
-          fill="none"
-          stroke="#1a120b"
-          strokeWidth="2"
-        >
-          <path d="M50 15 C30 15 15 35 15 55 C15 75 30 90 50 90 C70 90 85 75 85 55 C85 35 70 15 50 15Z" />
-          <path d="M50 35 L50 75" strokeDasharray="4 4" />
-          <path d="M35 50 L65 50" strokeDasharray="4 4" />
-        </svg>
-
-        <svg
-          className="absolute top-[45%] left-[2%] w-8 sm:w-14 opacity-[0.08] lg:block hidden"
-          viewBox="0 0 60 100"
-          fill="none"
-          stroke="#1a120b"
-          strokeWidth="2"
-        >
-          <path d="M30 5 C15 5 5 25 5 50 C5 75 15 95 30 95 C45 95 55 75 55 50 C55 25 45 5 30 5Z" />
-          <path d="M30 20 L30 80" strokeDasharray="3 3" />
-        </svg>
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-bm-orange lg:h-10 lg:w-10">
+            <TagIcon className="h-5 w-5" />
+          </span>
+          <span className="text-left leading-tight">
+            <span className="block text-[10px] font-extrabold uppercase tracking-[0.18em] text-bm-muted">Now serving</span>
+            <span className="block text-sm font-extrabold">{slide.tag}</span>
+          </span>
+          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </button>
       </div>
 
-      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 lg:pt-14 pb-10 sm:pb-14 lg:pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-6 sm:gap-8 lg:gap-14">
-          <div className="lg:col-span-5 relative z-20 text-center lg:text-left">
-            <div
-              className="inline-flex items-center gap-2 bg-[#f8f1e5] border border-[#e6d3c2] text-[#000000] text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-5 sm:mb-6 text-charcoal"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#d97a4c]" />
-              Est. Moi Road, Nakuru
-            </div>
+      {/* Copy sits on the black, overlapping the photo's faded edge */}
+      <div className="relative mx-auto -mt-32 max-w-[1320px] px-4 pb-10 sm:-mt-40 sm:px-6 lg:mt-0 lg:flex lg:min-h-[calc(100svh-7.75rem)] lg:items-center lg:px-8 lg:py-16">
+        <div className="lg:max-w-[600px]">
+          <span
+            className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.16em] ${
+              status.open ? 'bg-emerald-400/10 text-emerald-300' : 'bg-white/10 text-white/70'
+            }`}
+          >
+            <span className={`h-2 w-2 rounded-full ${status.open ? 'animate-pulse bg-emerald-400' : 'bg-white/50'}`} />
+            {status.label} · Moi Road, Nakuru
+          </span>
 
-            <h1 className="font-black text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] text-[#000000] leading-[0.92] tracking-tight text-charcoal-lg">
-              Coffee House &amp;
-              <br />
-              Restaurant in
-              <br />
-              <span className="text-[#d97a4c] italic font-normal text-[1.5rem] sm:text-3xl md:text-4xl lg:text-[3.25rem]">Nakuru</span>
-            </h1>
-
-            <p className="text-[#5c4b3f] text-sm sm:text-base lg:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed mt-5 sm:mt-6 text-charcoal">
-              Open-kitchen cooking, fresh pastries, honest flavour, and the kind of room that
-              keeps you lingering. From coffee and flame-grilled chicken to hand-stretched
-              pizza — nothing here is rushed. Located on Moi Road, Tropical House, Nakuru.
-            </p>
-
-            <div
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-6 sm:mt-7"
-            >
-              <button
-                onClick={onScrollToMenu}
-                className="bg-[#000000] hover:bg-[#2b1b12] text-white font-black text-sm px-7 py-3.5 sm:px-8 sm:py-4 rounded-full transition-all flex items-center gap-2 shadow-[0_10px_30px_rgba(0,0,0,0.25)] active:scale-[0.97]"
+          <AnimatePresence mode="wait">
+            <motion.div key={slide.id} exit={{ opacity: 0, transition: { duration: 0.25 } }}>
+              <motion.p
+                className="mt-5 text-sm font-bold text-bm-orange sm:text-base"
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, ease: EASE }}
               >
-                View Menu
-                <ArrowRight className="w-4 h-4" style={{ color: '#d97a4c' }} />
-              </button>
-              <a
-                href="https://www.google.com/maps/search/?api=1&query=BakeMart+Coffee+House,Tropical+House,Moi+Road,Nakuru"
-                target="_blank"
-                rel="noreferrer"
-                className="bg-white hover:bg-[#f8f1e5] text-[#000000] border border-[#e6d3c2] font-bold text-sm px-6 py-3.5 sm:px-7 sm:py-4 rounded-full transition-all"
+                {slide.eyebrow}
+              </motion.p>
+              <h1 className="mt-2 font-display text-[3.7rem] uppercase leading-[0.86] text-white sm:text-[5.5rem] lg:text-[6.5rem] xl:text-[7.5rem]">
+                {slide.lines.map((line, i) => (
+                  <span key={line} className="block overflow-hidden pb-1">
+                    <motion.span
+                      className={`block ${i === 1 ? 'text-bm-orange' : ''}`}
+                      initial={{ y: '105%' }}
+                      animate={{ y: 0 }}
+                      transition={{ duration: 0.8, ease: EASE, delay: 0.05 + i * 0.09 }}
+                    >
+                      {line}
+                    </motion.span>
+                  </span>
+                ))}
+                <span className="sr-only"> — BakeMart Coffee House, coffee house and restaurant in Nakuru</span>
+              </h1>
+              <motion.p
+                className="mt-4 max-w-md text-[15px] leading-relaxed text-white/75 sm:text-lg"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: EASE, delay: 0.25 }}
               >
-                Visit Us
-              </a>
-            </div>
+                {slide.body}
+              </motion.p>
+            </motion.div>
+          </AnimatePresence>
 
-            <div
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 mt-6 sm:mt-7 pt-5 sm:pt-6 border-t border-[#e6d3c2] max-w-md mx-auto lg:mx-0"
+          <div className="mt-7 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={onNavigateMenu}
+              className="group inline-flex items-center gap-2 rounded-full bg-bm-orange px-7 py-4 text-[15px] font-extrabold text-bm-ink transition-[background-color,transform] hover:bg-bm-orange-hot active:scale-95"
             >
-              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#5c4b3f]">
-                <Star className="w-3.5 h-3.5 text-[#d97a4c] fill-[#d97a4c]" />
-                5.0 on Google
-              </div>
-              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#5c4b3f]">
-                <Clock className="w-3.5 h-3.5 text-[#d97a4c]" />
-                7 AM – 8 PM Daily
-              </div>
-            </div>
+              Order now
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectCategory(slide.categoryId)}
+              className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-4 text-[15px] font-extrabold text-white hover:border-white hover:bg-white/5"
+            >
+              See {slide.tag}
+            </button>
           </div>
 
-          <div className="lg:col-span-7 relative z-20 mt-2 sm:mt-4 lg:mt-0">
-            <div className="relative mx-auto max-w-[85%] sm:max-w-sm lg:max-w-none">
-              <div className="relative w-full mx-auto">
-                <img
-                  src="/menu-item-cutout.png"
-                  alt="Signature BakeMart dish"
-                  className="w-full h-auto"
-                  style={{ filter: 'drop-shadow(0 30px 40px rgba(0,0,0,0.25))' }}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-              </div>
-
-              <div className="absolute top-1 right-0 sm:top-0 sm:right-2 lg:right-4 z-30">
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 rounded-full bg-[#d97a4c] flex items-center justify-center shadow-[0_14px_30px_rgba(0,0,0,0.35)] border-2 border-[#000000]">
-                  <span
-                    className="text-center text-[10px] sm:text-[11px] lg:text-[13px] font-black uppercase leading-tight text-[#000000] px-2 text-charcoal"
-                  >
-                    Baked
-                    <br />
-                    Fresh
-                    <br />
-                    Daily
+          <div className="mt-9 grid max-w-[560px] grid-cols-4 gap-2 sm:gap-3" role="tablist" aria-label="Choose a featured dish">
+            {SLIDES.map((s, i) => {
+              const active = i === index;
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => goTo(i)}
+                  className="group text-left"
+                >
+                  <span className="relative block h-1 overflow-hidden rounded-full bg-white/15">
+                    {active ? (
+                      <span
+                        key={cycle}
+                        className="bm-progress absolute inset-0 rounded-full bg-bm-orange"
+                        style={{ animationDuration: `${SLIDE_SECONDS}s`, animationPlayState: paused ? 'paused' : 'running' }}
+                        onAnimationEnd={advance}
+                      />
+                    ) : (
+                      <span className={`absolute inset-0 rounded-full ${i < index ? 'bg-white/40' : ''}`} />
+                    )}
                   </span>
-                </div>
-              </div>
-
-              <div
-                className="absolute top-[28%] -right-2 sm:-right-3 lg:-right-6 max-w-[130px] sm:max-w-[150px] lg:max-w-[170px] bg-white rounded-2xl px-2.5 py-2.5 sm:px-4 sm:py-3.5 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30"
-              >
-                <div className="flex gap-0.5 mb-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-[#d97a4c] fill-[#d97a4c]" />
-                  ))}
-                </div>
-                <p className="text-[10px] sm:text-[11px] leading-snug text-[#000000] font-semibold text-charcoal">
-                  "Best flame-grilled chicken in Nakuru, hands down."
-                </p>
-                <p className="text-[8px] sm:text-[9px] text-[#8c7a6c] font-bold mt-1">— Google review</p>
-              </div>
-
-              <div
-                className="absolute bottom-[2%] left-0 sm:-left-4 lg:-left-6 bg-white rounded-2xl px-2.5 py-2 sm:px-4 sm:py-3 shadow-[0_16px_30px_rgba(0,0,0,0.35)] border border-[#e6d3c2] z-30"
-              >
-                <div className="text-charcoal font-black text-lg sm:text-2xl leading-none">
-                  202+
-                </div>
-                <div className="text-[8px] sm:text-[9px] uppercase tracking-wide text-[#8c7a6c] font-bold mt-1">
-                  Menu items & counting
-                </div>
-              </div>
-            </div>
+                  <span
+                    className={`mt-2 hidden text-[12px] font-bold sm:block ${active ? 'text-white' : 'text-white/45 group-hover:text-white/80'}`}
+                  >
+                    <span className="mr-1.5 font-display text-bm-orange">0{i + 1}</span>
+                    {s.tag}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

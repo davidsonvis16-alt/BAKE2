@@ -1,7 +1,12 @@
-import React from 'react';
-import { X, Plus, Check } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion } from 'motion/react';
+import { Check, Minus, Plus, X } from 'lucide-react';
 import { MenuItem, MenuItemOption } from '../types';
 import { useCartAnimation } from './CartAnimation';
+import { useScrollLock } from '../hooks/useScrollLock';
+import { CATEGORIES } from '../data/menuData';
+import { formatKsh } from '../lib/menuMeta';
+import { FoodArtFallback } from './menu/MenuCard';
 
 interface FoodPreviewModalProps {
   item: MenuItem;
@@ -9,135 +14,160 @@ interface FoodPreviewModalProps {
   onAddToCart: (item: MenuItem, selectedOption?: MenuItemOption) => void;
 }
 
-export const FoodPreviewModal: React.FC<FoodPreviewModalProps> = ({
-  item,
-  onClose,
-  onAddToCart,
-}) => {
-  const [selectedOption, setSelectedOption] = React.useState<MenuItemOption | undefined>(
-    item.options && item.options.length > 0 ? item.options[0] : undefined
-  );
-  const [added, setAdded] = React.useState(false);
+export const FoodPreviewModal: React.FC<FoodPreviewModalProps> = ({ item, onClose, onAddToCart }) => {
+  const [selectedOption, setSelectedOption] = useState<MenuItemOption | undefined>(item.options?.[0]);
+  const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
   const { triggerFly } = useCartAnimation();
-  const addButtonRef = React.useRef<HTMLButtonElement | null>(null);
+  const addButtonRef = useRef<HTMLButtonElement>(null);
+  useScrollLock(true);
 
-  const currentPrice = selectedOption ? selectedOption.price : item.price;
+  const unitPrice = selectedOption ? selectedOption.price : item.price;
+  const categoryName = CATEGORIES.find((c) => c.id === item.category)?.name;
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
   const handleAdd = () => {
-    onAddToCart(item, selectedOption);
+    for (let i = 0; i < quantity; i++) onAddToCart(item, selectedOption);
     setAdded(true);
-    if (addButtonRef.current) {
-      triggerFly(addButtonRef.current.getBoundingClientRect());
-    }
-    setTimeout(() => {
-      setAdded(false);
-      onClose();
-    }, 1200);
+    if (addButtonRef.current) triggerFly(addButtonRef.current.getBoundingClientRect());
+    setTimeout(onClose, 850);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white w-full max-w-lg max-h-[90vh] sm:rounded-3xl rounded-t-3xl overflow-hidden shadow-2xl flex flex-col">
-        <div className="relative aspect-[4/3] bg-[#f8f1e5]">
-          {item.image ? (
-            <img
+    <div className="fixed inset-0 z-[70] flex items-end justify-center md:items-center md:p-6" role="dialog" aria-modal="true" aria-label={item.name}>
+      <motion.div
+        className="absolute inset-0 bg-bm-ink/70 backdrop-blur-sm"
+        onClick={onClose}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+      <motion.div
+        className="relative flex max-h-[92svh] w-full flex-col overflow-hidden rounded-t-[1.75rem] bg-bm-cream shadow-2xl md:grid md:max-h-[min(640px,88vh)] md:max-w-4xl md:grid-cols-[1.05fr_1fr] md:rounded-[1.75rem]"
+        initial={{ y: '100%', opacity: 0.6 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: '100%', opacity: 0 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 34 }}
+      >
+        <div className="relative aspect-[16/11] shrink-0 overflow-hidden bg-bm-coal md:aspect-auto md:h-full">
+          {item.image && !imageFailed ? (
+            <motion.img
               src={item.image}
               alt={item.name}
-              className="w-full h-full object-cover"
+              onError={() => setImageFailed(true)}
+              className="absolute inset-0 h-full w-full object-cover"
+              initial={{ scale: 1.15 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-6xl">
-              🍽️
-            </div>
+            <FoodArtFallback category={item.category} />
           )}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 border border-[#e6d3c2] flex items-center justify-center text-[#000000] hover:bg-white transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
           {item.badge && (
-            <div className="absolute top-4 left-4 z-10">
-              <span className="bg-[#000000] text-white text-[10px] font-bold px-3 py-1 rounded-full">
-                {item.badge}
-              </span>
-            </div>
+            <span className="absolute left-4 top-4 rounded-full bg-bm-orange px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-bm-ink">
+              {item.badge}
+            </span>
           )}
+          <span className="absolute left-1/2 top-2 h-1.5 w-12 -translate-x-1/2 rounded-full bg-white/70 md:hidden" aria-hidden="true" />
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 space-y-5">
-          <div className="space-y-2">
-            <h2 className="text-charcoal font-black text-2xl text-[#000000] leading-tight">
-              {item.name}
-            </h2>
-            {item.description && (
-              <p className="text-sm text-[#5c4b3f] leading-relaxed">
-                {item.description}
-              </p>
-            )}
-          </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-full bg-white text-bm-ink shadow-lg hover:bg-bm-sand"
+          aria-label="Close"
+        >
+          <X className="h-5 w-5" />
+        </button>
 
-          <div className="flex items-baseline gap-2">
-            <span className="font-mono font-bold text-2xl text-[#000000]">
-              KSh {currentPrice.toLocaleString()}
-            </span>
-            {selectedOption && (
-              <span className="text-xs text-[#8c7a6c]">
-                ({selectedOption.name})
-              </span>
-            )}
-          </div>
+        <div className="flex min-h-0 flex-1 flex-col">
+          <div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-5 sm:p-7" data-lenis-prevent>
+            <div>
+              {categoryName && (
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-bm-flame">{categoryName}</p>
+              )}
+              <h2 className="mt-2 font-display text-[2rem] uppercase leading-[0.95] text-bm-ink sm:text-[2.5rem]">{item.name}</h2>
+              {item.description && <p className="mt-3 text-[15px] leading-relaxed text-bm-muted">{item.description}</p>}
+            </div>
 
-          {item.options && item.options.length > 0 && (
-            <div className="space-y-3">
-              <p className="text-xs font-bold uppercase tracking-widest text-[#8c7a6c]">
-                Choose Option
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {item.options.map((opt) => (
-                  <button
-                    key={opt.name}
-                    type="button"
-                    onClick={() => setSelectedOption(opt)}
-                    className={`rounded-full border px-4 py-2 text-xs font-semibold transition ${
-                      selectedOption?.name === opt.name
-                        ? 'border-[#000000] bg-[#000000] text-white'
-                        : 'border-[#e6d3c2] bg-[#fdfaf3] text-[#000000] hover:border-[#000000]'
-                    }`}
-                  >
-                    {opt.name}
-                  </button>
-                ))}
+            {item.options && item.options.length > 0 && (
+              <fieldset>
+                <legend className="mb-2.5 text-xs font-extrabold uppercase tracking-[0.18em] text-bm-ink">Choose your size</legend>
+                <div className="grid grid-cols-2 gap-2.5">
+                  {item.options.map((opt) => {
+                    const active = selectedOption?.name === opt.name;
+                    return (
+                      <button
+                        key={opt.name}
+                        type="button"
+                        onClick={() => setSelectedOption(opt)}
+                        aria-pressed={active}
+                        className={`flex flex-col items-start rounded-2xl border-2 px-4 py-3 text-left transition-colors ${
+                          active ? 'border-bm-ink bg-bm-ink text-white' : 'border-bm-line bg-white text-bm-ink hover:border-bm-ink'
+                        }`}
+                      >
+                        <span className="text-sm font-bold">{opt.name}</span>
+                        <span className={`font-display text-xl ${active ? 'text-bm-orange' : ''}`}>{formatKsh(opt.price)}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            )}
+
+            <div className="flex items-center justify-between rounded-2xl bg-white p-3 ring-1 ring-bm-line">
+              <span className="pl-1 text-sm font-bold text-bm-ink">Quantity</span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                  className="grid h-10 w-10 place-items-center rounded-full bg-bm-sand text-bm-ink hover:bg-bm-line disabled:opacity-40"
+                  disabled={quantity <= 1}
+                  aria-label="Decrease quantity"
+                >
+                  <Minus className="h-4 w-4" />
+                </button>
+                <span className="w-10 text-center font-display text-2xl tabular-nums text-bm-ink" aria-live="polite">
+                  {quantity}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => q + 1)}
+                  className="grid h-10 w-10 place-items-center rounded-full bg-bm-ink text-white hover:bg-bm-ember"
+                  aria-label="Increase quantity"
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
               </div>
             </div>
-          )}
-        </div>
+          </div>
 
-        <div className="p-4 border-t border-[#e6d3c2] bg-white">
-          <button
-            ref={addButtonRef}
-            onClick={handleAdd}
-            className={`w-full flex items-center justify-center gap-2 rounded-full py-3.5 text-sm font-bold transition-all active:scale-[0.98] ${
-              added
-                ? 'bg-[#d97a4c] text-white'
-                : 'bg-[#000000] text-white hover:bg-[#000000]'
-            }`}
-          >
-            {added ? (
-              <>
-                <Check className="w-4 h-4" />
-                Added to Cart
-              </>
-            ) : (
-              <>
-                <Plus className="w-4 h-4" />
-                Add to Cart
-              </>
-            )}
-          </button>
+          <div className="border-t border-bm-line bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-7">
+            <button
+              ref={addButtonRef}
+              type="button"
+              onClick={handleAdd}
+              disabled={added}
+              className={`flex w-full items-center justify-between gap-3 rounded-full px-6 py-4 text-[15px] font-extrabold transition-[background-color,transform] active:scale-[0.98] ${
+                added ? 'bg-bm-ink text-white' : 'bg-bm-orange text-bm-ink hover:bg-bm-orange-hot'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                {added ? <Check className="h-5 w-5" /> : <Plus className="h-5 w-5" strokeWidth={3} />}
+                {added ? 'Added to your order' : `Add ${quantity} to order`}
+              </span>
+              <span className="font-display text-xl">{formatKsh(unitPrice * quantity)}</span>
+            </button>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

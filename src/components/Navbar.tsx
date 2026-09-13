@@ -1,351 +1,329 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ShoppingBag, Heart, Phone, Search, Gift, X, Instagram, Facebook, Youtube, Music2 } from 'lucide-react';
-import { HamburgerIcon } from './HamburgerIcon';
+import { ChevronDown, Facebook, Heart, Instagram, Menu, MessageCircle, Music2, Phone, Search, ShoppingBag, X, Youtube } from 'lucide-react';
 import { useCartAnimation } from './CartAnimation';
+import { CATEGORIES } from '../data/menuData';
+import { useMenuData } from '../hooks/useMenuData';
+import { useScrollLock } from '../hooks/useScrollLock';
+import { formatKsh, openStatus, orderCategories, PHONE_DISPLAY, PHONE_TEL, shortCategoryName, startingPrice, whatsappLink } from '../lib/menuMeta';
+import { requestSearchFocus } from '../lib/searchFocus';
+
+export type ActivePage = 'home' | 'menu' | 'category' | 'reservation' | 'admin' | 'gallery' | 'about' | 'faq' | 'specials';
 
 interface NavbarProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
   cartCount: number;
   wishlistCount: number;
-  activePage: 'home' | 'menu' | 'category' | 'reservation' | 'admin' | 'gallery' | 'about' | 'faq' | 'specials';
-  onNavigateHome: () => void;
-  onNavigateMenu: () => void;
-  onNavigateCategories: () => void;
+  activePage: ActivePage;
+  onNavigate: (path: string) => void;
   onOpenCart: () => void;
   onOpenWishlist: () => void;
-  onNavigateGallery: () => void;
-  onNavigateAbout: () => void;
-  onNavigateFAQ: () => void;
-  onNavigateReservation: () => void;
-  onNavigateSpecials: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({
-  searchQuery,
-  setSearchQuery,
-  cartCount,
-  wishlistCount,
-  activePage,
-  onNavigateHome,
-  onNavigateMenu,
-  onNavigateCategories,
-  onOpenCart,
-  onOpenWishlist,
-  onNavigateGallery,
-  onNavigateAbout,
-  onNavigateFAQ,
-  onNavigateReservation,
-  onNavigateSpecials,
-}) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+const SOCIALS = [
+  { href: 'https://www.instagram.com/bakemartcoffeehouse/', label: 'Instagram', icon: Instagram },
+  { href: 'https://www.facebook.com/BakemartCoffeeHouse/', label: 'Facebook', icon: Facebook },
+  { href: 'https://www.tiktok.com/@bakemartcoffeehouse', label: 'TikTok', icon: Music2 },
+  { href: 'https://www.youtube.com/@bakemartcoffeehouse', label: 'YouTube', icon: Youtube },
+];
+
+export const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, activePage, onNavigate, onOpenCart, onOpenWishlist }) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [megaOpen, setMegaOpen] = useState(false);
   const { setCartRef } = useCartAnimation();
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  const prevCartCount = useRef(cartCount);
-  const [cartPulse, setCartPulse] = useState(false);
+  const { menuItems } = useMenuData();
+  const status = useMemo(() => openStatus(), []);
+  const categories = useMemo(() => orderCategories(CATEGORIES), []);
+  useScrollLock(mobileOpen);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  useEffect(() => {
-    if (cartCount > prevCartCount.current) {
-      setCartPulse(true);
-      const t = setTimeout(() => setCartPulse(false), 600);
-      return () => clearTimeout(t);
-    }
-    prevCartCount.current = cartCount;
-  }, [cartCount]);
-
-  useEffect(() => {
-    if (isSearchOpen) searchInputRef.current?.focus();
-  }, [isSearchOpen]);
-
-  const primaryNav = [
-    { label: 'Home', onClick: onNavigateHome, active: activePage === 'home' },
-    { label: 'Full Menu', onClick: onNavigateMenu, active: activePage === 'menu' },
-    { label: 'Categories', onClick: onNavigateCategories, active: activePage === 'category' },
-    { label: 'Specials', onClick: onNavigateSpecials, active: activePage === 'specials' },
-    { label: 'Gallery', onClick: onNavigateGallery, active: activePage === 'gallery' },
-    { label: 'About', onClick: onNavigateAbout, active: activePage === 'about' },
-    { label: 'FAQ', onClick: onNavigateFAQ, active: activePage === 'faq' },
+  const links: { label: string; path: string; active: boolean }[] = [
+    { label: 'Home', path: '/', active: activePage === 'home' },
+    { label: 'Menu', path: '/menu', active: activePage === 'menu' || activePage === 'category' },
+    { label: 'Deals', path: '/specials', active: activePage === 'specials' },
+    { label: 'Gallery', path: '/gallery', active: activePage === 'gallery' },
+    { label: 'About', path: '/about', active: activePage === 'about' },
+    { label: 'FAQ', path: '/faq', active: activePage === 'faq' },
   ];
 
-  const mobileMenuItems = [
-    { label: 'Home', onClick: onNavigateHome, active: activePage === 'home' },
-    { label: 'Full Menu', onClick: onNavigateMenu, active: activePage === 'menu' },
-    { label: 'Categories', onClick: onNavigateCategories, active: activePage === 'category' },
-    { label: 'Specials', onClick: onNavigateSpecials, active: activePage === 'specials' },
-    { label: 'Gallery', onClick: onNavigateGallery, active: activePage === 'gallery' },
-    { label: 'About', onClick: onNavigateAbout, active: activePage === 'about' },
-    { label: 'FAQ', onClick: onNavigateFAQ, active: activePage === 'faq' },
-    { label: 'Reserve', onClick: onNavigateReservation, active: activePage === 'reservation' },
-  ];
+  const go = (path: string) => {
+    setMegaOpen(false);
+    setMobileOpen(false);
+    onNavigate(path);
+  };
+
+  const openSearch = () => {
+    setMobileOpen(false);
+    onNavigate('/menu');
+    requestSearchFocus();
+  };
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-[var(--color-ivory)]/90 backdrop-blur-xl shadow-[0_8px_24px_rgba(26,18,11,0.06)] border-b border-[var(--color-warm-border-light)]'
-          : 'bg-[var(--color-ivory)] border-b border-transparent'
-      }`}
-    >
-      {/* ---- top utility strip ---- */}
-      <div
-        className={`hidden lg:block overflow-hidden transition-all duration-300 ${
-          scrolled ? 'max-h-0 opacity-0' : 'max-h-9 opacity-100'
-        }`}
-      >
-        <div className="max-w-[1400px] mx-auto px-6 xl:px-8 h-9 flex items-center justify-between text-[11px] font-semibold text-[var(--color-warm-stone)]">
-          <span className="tracking-wide">Beyond Sweetness — It is fresh and nutritional</span>
+    <>
+      {/* Utility strip */}
+      <div className="bg-bm-coal text-[12px] font-semibold text-white/75">
+        <div className="mx-auto flex h-9 max-w-[1320px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          <span className="flex items-center gap-2">
+            <span className={`h-1.5 w-1.5 rounded-full ${status.open ? 'bg-emerald-400' : 'bg-white/40'}`} />
+            {status.label}
+          </span>
+          <a href={whatsappLink()} target="_blank" rel="noreferrer" className="hidden items-center gap-1.5 hover:text-bm-orange sm:flex">
+            <MessageCircle className="h-3.5 w-3.5 text-bm-orange" />
+            Order on WhatsApp · {PHONE_DISPLAY}
+          </a>
           <div className="flex items-center gap-3">
-            <a href="tel:+254725009708" className="flex items-center gap-1.5 text-[var(--color-espresso)] hover:text-[var(--color-orange-muted)] transition-colors">
-              <Phone className="w-3 h-3" />
-              <span>0725 009 708</span>
+            <a href={PHONE_TEL} className="flex items-center gap-1.5 hover:text-bm-orange sm:hidden">
+              <Phone className="h-3.5 w-3.5 text-bm-orange" />
+              {PHONE_DISPLAY}
             </a>
-            <a href="https://www.instagram.com/bakemartcoffeehouse/" target="_blank" rel="noreferrer" className="hover:text-[var(--color-orange-muted)] transition-colors">
-              <Instagram className="w-3.5 h-3.5" />
-            </a>
-            <a href="https://www.facebook.com/BakemartCoffeeHouse/" target="_blank" rel="noreferrer" className="hover:text-[var(--color-orange-muted)] transition-colors">
-              <Facebook className="w-3.5 h-3.5" />
-            </a>
-            <a href="https://www.tiktok.com/@bakemartcoffeehouse" target="_blank" rel="noreferrer" className="hover:text-[var(--color-orange-muted)] transition-colors">
-              <Music2 className="w-3.5 h-3.5" />
-            </a>
-            <a href="https://www.youtube.com/@bakemartcoffeehouse" target="_blank" rel="noreferrer" className="hover:text-[var(--color-orange-muted)] transition-colors">
-              <Youtube className="w-3.5 h-3.5" />
-            </a>
+            {SOCIALS.map(({ href, label, icon: Icon }) => (
+              <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="hidden hover:text-bm-orange lg:block">
+                <Icon className="h-3.5 w-3.5" />
+              </a>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* ---- main row ---- */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 xl:px-8">
-        <div className="h-16 lg:h-[68px] flex items-center justify-between gap-4">
-          {/* logo */}
-          <button onClick={onNavigateHome} className="flex items-center gap-3 shrink-0 group">
-            <img
-              src="/logo.jpeg"
-              alt="BakeMart Coffee House"
-              className="w-10 h-10 lg:w-11 lg:h-11 rounded-full object-cover ring-2 ring-[var(--color-warm-border)] group-hover:ring-[var(--color-gold)] transition-all"
-            />
-             <div className="text-left leading-tight">
-               <div className="font-serif font-black text-[15px] lg:text-[17px] text-[var(--color-espresso)]">
-                 BakeMart Coffee House
-               </div>
-               <div className="text-[10px] font-semibold tracking-wide text-[var(--color-warm-stone)] uppercase">
-                 Nakuru City
-               </div>
-             </div>
+      <header data-site-header className="sticky top-0 z-50 border-b border-white/10 bg-bm-ink text-white">
+        <div className="mx-auto flex h-16 max-w-[1320px] items-center justify-between gap-4 px-4 sm:px-6 lg:h-[72px] lg:px-8">
+          <button type="button" onClick={() => go('/')} className="flex shrink-0 items-center gap-2.5" aria-label="BakeMart Coffee House home">
+            <img src="/logo.jpeg" alt="" className="h-10 w-10 rounded-full object-cover lg:h-11 lg:w-11" />
+            <span className="text-left leading-none">
+              <span className="block font-display text-[1.35rem] tracking-[0.04em] text-white lg:text-[1.5rem]">BAKEMART</span>
+              <span className="mt-0.5 block text-[9px] font-extrabold uppercase tracking-[0.3em] text-bm-orange lg:text-[10px]">
+                Coffee House
+              </span>
+            </span>
           </button>
 
-          {/* center pill nav — desktop only */}
-          <nav className="hidden lg:flex items-center gap-1 bg-[var(--color-warm-bg-alt)] border border-[var(--color-warm-border-light)] rounded-full p-1 overflow-x-auto">
-            {primaryNav.map((item) => (
-              <button
-                key={item.label}
-                onClick={item.onClick}
-                className={`relative flex items-center gap-1.5 px-3 py-2 rounded-full text-[13px] font-bold smooth-nav shrink-0 ${
-                  item.active
-                    ? 'text-white'
-                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-espresso)]'
-                }`}
-              >
-                {item.active && (
-                  <motion.span
-                    layoutId="nav-pill"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    className="absolute inset-0 rounded-full bg-[var(--color-espresso)]"
-                  />
-                )}
-                <span className="relative flex items-center gap-1.5">
-                  {item.icon ? <item.icon className="w-3.5 h-3.5" /> : null}
-                  {item.label}
-                </span>
-              </button>
-            ))}
+          <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+            {links.map((link) =>
+              link.label === 'Menu' ? (
+                <div
+                  key={link.label}
+                  className="relative"
+                  onMouseEnter={() => setMegaOpen(true)}
+                  onMouseLeave={() => setMegaOpen(false)}
+                >
+                  <NavLink link={link} onClick={() => go(link.path)} trailing={<ChevronDown className={`h-3.5 w-3.5 transition-transform ${megaOpen ? 'rotate-180' : ''}`} />} />
+                  <AnimatePresence>
+                    {megaOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.18 }}
+                        className="absolute left-1/2 top-full w-[760px] -translate-x-1/2 pt-3"
+                      >
+                        <div className="rounded-[1.5rem] bg-white p-4 text-bm-ink shadow-[0_24px_60px_-20px_rgba(0,0,0,0.45)]">
+                          <div className="grid grid-cols-3 gap-1">
+                            {categories.map((c) => {
+                              const from = startingPrice(menuItems.filter((i) => i.category === c.id));
+                              return (
+                                <button
+                                  key={c.id}
+                                  type="button"
+                                  onClick={() => go(`/category/${c.id}`)}
+                                  className="flex items-center gap-3 rounded-2xl p-2 text-left hover:bg-bm-cream"
+                                >
+                                  <img src={c.image} alt="" className="h-12 w-12 shrink-0 rounded-xl object-cover" loading="lazy" />
+                                  <span className="min-w-0">
+                                    <span className="block truncate text-sm font-extrabold">{shortCategoryName(c)}</span>
+                                    {from !== null && <span className="block text-xs font-semibold text-bm-muted">From {formatKsh(from)}</span>}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => go('/menu')}
+                            className="mt-3 flex w-full items-center justify-between rounded-2xl bg-bm-ink px-5 py-3.5 text-sm font-extrabold text-white hover:bg-bm-ember"
+                          >
+                            View the full menu
+                            <span className="text-bm-orange">{menuItems.length} items →</span>
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <NavLink key={link.label} link={link} onClick={() => go(link.path)} />
+              )
+            )}
           </nav>
 
-          {/* actions */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            {/* expandable search — desktop */}
-            <div className="hidden md:flex items-center">
-              <AnimatePresence initial={false}>
-                {isSearchOpen && (
-                  <motion.input
-                    ref={searchInputRef}
-                    initial={{ width: 0, opacity: 0 }}
-                    animate={{ width: 220, opacity: 1 }}
-                    exit={{ width: 0, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: 'easeOut' }}
-                    type="text"
-                    placeholder="Search coffee, pastries..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onBlur={() => !searchQuery && setIsSearchOpen(false)}
-                    className="smooth-input bg-[var(--color-warm-bg-alt)] border border-[var(--color-warm-border)] rounded-full px-4 py-2 text-sm text-[var(--color-espresso)] outline-none focus:border-[var(--color-gold)]"
-                  />
-                )}
-              </AnimatePresence>
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+            <IconButton label="Search the menu" onClick={openSearch}>
+              <Search className="h-5 w-5" />
+            </IconButton>
+            <IconButton label="Favourites" onClick={onOpenWishlist} badge={wishlistCount}>
+              <Heart className="h-5 w-5" />
+            </IconButton>
+            <button
+              type="button"
+              onClick={() => go('/reservation')}
+              className={`hidden h-10 items-center rounded-full border px-5 text-sm font-extrabold xl:inline-flex ${
+                activePage === 'reservation' ? 'border-bm-orange text-bm-orange' : 'border-white/25 text-white hover:border-white'
+              }`}
+            >
+              Reserve a table
+            </button>
+            <button
+              ref={(el) => setCartRef(el, 'header')}
+              type="button"
+              onClick={onOpenCart}
+              className="relative hidden h-10 items-center gap-2 rounded-full bg-bm-orange pl-4 pr-5 text-sm font-extrabold text-bm-ink hover:bg-bm-orange-hot lg:inline-flex"
+            >
+              <ShoppingBag className="h-4 w-4" />
+              Cart
+              <span className="grid h-6 min-w-6 place-items-center rounded-full bg-bm-ink px-1.5 text-[11px] text-white tabular-nums">{cartCount}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 lg:hidden"
+              aria-label="Open menu"
+              aria-expanded={mobileOpen}
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            className="fixed inset-0 z-[60] flex flex-col bg-bm-ink text-white lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
+          >
+            <div className="flex h-16 shrink-0 items-center justify-between border-b border-white/10 px-4 sm:px-6">
+              <span className="flex items-center gap-2.5">
+                <img src="/logo.jpeg" alt="" className="h-10 w-10 rounded-full object-cover" />
+                <span className="font-display text-[1.35rem] tracking-[0.04em]">BAKEMART</span>
+              </span>
               <button
-                onClick={() => setIsSearchOpen((v) => !v)}
-                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--color-warm-bg-alt)] smooth-nav text-[var(--color-espresso)]"
-                title="Search"
+                type="button"
+                onClick={() => setMobileOpen(false)}
+                className="grid h-10 w-10 place-items-center rounded-full bg-white/10 hover:bg-white/20"
+                aria-label="Close menu"
               >
-                {isSearchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
+                <X className="h-5 w-5" />
               </button>
             </div>
 
-            {/* wishlist */}
-            <button
-              onClick={onOpenWishlist}
-              className="relative w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--color-warm-bg-alt)] smooth-nav text-[var(--color-espresso)]"
-              title="Wishlist"
-            >
-              <Heart className="w-[18px] h-[18px]" />
-              {wishlistCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 flex items-center justify-center rounded-full bg-[var(--color-orange-muted)] text-white text-[9px] font-black">
-                  {wishlistCount}
-                </span>
-              )}
-            </button>
-
-            {/* cart */}
-            <motion.button
-              ref={setCartRef}
-              onClick={onOpenCart}
-              animate={cartPulse ? { scale: [1, 1.18, 1] } : { scale: 1 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="relative flex items-center gap-1.5 pl-3 pr-3.5 sm:pr-4 h-9 rounded-full bg-[var(--color-espresso)] text-white smooth-nav hover:bg-[var(--color-ink)]"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span className="hidden sm:inline text-[13px] font-bold">Cart</span>
-              {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-[var(--color-gold)] text-[var(--color-espresso)] text-[10px] font-black ring-2 ring-[var(--color-ivory)]">
-                  {cartCount}
-                </span>
-              )}
-            </motion.button>
-
-            {/* reserve — desktop only */}
-            <button
-              onClick={onNavigateReservation}
-              className="hidden lg:inline-flex items-center h-9 px-4 rounded-full border border-[var(--color-warm-border)] text-[13px] font-bold text-[var(--color-espresso)] smooth-nav hover:border-[var(--color-espresso)]"
-            >
-              Reserve a Table
-            </button>
-
-            {/* hamburger — mobile only */}
-            <div className="lg:hidden">
-              <HamburgerIcon
-                isOpen={isMobileMenuOpen}
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ---- mobile tagline ---- */}
-      <div className="md:hidden px-4 pt-2 pb-1">
-        <span className="text-[10px] font-semibold tracking-wide text-[var(--color-warm-stone)] uppercase">
-          Beyond Sweetness — It is fresh and nutritional
-        </span>
-      </div>
-
-      {/* ---- mobile search — always visible under the main row on small screens ---- */}
-      <div className="md:hidden px-4 pb-3">
-        <div className="flex items-center gap-2 bg-[var(--color-warm-bg-alt)] border border-[var(--color-warm-border-light)] rounded-full px-4 py-2.5">
-          <Search className="w-4 h-4 text-[var(--color-warm-stone)] shrink-0" />
-          <input
-            type="text"
-            placeholder="Search for pizza, coffee, burgers, juices..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 bg-transparent outline-none text-sm text-[var(--color-espresso)] placeholder:text-[var(--color-warm-stone)]"
-          />
-        </div>
-      </div>
-
-      {/* ---- mobile menu drawer ---- */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-[var(--color-warm-black)]/40 z-40 lg:hidden"
-            />
-            <motion.nav
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', stiffness: 320, damping: 34 }}
-              className="fixed top-0 right-0 bottom-0 w-[82%] max-w-xs bg-[var(--color-ivory)] z-50 lg:hidden shadow-[0_0_40px_rgba(26,18,11,0.2)] flex flex-col"
-            >
-              <div className="flex items-center justify-between px-5 h-16 border-b border-[var(--color-warm-border-light)]">
-                <span className="font-serif font-black text-[var(--color-espresso)]">Menu</span>
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[var(--color-warm-bg-alt)]"
-                >
-                  <X className="w-4 h-4 text-[var(--color-espresso)]" />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto no-scrollbar px-3 py-4 flex flex-col gap-1">
-                {mobileMenuItems.map((item) => (
-                  <button
-                    key={item.label}
-                    onClick={() => {
-                      item.onClick();
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className={`text-left px-4 py-3 rounded-2xl text-[15px] font-bold smooth-nav ${
-                      item.active
-                        ? 'bg-[var(--color-espresso)] text-white'
-                        : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-warm-bg-alt)]'
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-8 pt-6 sm:px-6" data-lenis-prevent>
+              <nav aria-label="Mobile">
+                {[...links, { label: 'Reserve', path: '/reservation', active: activePage === 'reservation' }].map((link, i) => (
+                  <motion.button
+                    key={link.label}
+                    type="button"
+                    onClick={() => go(link.path)}
+                    initial={{ opacity: 0, x: -24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.04 * i, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    className={`flex w-full items-center justify-between border-b border-white/10 py-3 text-left font-display text-[2.6rem] uppercase leading-none ${
+                      link.active ? 'text-bm-orange' : 'text-white'
                     }`}
                   >
-                    {item.label}
+                    {link.label}
+                    <span className="font-sans text-sm font-bold text-white/30">0{i + 1}</span>
+                  </motion.button>
+                ))}
+              </nav>
+
+              <p className="mt-8 text-xs font-extrabold uppercase tracking-[0.22em] text-white/45">Jump to</p>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {categories.slice(0, 8).map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => go(`/category/${c.id}`)}
+                    className="flex items-center gap-2.5 rounded-2xl bg-white/5 p-2 text-left text-sm font-bold hover:bg-white/10"
+                  >
+                    <img src={c.image} alt="" className="h-9 w-9 shrink-0 rounded-xl object-cover" loading="lazy" />
+                    <span className="truncate">{shortCategoryName(c)}</span>
                   </button>
                 ))}
               </div>
 
-              <div className="p-4 border-t border-[var(--color-warm-border-light)] safe-bottom">
-                <p className="eyebrow mb-2 px-1">Call / WhatsApp</p>
+              <div className="mt-8 grid grid-cols-2 gap-2">
                 <a
-                  href="https://wa.me/254725009708"
+                  href={whatsappLink()}
                   target="_blank"
                   rel="noreferrer"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-[var(--color-warm-bg-alt)] font-bold text-[var(--color-espresso)]"
+                  className="flex items-center justify-center gap-2 rounded-full bg-bm-orange py-3.5 text-sm font-extrabold text-bm-ink"
                 >
-                  <Phone className="w-4 h-4 shrink-0 text-[var(--color-orange-muted)]" />
-                  0725 009 708
+                  <MessageCircle className="h-4 w-4" />
+                  WhatsApp
                 </a>
-                <button
-                  onClick={() => {
-                    onNavigateReservation();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="btn-primary w-full mt-3 py-3 text-sm"
-                >
-                  Reserve a Table
-                </button>
+                <a href={PHONE_TEL} className="flex items-center justify-center gap-2 rounded-full border border-white/25 py-3.5 text-sm font-extrabold">
+                  <Phone className="h-4 w-4" />
+                  Call us
+                </a>
               </div>
-            </motion.nav>
-          </>
+              <div className="mt-6 flex justify-center gap-5 text-white/60">
+                {SOCIALS.map(({ href, label, icon: Icon }) => (
+                  <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="hover:text-bm-orange">
+                    <Icon className="h-5 w-5" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 };
+
+const NavLink: React.FC<{
+  link: { label: string; active: boolean };
+  onClick: () => void;
+  trailing?: React.ReactNode;
+}> = ({ link, onClick, trailing }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-current={link.active ? 'page' : undefined}
+    className={`relative flex h-10 items-center gap-1 px-3.5 text-sm font-bold ${link.active ? 'text-white' : 'text-white/65 hover:text-white'}`}
+  >
+    {link.label}
+    {trailing}
+    {link.active && (
+      <motion.span
+        layoutId="nav-underline"
+        className="absolute inset-x-3.5 -bottom-[15px] h-[3px] rounded-full bg-bm-orange"
+        transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+      />
+    )}
+  </button>
+);
+
+const IconButton: React.FC<{ label: string; onClick: () => void; badge?: number; children: React.ReactNode }> = ({
+  label,
+  onClick,
+  badge = 0,
+  children,
+}) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-label={label}
+    className="relative grid h-10 w-10 place-items-center rounded-full text-white hover:bg-white/10"
+  >
+    {children}
+    {badge > 0 && (
+      <span className="absolute right-0.5 top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-bm-orange px-1 text-[10px] font-extrabold text-bm-ink">
+        {badge}
+      </span>
+    )}
+  </button>
+);

@@ -1,41 +1,50 @@
 import React, { createContext, useContext, useState, useRef, useCallback } from 'react';
 
+type CartSlot = 'header' | 'dock';
+
 interface CartAnimationContextValue {
   triggerFly: (sourceRect: DOMRect) => void;
-  setCartRef: (el: HTMLButtonElement | null) => void;
+  /** Register a cart button. The header and the mobile dock both register; whichever is visible is the target. */
+  setCartRef: (el: HTMLElement | null, slot?: CartSlot) => void;
 }
 
 const CartAnimationContext = createContext<CartAnimationContextValue | null>(null);
 
 export const CartAnimationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [animation, setAnimation] = useState<{ source: DOMRect; id: number } | null>(null);
-  const [bounce, setBounce] = useState(false);
-  const cartRef = useRef<HTMLButtonElement | null>(null);
+  const [bounceRect, setBounceRect] = useState<DOMRect | null>(null);
+  const cartRefs = useRef<Partial<Record<CartSlot, HTMLElement | null>>>({});
   const idRef = useRef(0);
+
+  const getCartRect = useCallback(() => {
+    for (const el of Object.values(cartRefs.current) as (HTMLElement | null)[]) {
+      const rect = el?.getBoundingClientRect();
+      if (rect && rect.width > 0 && rect.height > 0) return rect;
+    }
+    return undefined;
+  }, []);
 
   const triggerFly = useCallback((sourceRect: DOMRect) => {
     idRef.current += 1;
     setAnimation({ source: sourceRect, id: idRef.current });
     setTimeout(() => {
       setAnimation(null);
-      setBounce(true);
-      setTimeout(() => setBounce(false), 300);
+      setBounceRect(getCartRect() ?? null);
+      setTimeout(() => setBounceRect(null), 400);
     }, 700);
-  }, []);
+  }, [getCartRect]);
 
-  const setCartRef = useCallback((el: HTMLButtonElement | null) => {
-    cartRef.current = el;
+  const setCartRef = useCallback((el: HTMLElement | null, slot: CartSlot = 'header') => {
+    cartRefs.current[slot] = el;
   }, []);
 
   return (
     <CartAnimationContext.Provider value={{ triggerFly, setCartRef }}>
       {children}
       {animation && (
-        <CartFlyAnimation key={animation.id} source={animation.source} getCartRect={() => cartRef.current?.getBoundingClientRect()} />
+        <CartFlyAnimation key={animation.id} source={animation.source} getCartRect={getCartRect} />
       )}
-      {bounce && cartRef.current && (
-        <CartBounce cartRef={cartRef.current} />
-      )}
+      {bounceRect && <CartBounce rect={bounceRect} />}
     </CartAnimationContext.Provider>
   );
 };
@@ -51,6 +60,7 @@ const CartFlyAnimation: React.FC<CartFlyAnimationProps> = ({ source, getCartRect
   React.useEffect(() => {
     const startTime = performance.now();
     const duration = 700;
+    let frame = 0;
 
     const animate = (time: number) => {
       const elapsed = time - startTime;
@@ -58,11 +68,12 @@ const CartFlyAnimation: React.FC<CartFlyAnimationProps> = ({ source, getCartRect
       const eased = 1 - Math.pow(1 - p, 3);
       setProgress(eased);
       if (p < 1) {
-        requestAnimationFrame(animate);
+        frame = requestAnimationFrame(animate);
       }
     };
 
-    requestAnimationFrame(animate);
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const cartRect = getCartRect();
@@ -82,38 +93,31 @@ const CartFlyAnimation: React.FC<CartFlyAnimationProps> = ({ source, getCartRect
 
   return (
     <div
-      className="fixed inset-0 pointer-events-none z-[60]"
+      className="fixed inset-0 pointer-events-none z-[80]"
       style={{ transform: `translate(${currentX}px, ${currentY}px) scale(${scale})`, opacity }}
     >
       <div
-        className="w-3 h-3 rounded-full shadow-lg"
-        style={{ background: '#d97a4c', transform: 'translate(-50%, -50%)' }}
+        className="w-4 h-4 rounded-full shadow-lg ring-2 ring-white"
+        style={{ background: 'var(--color-bm-orange)', transform: 'translate(-50%, -50%)' }}
       />
     </div>
   );
 };
 
-interface CartBounceProps {
-  cartRef: HTMLButtonElement;
-}
-
-const CartBounce: React.FC<CartBounceProps> = ({ cartRef }) => {
-  const rect = cartRef.getBoundingClientRect();
-  return (
-    <div
-      className="fixed pointer-events-none z-[60]"
-      style={{
-        left: rect.left + rect.width / 2 - 8,
-        top: rect.top - 12,
-        width: 16,
-        height: 16,
-        borderRadius: '50%',
-        background: '#d97a4c',
-        animation: 'cartBounce 0.4s ease-out',
-      }}
-    />
-  );
-};
+const CartBounce: React.FC<{ rect: DOMRect }> = ({ rect }) => (
+  <div
+    className="fixed pointer-events-none z-[80]"
+    style={{
+      left: rect.left + rect.width / 2 - 8,
+      top: rect.top - 12,
+      width: 16,
+      height: 16,
+      borderRadius: '50%',
+      background: 'var(--color-bm-orange)',
+      animation: 'cartBounce 0.4s ease-out',
+    }}
+  />
+);
 
 export const useCartAnimation = () => {
   const context = useContext(CartAnimationContext);

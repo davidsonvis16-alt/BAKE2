@@ -1,7 +1,10 @@
 import React from 'react';
-import { X, Heart, Plus, Trash2 } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import { Heart, Plus, Trash2, X } from 'lucide-react';
 import { MenuItem } from '../types';
 import { useCartAnimation } from './CartAnimation';
+import { useScrollLock } from '../hooks/useScrollLock';
+import { categoryIcon, formatKsh, hasOptions, lowestPrice } from '../lib/menuMeta';
 
 interface WishlistDrawerProps {
   isOpen: boolean;
@@ -19,105 +22,94 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
   onAddToCart,
 }) => {
   const { triggerFly } = useCartAnimation();
-
-  if (!isOpen) return null;
+  useScrollLock(isOpen);
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
-      <div
-        onClick={onClose}
-        className="absolute inset-0 bg-black/40 transition-opacity drawer-overlay"
-      />
-
-      <div className="fixed inset-y-0 right-0 max-w-full flex">
-        <div className="w-full max-w-md h-full bg-[#fdfaf3] text-[#000000] shadow-2xl flex flex-col border-l border-[#e6d3c2] drawer-content">
-
-          {/* Header */}
-          <div className="p-4 bg-white border-b border-[#e6d3c2] flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Heart className="w-5 h-5 text-[#d97a4c] fill-[#d97a4c]" />
-              <h2 className="text-charcoal font-bold text-base text-[#000000]">
-                Saved Favorites ({wishlistItems.length})
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[65]" role="dialog" aria-modal="true" aria-label="Saved favourites">
+          <motion.div
+            className="absolute inset-0 bg-bm-ink/60"
+            onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+          <motion.aside
+            className="absolute inset-y-0 right-0 flex w-full max-w-[420px] flex-col bg-bm-cream text-bm-ink shadow-2xl"
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', stiffness: 320, damping: 36 }}
+          >
+            <div className="flex h-16 shrink-0 items-center justify-between bg-bm-ink px-5 text-white">
+              <h2 className="flex items-baseline gap-2 font-display text-2xl uppercase text-white">
+                Favourites
+                <span className="font-sans text-sm font-bold text-white/55">{wishlistItems.length}</span>
               </h2>
+              <button
+                type="button"
+                onClick={onClose}
+                className="grid h-10 w-10 place-items-center rounded-full bg-white/10 hover:bg-white/20"
+                aria-label="Close favourites"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
-            <button
-              onClick={onClose}
-              className="p-1 rounded-full text-[#8c7a6c] hover:text-[#000000] hover:bg-[#f8f1e5] transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
 
-          {/* Body */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            {wishlistItems.length === 0 ? (
-              <div className="text-center py-16 space-y-3">
-                <Heart className="w-12 h-12 text-[#8c7a6c] mx-auto" />
-                <h3 className="text-charcoal font-bold text-lg text-[#000000]">
-                  No favorites saved yet
-                </h3>
-                <p className="text-xs text-[#5c4b3f] max-w-xs mx-auto">
-                  Click the heart icon on any menu item to save it for quick future ordering.
-                </p>
-              </div>
-            ) : (
-              wishlistItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-white p-3 rounded-xl border border-[#e6d3c2] flex items-center gap-3"
-                >
-                  {item.image && (
-                    <div className="w-14 h-14 rounded-lg overflow-hidden bg-[#f8f1e5] shrink-0 flex items-center justify-center">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="max-w-[80%] max-h-[80%] object-contain"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-charcoal font-bold text-xs sm:text-sm text-[#000000] truncate">
-                      {item.name}
-                    </h4>
-                    <p className="text-[11px] text-[#5c4b3f] truncate mt-0.5">
-                      {item.description}
-                    </p>
-                    <p className="font-mono font-bold text-xs text-[#000000] mt-1">
-                      KSh {item.price.toLocaleString()}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        onAddToCart(item);
-                        triggerFly(rect);
-                      }}
-                      className="bg-[#000000] hover:bg-[#000000] text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Add</span>
-                    </button>
-
-                    <button
-                      onClick={() => onRemoveFromWishlist(item)}
-                      className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Remove"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+            <div className="min-h-0 flex-1 space-y-2.5 overflow-y-auto p-4 sm:p-5" data-lenis-prevent>
+              {wishlistItems.length === 0 ? (
+                <div className="px-4 py-16 text-center">
+                  <span className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-bm-ink text-bm-orange">
+                    <Heart className="h-9 w-9" />
+                  </span>
+                  <h3 className="mt-5 font-display text-3xl uppercase text-bm-ink">Nothing saved yet</h3>
+                  <p className="mx-auto mt-2 max-w-xs text-sm text-bm-muted">Tap the heart on any dish to keep it here for next time.</p>
                 </div>
-              ))
-            )}
-          </div>
-
+              ) : (
+                wishlistItems.map((item) => {
+                  const Icon = categoryIcon(item.category);
+                  return (
+                    <div key={item.id} className="flex items-center gap-3 rounded-2xl bg-white p-2.5 ring-1 ring-bm-line/70">
+                      <span className="relative grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-xl bg-bm-coal text-bm-orange">
+                        <Icon className="h-6 w-6" />
+                        {item.image && <img src={item.image} alt="" className="absolute inset-0 h-full w-full object-cover" />}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-extrabold">{item.name}</p>
+                        <p className="mt-0.5 font-display text-lg leading-none">
+                          {hasOptions(item) && <span className="mr-1 font-sans text-[10px] font-bold uppercase text-bm-muted">From</span>}
+                          {formatKsh(lowestPrice(item))}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          onAddToCart(item);
+                          triggerFly(rect);
+                        }}
+                        className="flex h-9 items-center gap-1 rounded-full bg-bm-orange px-3.5 text-xs font-extrabold text-bm-ink hover:bg-bm-orange-hot"
+                      >
+                        <Plus className="h-3.5 w-3.5" strokeWidth={3} />
+                        Add
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onRemoveFromWishlist(item)}
+                        className="grid h-9 w-9 place-items-center rounded-full text-bm-muted hover:bg-red-50 hover:text-red-600"
+                        aria-label={`Remove ${item.name} from favourites`}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </motion.aside>
         </div>
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   );
 };

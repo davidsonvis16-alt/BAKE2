@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { X, Trash2, Plus, ShoppingBag, MapPin, Send, Minus, Copy, Check, Phone } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import { Bike, Check, ChevronDown, Copy, MapPin, Minus, Phone, Plus, Send, ShoppingBag, Trash2, UtensilsCrossed, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { CartItem } from '../types';
 import { OrderTicket } from './OrderTicket';
 import { generateSecureOrderId } from '../utils/ids';
 import { supabase } from '../lib/supabase';
+import { useScrollLock } from '../hooks/useScrollLock';
+import { categoryIcon, formatKsh } from '../lib/menuMeta';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -14,6 +17,15 @@ interface CartDrawerProps {
   onRemoveItem: (cartItemId: string) => void;
   onClearCart: () => void;
 }
+
+const ORDER_TYPES = [
+  { id: 'dine-in', label: 'Dine-in', icon: UtensilsCrossed },
+  { id: 'takeaway', label: 'Takeaway', icon: ShoppingBag },
+  { id: 'delivery', label: 'Delivery', icon: Bike },
+] as const;
+
+const fieldClass =
+  'h-12 w-full rounded-xl border border-bm-line bg-white px-4 text-base text-bm-ink outline-none placeholder:text-bm-muted/70 focus:border-bm-ink';
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
   isOpen,
@@ -33,6 +45,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const [showTicket, setShowTicket] = useState(false);
   const [sentStatus, setSentStatus] = useState<'idle' | 'sent'>('idle');
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  useScrollLock(isOpen);
 
   const handleCopy = async (value: string, field: string) => {
     try {
@@ -49,8 +62,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     setTimeout(() => setCopiedField((f) => (f === field ? null : f)), 1800);
   };
 
-  if (!isOpen) return null;
-
   const subtotal = cartItems.reduce((acc, item) => {
     const price = item.selectedOption ? item.selectedOption.price : item.item.price;
     return acc + price * item.quantity;
@@ -58,6 +69,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   const deliveryFee = orderType === 'delivery' ? 150 : 0;
   const grandTotal = subtotal + deliveryFee;
+  const itemCount = cartItems.reduce((a, b) => a + b.quantity, 0);
 
   const handleCheckoutWhatsApp = () => {
     if (cartItems.length === 0) return;
@@ -167,342 +179,270 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     window.open(`https://wa.me/254725009708?text=${encoded}`, '_blank');
   };
 
+  const payRows = [
+    { key: 'paybill', label: 'Paybill', value: '247247' },
+    { key: 'account', label: 'Account', value: '0752114450' },
+    { key: 'till', label: 'Till', value: '5170287' },
+  ];
+
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
-      <div
-        onClick={onClose}
-        className="absolute inset-0 bg-black/40 transition-opacity drawer-overlay"
-      />
-
-      <div className="fixed inset-y-0 right-0 max-w-full flex">
-        <div className="w-full max-w-md h-full bg-[#fdfaf3] text-[#000000] shadow-2xl flex flex-col border-l border-[#e6d3c2] drawer-content">
-
-          {/* Header */}
-          <div className="p-4 bg-white border-b border-[#e6d3c2] flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5 text-[#d97a4c]" />
-              <h2 className="text-charcoal font-bold text-base text-[#000000]">
-                Your Order ({cartItems.reduce((a, b) => a + b.quantity, 0)})
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[65]" role="dialog" aria-modal="true" aria-label="Your order">
+          <motion.div
+            className="absolute inset-0 bg-bm-ink/60"
+            onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+          <motion.aside
+            className="absolute inset-y-0 right-0 flex w-full max-w-[440px] flex-col bg-bm-cream text-bm-ink shadow-2xl"
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', stiffness: 320, damping: 36 }}
+          >
+            <div className="flex h-16 shrink-0 items-center justify-between bg-bm-ink px-5 text-white">
+              <h2 className="flex items-baseline gap-2 font-display text-2xl uppercase text-white">
+                Your order
+                <span className="font-sans text-sm font-bold text-white/55">
+                  {itemCount} {itemCount === 1 ? 'item' : 'items'}
+                </span>
               </h2>
+              <button
+                type="button"
+                onClick={onClose}
+                className="grid h-10 w-10 place-items-center rounded-full bg-white/10 hover:bg-white/20"
+                aria-label="Close cart"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
-            <button
-              onClick={onClose}
-              className="p-1 rounded-full text-[#8c7a6c] hover:text-[#000000] hover:bg-[#f8f1e5] transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
 
-          {/* Body List */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 pb-6">
-            {cartItems.length === 0 ? (
-              <div className="text-center py-16 space-y-3">
-                <ShoppingBag className="w-12 h-12 text-[#8c7a6c] mx-auto" />
-                <h3 className="text-charcoal font-bold text-lg text-[#000000]">
-                  Your cart is empty
-                </h3>
-                <p className="text-xs text-[#5c4b3f] max-w-xs mx-auto">
-                  Explore our open-kitchen menu and add your favorite coffee, pizzas, or barbecue platters.
-                </p>
-                <button
-                  onClick={() => {
-                    onClose();
-                    navigate('/menu');
-                  }}
-                  className="mt-2 bg-[#000000] text-white text-xs font-bold px-5 py-2.5 rounded-full hover:bg-[#000000] transition-colors"
-                >
-                  Explore Menu
-                </button>
-              </div>
-            ) : (
-              <>
-                {/* Cart Items List */}
-                <div className="space-y-3">
-                  {cartItems.map((ci) => {
-                    const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
-                    return (
-                      <div
-                        key={ci.id}
-                        className="bg-white p-3 rounded-xl border border-[#e6d3c2] flex items-center gap-3"
-                      >
-                        {/* Item Image Thumbnail */}
-                        {ci.item.image && (
-                          <div className="w-14 h-14 rounded-lg overflow-hidden bg-[#f8f1e5] shrink-0 flex items-center justify-center">
-                            <img
-                              src={ci.item.image}
-                              alt={ci.item.name}
-                              className="max-w-[80%] max-h-[80%] object-contain"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = 'none';
-                              }}
-                            />
+            <div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-4 sm:p-5" data-lenis-prevent>
+              {cartItems.length === 0 ? (
+                <div className="px-4 py-16 text-center">
+                  <span className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-bm-ink text-bm-orange">
+                    <ShoppingBag className="h-9 w-9" />
+                  </span>
+                  <h3 className="mt-5 font-display text-3xl uppercase text-bm-ink">Your cart is empty</h3>
+                  <p className="mx-auto mt-2 max-w-xs text-sm text-bm-muted">
+                    Add coffee, pizzas, platters and more from the open-kitchen menu.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      navigate('/menu');
+                    }}
+                    className="mt-6 rounded-full bg-bm-orange px-7 py-3.5 text-sm font-extrabold text-bm-ink hover:bg-bm-orange-hot"
+                  >
+                    Explore the menu
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <ul className="space-y-2.5">
+                    {cartItems.map((ci) => {
+                      const price = ci.selectedOption ? ci.selectedOption.price : ci.item.price;
+                      const Icon = categoryIcon(ci.item.category);
+                      return (
+                        <li key={ci.id} className="flex items-center gap-3 rounded-2xl bg-white p-2.5 ring-1 ring-bm-line/70">
+                          <span className="relative grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-xl bg-bm-coal text-bm-orange">
+                            <Icon className="h-6 w-6" />
+                            {ci.item.image && (
+                              <img
+                                src={ci.item.image}
+                                alt=""
+                                className="absolute inset-0 h-full w-full object-cover"
+                                onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
+                              />
+                            )}
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-extrabold">{ci.item.name}</p>
+                            {ci.selectedOption && <p className="text-xs font-semibold text-bm-muted">{ci.selectedOption.name}</p>}
+                            <p className="mt-0.5 font-display text-lg leading-none">{formatKsh(price * ci.quantity)}</p>
                           </div>
-                        )}
+                          <div className="flex flex-col items-end gap-1.5">
+                            <div className="flex items-center rounded-full bg-bm-sand p-0.5">
+                              <button
+                                type="button"
+                                onClick={() => onUpdateQuantity(ci.id, -1)}
+                                className="grid h-8 w-8 place-items-center rounded-full hover:bg-white"
+                                aria-label={`Remove one ${ci.item.name}`}
+                              >
+                                <Minus className="h-3.5 w-3.5" />
+                              </button>
+                              <span className="w-6 text-center text-sm font-extrabold tabular-nums">{ci.quantity}</span>
+                              <button
+                                type="button"
+                                onClick={() => onUpdateQuantity(ci.id, 1)}
+                                className="grid h-8 w-8 place-items-center rounded-full bg-bm-ink text-white"
+                                aria-label={`Add one ${ci.item.name}`}
+                              >
+                                <Plus className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => onRemoveItem(ci.id)}
+                              className="flex items-center gap-1 text-[11px] font-bold text-bm-muted hover:text-red-600"
+                            >
+                              <Trash2 className="h-3 w-3" />
+                              Remove
+                            </button>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
 
-                        <div className="flex-1 min-w-0">
-                           <h4 className="text-charcoal font-bold text-xs sm:text-sm text-[#000000] truncate">
-                            {ci.item.name}
-                          </h4>
-                          {ci.selectedOption && (
-                            <span className="text-[10px] font-semibold text-[#8c7a6c] bg-[#f8f1e5] px-1.5 py-0.2 rounded-sm inline-block mt-0.5">
-                              {ci.selectedOption.name}
-                            </span>
-                          )}
-                          <p className="font-mono font-bold text-xs text-[#000000] mt-1">
-                            KSh {(price * ci.quantity).toLocaleString()}
-                          </p>
-                        </div>
+                  <div>
+                    <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.18em]">How are you eating?</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {ORDER_TYPES.map(({ id, label, icon: Icon }) => (
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => setOrderType(id)}
+                          aria-pressed={orderType === id}
+                          className={`flex flex-col items-center gap-1 rounded-2xl border-2 py-3 text-xs font-extrabold ${
+                            orderType === id ? 'border-bm-ink bg-bm-ink text-white' : 'border-bm-line bg-white hover:border-bm-ink'
+                          }`}
+                        >
+                          <Icon className={`h-5 w-5 ${orderType === id ? 'text-bm-orange' : ''}`} />
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-                        {/* Quantity Controls */}
-                        <div className="flex items-center gap-2 bg-[#fdfaf3] p-1 rounded-lg border border-[#e6d3c2]">
-                          <button
-                            onClick={() => onUpdateQuantity(ci.id, -1)}
-                            className="p-1 rounded-md text-[#000000] hover:bg-[#f8f1e5] transition-colors"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="font-mono font-bold text-xs text-[#000000] w-4 text-center">
-                            {ci.quantity}
+                  <div className="space-y-2.5">
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <input type="text" placeholder="Your name" value={customerName} onChange={(e) => setCustomerName(e.target.value)} className={fieldClass} />
+                      <input type="tel" placeholder="Phone number" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} className={fieldClass} />
+                    </div>
+                    {orderType === 'dine-in' && (
+                      <input type="text" placeholder="Table number (optional)" value={tableNumber} onChange={(e) => setTableNumber(e.target.value)} className={fieldClass} />
+                    )}
+                    {orderType === 'delivery' && (
+                      <div className="relative">
+                        <MapPin className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-bm-muted" />
+                        <input
+                          type="text"
+                          placeholder="Nakuru delivery address"
+                          value={deliveryAddress}
+                          onChange={(e) => setDeliveryAddress(e.target.value)}
+                          className={`${fieldClass} pl-10`}
+                        />
+                      </div>
+                    )}
+                    <input
+                      type="text"
+                      placeholder="Special instructions / allergies"
+                      value={orderNotes}
+                      onChange={(e) => setOrderNotes(e.target.value)}
+                      className={fieldClass}
+                    />
+                  </div>
+
+                  <details className="group rounded-2xl bg-white ring-1 ring-bm-line/70">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-2 p-4 [&::-webkit-details-marker]:hidden">
+                      <span className="flex items-center gap-2 text-sm font-extrabold">
+                        <img src="/mpesa-logo.png" alt="M-Pesa" className="h-5 w-auto" />
+                        Pay with M-Pesa
+                      </span>
+                      <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="space-y-2 px-4 pb-4">
+                      {payRows.map((row) => (
+                        <div key={row.key} className="flex items-center justify-between gap-2 rounded-xl bg-bm-cream px-3 py-2.5">
+                          <span>
+                            <span className="block text-[10px] font-bold uppercase tracking-wider text-bm-muted">{row.label}</span>
+                            <span className="font-mono text-base font-bold">{row.value}</span>
                           </span>
                           <button
-                            onClick={() => onUpdateQuantity(ci.id, 1)}
-                            className="p-1 rounded-md text-[#000000] hover:bg-[#f8f1e5] transition-colors"
+                            type="button"
+                            onClick={() => handleCopy(row.value, row.key)}
+                            className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-extrabold uppercase ${
+                              copiedField === row.key ? 'bg-[#00A651] text-white' : 'bg-white ring-1 ring-bm-line hover:ring-bm-ink'
+                            }`}
                           >
-                            <Plus className="w-3 h-3" />
+                            {copiedField === row.key ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                            {copiedField === row.key ? 'Copied' : 'Copy'}
                           </button>
-                 </div>
-
-                <button
-                          onClick={() => onRemoveItem(ci.id)}
-                          className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Remove item"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Order Type Selector */}
-                <div className="pt-3 border-t border-[#e6d3c2]">
-                  <label className="block text-xs font-bold text-[#000000] mb-1.5">
-                    Order Type
-                  </label>
-                  <div className="grid grid-cols-3 gap-1.5 bg-[#f8f1e5] p-1 rounded-xl">
-                    {(['dine-in', 'takeaway', 'delivery'] as const).map((type) => (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => setOrderType(type)}
-                        className={`text-[11px] font-bold py-1.5 rounded-lg transition-all capitalize ${
-                          orderType === type
-                            ? 'bg-[#000000] text-white shadow-sm'
-                            : 'text-[#000000] hover:bg-white'
-                        }`}
+                        </div>
+                      ))}
+                      <p className="pt-1 text-xs text-bm-muted">
+                        M-Pesa › Lipa na M-Pesa › <strong>Pay Bill</strong> or <strong>Buy Goods & Services</strong>
+                      </p>
+                      <a
+                        href="tel:*334#"
+                        className="flex items-center justify-center gap-2 rounded-full bg-[#00A651] py-3 text-xs font-extrabold uppercase tracking-wide text-white hover:bg-[#009245]"
                       >
-                        {type === 'dine-in' ? 'Dine-in' : type === 'takeaway' ? 'Takeaway' : 'Delivery'}
-                      </button>
-                    ))}
+                        <Phone className="h-3.5 w-3.5" />
+                        Dial *334# now
+                      </a>
+                    </div>
+                  </details>
+                </>
+              )}
+            </div>
+
+            {cartItems.length > 0 && (
+              <div className="shrink-0 space-y-3 border-t border-bm-line bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-5">
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between text-bm-muted">
+                    <span>Subtotal</span>
+                    <span className="font-bold text-bm-ink">{formatKsh(subtotal)}</span>
                   </div>
-                </div>
-
-                {/* Customer Details Form */}
-                <div className="space-y-2.5 pt-2">
-                  <div className="grid grid-cols-2 gap-2">
-                    <input
-                      type="text"
-                      placeholder="Your Name"
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full bg-white border border-[#e6d3c2] focus:border-[#000000] text-xs text-[#000000] rounded-xl px-3 py-2.5 outline-none"
-                    />
-                    <input
-                      type="tel"
-                      placeholder="Phone Number"
-                      value={customerPhone}
-                      onChange={(e) => setCustomerPhone(e.target.value)}
-                      className="w-full bg-white border border-[#e6d3c2] focus:border-[#000000] text-xs text-[#000000] rounded-xl px-3 py-2.5 outline-none"
-                    />
-                  </div>
-
-                  {orderType === 'dine-in' && (
-                    <input
-                      type="text"
-                      placeholder="Table Number (Optional)"
-                      value={tableNumber}
-                      onChange={(e) => setTableNumber(e.target.value)}
-                      className="w-full bg-white border border-[#e6d3c2] focus:border-[#000000] text-xs text-[#000000] rounded-xl px-3 py-2.5 outline-none"
-                    />
-                  )}
-
                   {orderType === 'delivery' && (
-                    <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#8c7a6c]" />
-                      <input
-                        type="text"
-                        placeholder="Nakuru Delivery Address"
-                        value={deliveryAddress}
-                        onChange={(e) => setDeliveryAddress(e.target.value)}
-                        className="w-full bg-white border border-[#e6d3c2] focus:border-[#000000] text-xs text-[#000000] rounded-xl pl-8 pr-3 py-2.5 outline-none"
-                      />
+                    <div className="flex justify-between text-bm-muted">
+                      <span>Delivery (Nakuru town)</span>
+                      <span className="font-bold text-bm-ink">{formatKsh(deliveryFee)}</span>
                     </div>
                   )}
-
-                  <input
-                    type="text"
-                    placeholder="Special Instructions / Allergies..."
-                    value={orderNotes}
-                    onChange={(e) => setOrderNotes(e.target.value)}
-                    className="w-full bg-white border border-[#e6d3c2] focus:border-[#000000] text-xs text-[#000000] rounded-xl px-3 py-2.5 outline-none"
-                  />
+                  <div className="flex items-baseline justify-between pt-1">
+                    <span className="font-extrabold">Total</span>
+                    <span className="font-display text-3xl leading-none">{formatKsh(grandTotal)}</span>
+                  </div>
                 </div>
-              </>
+                <button
+                  type="button"
+                  onClick={handleCheckoutWhatsApp}
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-bm-orange py-4 text-[15px] font-extrabold text-bm-ink transition-[background-color,transform] hover:bg-bm-orange-hot active:scale-[0.98]"
+                >
+                  <Send className="h-4 w-4" />
+                  Review ticket & order
+                </button>
+              </div>
             )}
-          </div>
+          </motion.aside>
 
-          {/* Footer Totals & WhatsApp Button */}
-          {cartItems.length > 0 && (
-            <div className="p-4 bg-white border-t border-[#e6d3c2] space-y-3">
-              <div className="space-y-1 text-xs">
-                <div className="flex justify-between text-[#000000]">
-                  <span>Subtotal</span>
-                  <span className="font-mono font-bold">KSh {subtotal.toLocaleString()}</span>
-                </div>
-                {orderType === 'delivery' && (
-                  <div className="flex justify-between text-[#000000]">
-                    <span>Delivery Fee (Nakuru Town)</span>
-                    <span className="font-mono font-bold">KSh {deliveryFee}</span>
-                  </div>
-                )}
-                <div className="flex justify-between text-[#000000] font-bold text-sm pt-1 border-t border-[#f3e8d8]">
-                  <span>Total Amount</span>
-                  <span className="font-mono text-[#000000] text-base">
-                    KSh {grandTotal.toLocaleString()}
-                  </span>
-                </div>
-                </div>
-
-                <div className="rounded-xl border border-[#e6d3c2] bg-[#f8f1e5] p-3 text-xs text-[#5c4b3f] space-y-2">
-                  <div className="flex items-center gap-2">
-                    <img src="/mpesa-logo.png" alt="M-Pesa" className="h-5 w-auto" />
-                    <span className="font-bold text-[#000000]">Pay with M-Pesa</span>
-                  </div>
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-[#e6d3c2] bg-white px-2.5 py-2">
-                      <div>
-                        <span className="block text-[10px] uppercase tracking-wide text-[#8c7a6c]">Paybill</span>
-                        <span className="font-mono font-bold text-[#000000]">247247</span>
-                      </div>
-                      <button
-                        onClick={() => handleCopy('247247', 'paybill')}
-                        className="flex items-center gap-1 rounded-full border border-[#e6d3c2] px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-[#000000] hover:border-[#000000] transition-colors"
-                      >
-                        {copiedField === 'paybill' ? (
-                          <>
-                            <Check className="w-3 h-3" /> Copied
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3 h-3" /> Copy
-                          </>
-                        )}
-                      </button>
-                    </div>
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-[#e6d3c2] bg-white px-2.5 py-2">
-                      <div>
-                        <span className="block text-[10px] uppercase tracking-wide text-[#8c7a6c]">Account</span>
-                        <span className="font-mono font-bold text-[#000000]">0752114450</span>
-                      </div>
-                      <button
-                        onClick={() => handleCopy('0752114450', 'account')}
-                        className="flex items-center gap-1 rounded-full border border-[#e6d3c2] px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-[#000000] hover:border-[#000000] transition-colors"
-                      >
-                        {copiedField === 'account' ? (
-                          <>
-                            <Check className="w-3 h-3" /> Copied
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3 h-3" /> Copy
-                          </>
-                        )}
-                      </button>
-                    </div>
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-[#e6d3c2] bg-white px-2.5 py-2">
-                      <div>
-                        <span className="block text-[10px] uppercase tracking-wide text-[#8c7a6c]">Till</span>
-                        <span className="font-mono font-bold text-[#000000]">5170287</span>
-                      </div>
-                      <button
-                        onClick={() => handleCopy('5170287', 'till')}
-                        className="flex items-center gap-1 rounded-full border border-[#e6d3c2] px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-[#000000] hover:border-[#000000] transition-colors"
-                      >
-                        {copiedField === 'till' ? (
-                          <>
-                            <Check className="w-3 h-3" /> Copied
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3 h-3" /> Copy
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                  <ul className="space-y-1 pt-1">
-                    <li className="flex items-start gap-1.5 text-[11px] text-[#5c4b3f]">
-                      <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#d97a4c]" />
-                      <span>Go to <span className="font-bold">M-Pesa &gt; Lipa na M-Pesa</span></span>
-                    </li>
-                    <li className="flex items-start gap-1.5 text-[11px] text-[#5c4b3f]">
-                      <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#d97a4c]" />
-                      <span>Choose <span className="font-bold">Pay Bill</span> or <span className="font-bold">Buy Goods & Services</span></span>
-                    </li>
-                  </ul>
-                  <a
-                    href="tel:*334#"
-                    className="flex items-center justify-center gap-2 bg-[#00A651] hover:bg-[#00c25f] text-black text-xs font-black uppercase tracking-wide py-2.5 rounded-full transition-colors"
-                  >
-                    <Phone className="w-3.5 h-3.5" />
-                    Dial *334# now
-                  </a>
-                </div>
-
-               <button
-                 onClick={handleCheckoutWhatsApp}
-                 className="w-full bg-[#000000] hover:bg-[#000000] text-white font-bold text-sm py-3 rounded-full transition-all flex items-center justify-center gap-2"
-               >
-                 <Send className="w-4 h-4 text-[#d97a4c]" />
-                 <span>Review Ticket & Order</span>
-               </button>
-             </div>
-           )}
-
+          <OrderTicket
+            isOpen={showTicket}
+            onClose={() => {
+              setShowTicket(false);
+              setSentStatus('idle');
+            }}
+            cartItems={cartItems}
+            orderType={orderType === 'dine-in' ? 'pickup' : 'delivery'}
+            deliveryFee={deliveryFee}
+            orderNotes={orderNotes}
+            customerName={customerName}
+            customerPhone={customerPhone}
+            onConfirmSend={confirmAndSendWhatsApp}
+            onCancelOrder={() => {
+              setShowTicket(false);
+              setSentStatus('idle');
+              onClearCart();
+            }}
+            sentStatus={sentStatus}
+          />
         </div>
-      </div>
-
-      {/* Order Ticket Modal */}
-      <OrderTicket
-        isOpen={showTicket}
-        onClose={() => {
-          setShowTicket(false);
-          setSentStatus('idle');
-        }}
-        cartItems={cartItems}
-        orderType={orderType === 'dine-in' ? 'pickup' : 'delivery'}
-        deliveryFee={deliveryFee}
-        orderNotes={orderNotes}
-        customerName={customerName}
-        customerPhone={customerPhone}
-        onConfirmSend={confirmAndSendWhatsApp}
-        onCancelOrder={() => {
-          setShowTicket(false);
-          setSentStatus('idle');
-          onClearCart();
-        }}
-        sentStatus={sentStatus}
-      />
-    </div>
+      )}
+    </AnimatePresence>
   );
 };
