@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight, Check, Clock, Copy, Facebook, Instagram, Mail, MapPin, Music2, Phone, Youtube } from 'lucide-react';
 import { CATEGORIES } from '../data/menuData';
 import { orderCategories, PHONE_DISPLAY, PHONE_TEL, shortCategoryName, whatsappLink } from '../lib/menuMeta';
+import { openCookieSettings } from '../lib/tracking';
 
 const PAYBILL = { business: '247247', account: '0752114450' };
 const TILL = '5170287';
@@ -236,6 +237,9 @@ export const Footer: React.FC = () => {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-[1320px] flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-white/45 sm:flex-row sm:px-6 lg:px-8">
           <p>© {new Date().getFullYear()} BakeMart Coffee House. All rights reserved.</p>
+          <button type="button" onClick={openCookieSettings} className="text-white/75 underline underline-offset-2 hover:text-bm-orange">
+            Cookie settings
+          </button>
           <p>
             Website by{' '}
             <a href="https://portfolio-e-mu.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-white/75 underline underline-offset-2 hover:text-bm-orange">

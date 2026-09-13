@@ -8,6 +8,7 @@ import { generateSecureOrderId } from '../utils/ids';
 import { supabase } from '../lib/supabase';
 import { useScrollLock } from '../hooks/useScrollLock';
 import { categoryIcon, formatKsh } from '../lib/menuMeta';
+import { trackCheckout } from '../lib/tracking';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -82,6 +83,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     setShowTicket(false);
 
     const orderId = generateSecureOrderId();
+    trackCheckout({ value: grandTotal, itemCount, method: `whatsapp-${orderType}` });
 
     try {
       const newOrder = {

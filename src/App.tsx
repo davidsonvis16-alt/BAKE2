@@ -21,6 +21,8 @@ import { useMenuData } from './hooks/useMenuData';
 import { MenuItem, MenuItemOption, CartItem } from './types';
 import { CATEGORIES } from './data/menuData';
 import { destroySmoothScroll, initSmoothScroll, scrollToY } from './lib/smoothScroll';
+import { CookieBanner } from './components/CookieBanner';
+import { trackAddToCart, trackAddToWishlist, trackPageView } from './lib/tracking';
 
 export default function App() {
   const navigate = useNavigate();
@@ -194,8 +196,21 @@ export default function App() {
     updateMeta('meta[name="twitter:description"]', 'content', meta.ogDescription);
   }, [activePage, selectedCategory]);
 
+  // Runs after the meta effect above so the page title is already current.
+  // No-op until the visitor has accepted analytics / marketing cookies.
+  useEffect(() => {
+    if (isAdminRoute) return;
+    trackPageView(location.pathname);
+  }, [location.pathname, isAdminRoute]);
+
   const handleAddToCart = (item: MenuItem, selectedOption?: MenuItemOption) => {
     const cartItemId = selectedOption ? `${item.id}-${selectedOption.name}` : item.id;
+    trackAddToCart({
+      id: item.id,
+      name: selectedOption ? `${item.name} (${selectedOption.name})` : item.name,
+      price: selectedOption ? selectedOption.price : item.price,
+      category: item.category,
+    });
 
     setCartItems((prev) => {
       const existing = prev.find((ci) => ci.id === cartItemId);
@@ -232,6 +247,9 @@ export default function App() {
   };
 
   const handleToggleWishlist = (item: MenuItem) => {
+    if (!wishlistIds.includes(item.id)) {
+      trackAddToWishlist({ id: item.id, name: item.name, price: item.price, category: item.category });
+    }
     setWishlistIds((prev) =>
       prev.includes(item.id)
         ? prev.filter((id) => id !== item.id)
@@ -346,6 +364,8 @@ export default function App() {
         onRemoveFromWishlist={handleToggleWishlist}
         onAddToCart={handleAddToCart}
       />
+
+      <CookieBanner />
     </CartAnimationProvider>
   );
 }
