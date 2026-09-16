@@ -89,8 +89,10 @@ export const PHONE_DISPLAY = '0725 009 708';
 export const PHONE_TEL = 'tel:+254725009708';
 export const whatsappLink = (text = 'Hello BakeMart Coffee House, I would like to order...') =>
   `https://wa.me/254725009708?text=${encodeURIComponent(text)}`;
-export const MAPS_LINK =
-  'https://www.google.com/maps/search/?api=1&query=BakeMart+Coffee+House,Tropical+House,Moi+Road,Nakuru';
+const MAP_QUERY = 'BakeMart Coffee House, Moi Road, Nakuru';
+export const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(MAP_QUERY)}`;
+/** Keyless Maps embed. It only renders when a referrer is sent, so never pair it with referrerPolicy="no-referrer". */
+export const MAP_EMBED = `https://maps.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&z=16&hl=en&output=embed`;
 
 /** Open 7AM–8PM daily, Nairobi time. */
 export function openStatus(now = new Date()) {

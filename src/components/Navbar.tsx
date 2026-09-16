@@ -5,7 +5,7 @@ import { useCartAnimation } from './CartAnimation';
 import { CATEGORIES } from '../data/menuData';
 import { useMenuData } from '../hooks/useMenuData';
 import { useScrollLock } from '../hooks/useScrollLock';
-import { formatKsh, openStatus, orderCategories, PHONE_DISPLAY, PHONE_TEL, shortCategoryName, startingPrice, whatsappLink } from '../lib/menuMeta';
+import { formatKsh, orderCategories, PHONE_DISPLAY, PHONE_TEL, shortCategoryName, startingPrice, whatsappLink } from '../lib/menuMeta';
 import { requestSearchFocus } from '../lib/searchFocus';
 
 export type ActivePage = 'home' | 'menu' | 'category' | 'reservation' | 'admin' | 'gallery' | 'about' | 'faq' | 'specials';
@@ -31,7 +31,6 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, active
   const [megaOpen, setMegaOpen] = useState(false);
   const { setCartRef } = useCartAnimation();
   const { menuItems } = useMenuData();
-  const status = useMemo(() => openStatus(), []);
   const categories = useMemo(() => orderCategories(CATEGORIES), []);
   useScrollLock(mobileOpen);
 
@@ -58,93 +57,76 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, active
 
   return (
     <>
-      {/* Utility strip */}
-      <div className="bg-bm-coal text-[12px] font-semibold text-white/75">
-        <div className="mx-auto flex h-9 max-w-[1320px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <span className="flex items-center gap-2">
-            <span
-              className={`h-2 w-2 rounded-full ${status.open ? 'bg-emerald-500' : 'bg-red-500'}`}
-              aria-hidden="true"
-            />
-            {status.label}
-          </span>
-          <a href={whatsappLink()} target="_blank" rel="noreferrer" className="hidden items-center gap-1.5 hover:text-bm-orange sm:flex">
-            <MessageCircle className="h-3.5 w-3.5 text-bm-orange" />
-            Order on WhatsApp · {PHONE_DISPLAY}
-          </a>
-          <div className="flex items-center gap-3">
-            <a href={PHONE_TEL} className="flex items-center gap-1.5 hover:text-bm-orange sm:hidden">
-              <Phone className="h-3.5 w-3.5 text-bm-orange" />
-              {PHONE_DISPLAY}
-            </a>
-            {SOCIALS.map(({ href, label, icon: Icon }) => (
-              <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="hidden hover:text-bm-orange lg:block">
-                <Icon className="h-3.5 w-3.5" />
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <header data-site-header className="sticky top-0 z-50 border-b border-white/10 bg-bm-ink text-white">
-        <div className="mx-auto flex h-16 max-w-[1320px] items-center justify-between gap-4 px-4 sm:px-6 lg:h-[72px] lg:px-8">
-          <button type="button" onClick={() => go('/')} className="flex shrink-0 items-center gap-2.5" aria-label="BakeMart Coffee House home">
-            <img src="/logo.jpeg" alt="" className="h-10 w-10 rounded-full object-cover lg:h-11 lg:w-11" />
-            <span className="text-left leading-none">
-              <span className="block font-display text-[1.35rem] tracking-[0.04em] text-white lg:text-[1.5rem]">BAKEMART</span>
-              <span className="mt-0.5 block text-[9px] font-extrabold uppercase tracking-[0.3em] text-bm-orange lg:text-[10px]">
+      {/* Signboard: matte black band, Anton signage type, ruled off in brand orange. */}
+      <header data-site-header className="sticky top-0 z-50 border-b-2 border-bm-orange bg-bm-ink text-white">
+        <div className="mx-auto flex h-16 max-w-[1320px] items-center gap-3 px-4 sm:px-6 lg:h-[72px] lg:px-8">
+          <button type="button" onClick={() => go('/')} className="flex shrink-0 items-center gap-3" aria-label="BakeMart Coffee House home">
+            <img src="/logo.jpeg" alt="" className="h-10 w-10 rounded-[10px] object-cover ring-1 ring-white/15 lg:h-11 lg:w-11" />
+            <span className="text-left">
+              <span className="block font-display text-[1.3rem] leading-[0.85] tracking-[0.02em] text-white lg:text-[1.45rem]">BAKEMART</span>
+              <span className="mt-[5px] block font-mono text-[9px] font-semibold uppercase leading-none tracking-[0.26em] text-white/45 lg:text-[10px]">
                 Coffee House
               </span>
             </span>
           </button>
 
-          <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+          <nav className="hidden flex-1 items-center justify-center lg:flex" aria-label="Main">
             {links.map((link) =>
               link.label === 'Menu' ? (
                 <div
                   key={link.label}
-                  className="relative"
+                  className="static"
                   onMouseEnter={() => setMegaOpen(true)}
                   onMouseLeave={() => setMegaOpen(false)}
                 >
-                  <NavLink link={link} onClick={() => go(link.path)} trailing={<ChevronDown className={`h-3.5 w-3.5 transition-transform ${megaOpen ? 'rotate-180' : ''}`} />} />
+                  <NavLink
+                    link={link}
+                    onClick={() => go(link.path)}
+                    trailing={<ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${megaOpen ? 'rotate-180' : ''}`} />}
+                  />
                   <AnimatePresence>
                     {megaOpen && (
                       <motion.div
-                        initial={{ opacity: 0, y: 8 }}
+                        initial={{ opacity: 0, y: -6 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                        transition={{ duration: 0.18 }}
-                        className="absolute left-1/2 top-full w-[760px] -translate-x-1/2 pt-3"
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.16 }}
+                        className="pointer-events-none absolute inset-x-0 top-full pt-[2px]"
                       >
-                        <div className="rounded-[1.5rem] bg-white p-4 text-bm-ink shadow-[0_24px_60px_-20px_rgba(0,0,0,0.45)]">
-                          <div className="grid grid-cols-3 gap-1">
-                            {categories.map((c) => {
-                              const from = startingPrice(menuItems.filter((i) => i.category === c.id));
-                              return (
-                                <button
-                                  key={c.id}
-                                  type="button"
-                                  onClick={() => go(`/category/${c.id}`)}
-                                  className="flex items-center gap-3 rounded-2xl p-2 text-left hover:bg-bm-cream"
-                                >
-                                  <img src={c.image} alt="" className="h-12 w-12 shrink-0 rounded-xl object-cover" loading="lazy" />
-                                  <span className="min-w-0">
-                                    <span className="block truncate text-sm font-extrabold">{shortCategoryName(c)}</span>
-                                    {from !== null && <span className="block text-xs font-semibold text-bm-muted">From {formatKsh(from)}</span>}
-                                  </span>
-                                </button>
-                              );
-                            })}
+                        <div className="mx-auto max-w-[1320px] px-8">
+                          <div className="pointer-events-auto mx-auto w-[840px] overflow-hidden rounded-b-[14px] border-x border-b border-white/10 bg-bm-coal shadow-[0_34px_70px_-24px_rgba(0,0,0,0.9)]">
+                            <div className="grid grid-cols-3 gap-px bg-white/[0.06]">
+                              {categories.map((c) => {
+                                const from = startingPrice(menuItems.filter((i) => i.category === c.id));
+                                return (
+                                  <button
+                                    key={c.id}
+                                    type="button"
+                                    onClick={() => go(`/category/${c.id}`)}
+                                    className="group flex items-center gap-3 bg-bm-coal p-3 text-left transition-colors hover:bg-bm-ember"
+                                  >
+                                    <img src={c.image} alt="" className="h-11 w-11 shrink-0 rounded-[8px] object-cover" loading="lazy" />
+                                    <span className="min-w-0">
+                                      <span className="block truncate font-display text-[0.95rem] uppercase tracking-[0.03em] text-white group-hover:text-bm-orange">
+                                        {shortCategoryName(c)}
+                                      </span>
+                                      {from !== null && (
+                                        <span className="mt-1 block font-mono text-[11px] font-semibold text-white/45">from {formatKsh(from)}</span>
+                                      )}
+                                    </span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => go('/menu')}
+                              className="flex w-full items-center justify-between bg-bm-orange px-5 py-4 font-display text-[1.05rem] uppercase tracking-[0.05em] text-bm-ink transition-colors hover:bg-white"
+                            >
+                              View the full menu
+                              <span className="font-mono text-[11px] font-bold tracking-wider">{menuItems.length} ITEMS →</span>
+                            </button>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => go('/menu')}
-                            className="mt-3 flex w-full items-center justify-between rounded-2xl bg-bm-ink px-5 py-3.5 text-sm font-extrabold text-white hover:bg-bm-ember"
-                          >
-                            View the full menu
-                            <span className="text-bm-orange">{menuItems.length} items →</span>
-                          </button>
                         </div>
                       </motion.div>
                     )}
@@ -156,7 +138,16 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, active
             )}
           </nav>
 
-          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+          <div className="ml-auto flex shrink-0 items-center gap-1 lg:ml-0 lg:gap-1.5">
+            <a
+              href={PHONE_TEL}
+              className="hidden items-center gap-2 pr-2 font-mono text-[12px] font-semibold tracking-[0.02em] text-white/65 hover:text-bm-orange xl:flex"
+            >
+              <Phone className="h-3.5 w-3.5 text-bm-orange" />
+              {PHONE_DISPLAY}
+            </a>
+            <span className="mr-1 hidden h-6 w-px bg-white/15 xl:block" aria-hidden="true" />
+
             <IconButton label="Search the menu" onClick={openSearch}>
               <Search className="h-5 w-5" />
             </IconButton>
@@ -166,26 +157,32 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, active
             <button
               type="button"
               onClick={() => go('/reservation')}
-              className={`hidden h-10 items-center rounded-full border px-5 text-sm font-extrabold xl:inline-flex ${
-                activePage === 'reservation' ? 'border-bm-orange text-bm-orange' : 'border-white/25 text-white hover:border-white'
+              className={`ml-1 hidden h-10 items-center rounded-[10px] border px-4 font-display text-[0.9rem] uppercase tracking-[0.06em] transition-colors xl:inline-flex ${
+                activePage === 'reservation'
+                  ? 'border-bm-orange text-bm-orange'
+                  : 'border-white/20 text-white hover:border-bm-orange hover:text-bm-orange'
               }`}
             >
-              Reserve a table
+              Reserve
             </button>
             <button
               ref={(el) => setCartRef(el, 'header')}
               type="button"
               onClick={onOpenCart}
-              className="relative hidden h-10 items-center gap-2 rounded-full bg-bm-orange pl-4 pr-5 text-sm font-extrabold text-bm-ink hover:bg-bm-orange-hot lg:inline-flex"
+              aria-label={`Open cart, ${cartCount} ${cartCount === 1 ? 'item' : 'items'}`}
+              className="relative ml-1 hidden h-10 items-center gap-3 rounded-[10px] bg-bm-orange pl-4 pr-3.5 font-display text-[0.9rem] uppercase tracking-[0.06em] text-bm-ink transition-colors hover:bg-white lg:inline-flex"
             >
-              <ShoppingBag className="h-4 w-4" />
-              Cart
-              <span className="grid h-6 min-w-6 place-items-center rounded-full bg-bm-ink px-1.5 text-[11px] text-white tabular-nums">{cartCount}</span>
+              <span className="flex items-center gap-2">
+                <ShoppingBag className="h-4 w-4" />
+                Cart
+              </span>
+              <span className="h-4 w-px bg-bm-ink/25" aria-hidden="true" />
+              <span className="font-mono text-[12px] font-bold tabular-nums">{String(cartCount).padStart(2, '0')}</span>
             </button>
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 lg:hidden"
+              className="grid h-10 w-10 place-items-center rounded-[10px] bg-white/10 text-white hover:bg-bm-orange hover:text-bm-ink lg:hidden"
               aria-label="Open menu"
               aria-expanded={mobileOpen}
             >
@@ -207,15 +204,20 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, active
             aria-modal="true"
             aria-label="Site menu"
           >
-            <div className="flex h-16 shrink-0 items-center justify-between border-b border-white/10 px-4 sm:px-6">
-              <span className="flex items-center gap-2.5">
-                <img src="/logo.jpeg" alt="" className="h-10 w-10 rounded-full object-cover" />
-                <span className="font-display text-[1.35rem] tracking-[0.04em]">BAKEMART</span>
+            <div className="flex h-16 shrink-0 items-center justify-between border-b-2 border-bm-orange px-4 sm:px-6">
+              <span className="flex items-center gap-3">
+                <img src="/logo.jpeg" alt="" className="h-10 w-10 rounded-[10px] object-cover ring-1 ring-white/15" />
+                <span className="text-left">
+                  <span className="block font-display text-[1.3rem] leading-[0.85] tracking-[0.02em]">BAKEMART</span>
+                  <span className="mt-[5px] block font-mono text-[9px] font-semibold uppercase leading-none tracking-[0.26em] text-white/45">
+                    Coffee House
+                  </span>
+                </span>
               </span>
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                className="grid h-10 w-10 place-items-center rounded-full bg-white/10 hover:bg-white/20"
+                className="grid h-10 w-10 place-items-center rounded-[10px] bg-white/10 hover:bg-bm-orange hover:text-bm-ink"
                 aria-label="Close menu"
               >
                 <X className="h-5 w-5" />
@@ -237,22 +239,22 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, active
                     }`}
                   >
                     {link.label}
-                    <span className="font-sans text-sm font-bold text-white/30">0{i + 1}</span>
+                    <span className="font-mono text-xs font-bold text-white/30">0{i + 1}</span>
                   </motion.button>
                 ))}
               </nav>
 
-              <p className="mt-8 text-xs font-extrabold uppercase tracking-[0.22em] text-white/45">Jump to</p>
+              <p className="mt-8 font-mono text-[10px] font-bold uppercase tracking-[0.26em] text-bm-orange">Jump to</p>
               <div className="mt-3 grid grid-cols-2 gap-2">
                 {categories.slice(0, 8).map((c) => (
                   <button
                     key={c.id}
                     type="button"
                     onClick={() => go(`/category/${c.id}`)}
-                    className="flex items-center gap-2.5 rounded-2xl bg-white/5 p-2 text-left text-sm font-bold hover:bg-white/10"
+                    className="flex items-center gap-2.5 rounded-[10px] bg-white/5 p-2 text-left hover:bg-white/10"
                   >
-                    <img src={c.image} alt="" className="h-9 w-9 shrink-0 rounded-xl object-cover" loading="lazy" />
-                    <span className="truncate">{shortCategoryName(c)}</span>
+                    <img src={c.image} alt="" className="h-9 w-9 shrink-0 rounded-[8px] object-cover" loading="lazy" />
+                    <span className="truncate font-display text-[0.85rem] uppercase tracking-[0.02em]">{shortCategoryName(c)}</span>
                   </button>
                 ))}
               </div>
@@ -262,17 +264,21 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, active
                   href={whatsappLink()}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-center gap-2 rounded-full bg-bm-orange py-3.5 text-sm font-extrabold text-bm-ink"
+                  className="flex items-center justify-center gap-2 rounded-[10px] bg-bm-orange py-3.5 font-display text-[0.95rem] uppercase tracking-[0.06em] text-bm-ink"
                 >
                   <MessageCircle className="h-4 w-4" />
                   WhatsApp
                 </a>
-                <a href={PHONE_TEL} className="flex items-center justify-center gap-2 rounded-full border border-white/25 py-3.5 text-sm font-extrabold">
+                <a
+                  href={PHONE_TEL}
+                  className="flex items-center justify-center gap-2 rounded-[10px] border border-white/20 py-3.5 font-display text-[0.95rem] uppercase tracking-[0.06em]"
+                >
                   <Phone className="h-4 w-4" />
                   Call us
                 </a>
               </div>
-              <div className="mt-6 flex justify-center gap-5 text-white/60">
+              <p className="mt-6 text-center font-mono text-[11px] text-white/45">Tropical House, Moi Road · Open daily 7AM–8PM</p>
+              <div className="mt-4 flex justify-center gap-5 text-white/60">
                 {SOCIALS.map(({ href, label, icon: Icon }) => (
                   <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="hover:text-bm-orange">
                     <Icon className="h-5 w-5" />
@@ -287,6 +293,11 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, active
   );
 };
 
+/**
+ * Signage nav item. The label rolls up and an orange copy rolls in behind it — the same
+ * kinetic-type idea the marquee and the footer wordmark use — so there is no travelling
+ * pill or underline to fight the orange rule under the header.
+ */
 const NavLink: React.FC<{
   link: { label: string; active: boolean };
   onClick: () => void;
@@ -296,17 +307,28 @@ const NavLink: React.FC<{
     type="button"
     onClick={onClick}
     aria-current={link.active ? 'page' : undefined}
-    className={`relative flex h-10 items-center gap-1 px-3.5 text-sm font-bold ${link.active ? 'text-white' : 'text-white/65 hover:text-white'}`}
+    className={`group flex h-[72px] items-center gap-1.5 px-4 font-display text-[0.95rem] uppercase tracking-[0.07em] ${
+      link.active ? 'text-bm-orange' : 'text-white/75'
+    }`}
   >
-    {link.label}
+    <span className="relative block overflow-hidden py-[2px]">
+      <span
+        className={`block transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          link.active ? '-translate-y-full' : 'group-hover:-translate-y-full'
+        }`}
+      >
+        {link.label}
+      </span>
+      <span
+        aria-hidden="true"
+        className={`absolute inset-0 block py-[2px] text-bm-orange transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          link.active ? 'translate-y-0' : 'translate-y-full group-hover:translate-y-0'
+        }`}
+      >
+        {link.label}
+      </span>
+    </span>
     {trailing}
-    {link.active && (
-      <motion.span
-        layoutId="nav-underline"
-        className="absolute inset-x-3.5 -bottom-[15px] h-[3px] rounded-full bg-bm-orange"
-        transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-      />
-    )}
   </button>
 );
 
@@ -320,11 +342,11 @@ const IconButton: React.FC<{ label: string; onClick: () => void; badge?: number;
     type="button"
     onClick={onClick}
     aria-label={label}
-    className="relative grid h-10 w-10 place-items-center rounded-full text-white hover:bg-white/10"
+    className="relative grid h-10 w-10 place-items-center rounded-[10px] text-white transition-colors hover:bg-white/10 hover:text-bm-orange"
   >
     {children}
     {badge > 0 && (
-      <span className="absolute right-0.5 top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-bm-orange px-1 text-[10px] font-extrabold text-bm-ink">
+      <span className="absolute right-0 top-0 grid h-[18px] min-w-[18px] place-items-center rounded-[6px] bg-bm-orange px-1 font-mono text-[10px] font-bold text-bm-ink">
         {badge}
       </span>
     )}

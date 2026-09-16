@@ -154,21 +154,13 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateMenu, onSelectCategory }) 
           </>
         )}
 
-        <AnimatePresence mode="wait">
-          {price !== null && (
-            <motion.div
-              key={slide.id}
-              className="absolute right-4 top-4 sm:right-6 sm:top-6 lg:right-10 lg:top-10"
-              initial={{ opacity: 0, y: -16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.45, ease: EASE, delay: 0.35 }}
-            >
-              <PriceBurst price={price} label={slide.priceLabel} size={100} className="sm:hidden" />
-              <PriceBurst price={price} label={slide.priceLabel} size={140} className="hidden sm:grid" />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* The tag stays put across slides — only the figure on it changes. */}
+        {price !== null && (
+          <div className="absolute right-4 top-4 sm:right-6 sm:top-6 lg:right-10 lg:top-10">
+            <PriceBurst price={price} label={slide.priceLabel} size={100} className="sm:hidden" />
+            <PriceBurst price={price} label={slide.priceLabel} size={140} className="hidden sm:grid" />
+          </div>
+        )}
 
         <button
           type="button"
@@ -188,14 +180,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateMenu, onSelectCategory }) 
 
       {/* Copy sits on the black; over a poster photo it overlaps the faded edge */}
       <div
-        className={`relative mx-auto max-w-[1320px] px-4 pb-10 sm:px-6 lg:mt-0 lg:flex lg:min-h-[calc(100svh-7.75rem)] lg:items-center lg:px-8 lg:py-16 ${
+        className={`relative mx-auto max-w-[1320px] px-4 pb-10 sm:px-6 lg:mt-0 lg:flex lg:min-h-[calc(100svh-4.625rem)] lg:items-center lg:px-8 lg:py-16 ${
           mounted ? '-mt-2' : '-mt-32 sm:-mt-40'
         }`}
       >
         <div className="lg:max-w-[600px]">
           <span
-            className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.16em] ${
-              status.open ? 'bg-emerald-400/10 text-emerald-300' : 'bg-white/10 text-white/70'
+            className={`inline-flex items-center gap-2 rounded-[8px] px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] ${
+              status.open ? 'bg-bm-orange/12 text-bm-orange' : 'bg-white/10 text-white/70'
             }`}
           >
             {status.label} · Moi Road, Nakuru

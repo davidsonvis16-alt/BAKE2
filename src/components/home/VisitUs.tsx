@@ -1,7 +1,7 @@
 import React from 'react';
 import { Clock, MapPin, Navigation, Phone } from 'lucide-react';
 import { Reveal } from '../brand/Reveal';
-import { MAPS_LINK, PHONE_DISPLAY, PHONE_TEL, openStatus } from '../../lib/menuMeta';
+import { MAP_EMBED, MAPS_LINK, PHONE_DISPLAY, PHONE_TEL, openStatus } from '../../lib/menuMeta';
 
 export const VisitUs: React.FC = () => {
   const status = openStatus();
@@ -62,15 +62,25 @@ export const VisitUs: React.FC = () => {
           </div>
         </div>
 
-        <div className="relative min-h-[300px] md:min-h-[480px]">
+        <div className="relative min-h-[300px] bg-bm-ember md:min-h-[480px]">
           <iframe
             title="BakeMart Coffee House location"
-            src="https://www.google.com/maps?q=BakeMart+Coffee+House,Tropical+House,Moi+Road,Nakuru&output=embed"
+            src={MAP_EMBED}
             loading="lazy"
-            referrerPolicy="no-referrer"
+            referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen
             className="absolute inset-0 h-full w-full border-0"
           />
+          {/* Google blocks the embed in some browsers/extensions; the overlay keeps a way through to the map. */}
+          <a
+            href={MAPS_LINK}
+            target="_blank"
+            rel="noreferrer"
+            className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-bm-ink/85 px-3.5 py-2 font-mono text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur hover:bg-bm-orange hover:text-bm-ink"
+          >
+            <Navigation className="h-3.5 w-3.5" />
+            Open in Maps
+          </a>
         </div>
       </Reveal>
     </section>

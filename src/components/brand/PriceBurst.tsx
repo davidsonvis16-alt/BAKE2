@@ -15,7 +15,7 @@ const TONES = {
   ink: { fill: 'var(--color-bm-ink)', text: 'text-white', sub: 'text-bm-orange' },
 };
 
-/** Still price tag — notched end with an eyelet, tilted slightly. "FROM · KSh 1,800". */
+/** Still price tag — notched end with an eyelet. Sits flat and never animates. "FROM · KSh 1,800". */
 export const PriceBurst: React.FC<PriceBurstProps> = ({ price, label = 'From', size = 112, tone = 'orange', className = '' }) => {
   const maskId = useId();
   const palette = TONES[tone];
@@ -31,7 +31,7 @@ export const PriceBurst: React.FC<PriceBurstProps> = ({ price, label = 'From', s
       aria-label={`${label} KSh ${price.toLocaleString()}`}
       role="img"
     >
-      <div className="absolute inset-0 -rotate-6">
+      <div className="absolute inset-0">
         <svg viewBox="0 0 145 68" className="h-full w-full" preserveAspectRatio="none" aria-hidden="true">
           <defs>
             <mask id={maskId}>
