@@ -98,7 +98,7 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
           {/* Ticket Header */}
           <div
             className="relative text-white p-5 flex items-center justify-between overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, #1a1512 0%, #000000 60%)' }}
+            style={{ background: 'linear-gradient(135deg, #1e1e21 0%, #000000 60%)' }}
           >
             <div
               className="absolute inset-0 opacity-[0.06] pointer-events-none"
@@ -130,9 +130,9 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
             {/* Store Info */}
             <div className="text-center space-y-1 pb-4 border-b-2 border-dashed border-[#d9c4ab]">
               <h3 className="text-charcoal font-bold text-base text-[#000000] tracking-tight">BakeMart Coffee House</h3>
-              <p className="text-[11px] text-[#5c4b3f]">Tropical House, Moi Road, Nakuru</p>
-              <p className="text-[11px] text-[#5c4b3f]">Tel: 0725 009708</p>
-              <p className="text-[11px] text-[#5c4b3f]">{orderTime}</p>
+              <p className="text-[11px] text-[#4e4e55]">Tropical House, Moi Road, Nakuru</p>
+              <p className="text-[11px] text-[#4e4e55]">Tel: 0725 009708</p>
+              <p className="text-[11px] text-[#4e4e55]">{orderTime}</p>
             </div>
 
             {/* Order Type & Status */}
@@ -144,7 +144,7 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
                   {orderType === 'delivery' ? 'Delivery' : 'Pickup'}
                 </span>
               </div>
-              <span className="text-[11px] font-bold text-[#8c7a6c] font-mono">#{orderId.split('-').pop()}</span>
+              <span className="text-[11px] font-bold text-[#74747d] font-mono">#{orderId.split('-').pop()}</span>
             </div>
 
             {/* Customer Info */}
@@ -165,7 +165,7 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
 
             {/* Items */}
             <div className="space-y-3">
-              <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider text-[#8c7a6c] pb-2 border-b border-[#e6d3c2]">
+              <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider text-[#74747d] pb-2 border-b border-[#e6d3c2]">
                 <span>Item</span>
                 <span className="text-right">Qty / Total</span>
               </div>
@@ -189,7 +189,7 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-[#000000] truncate">{ci.item.name}</p>
                       {ci.selectedOption && (
-                        <p className="text-[11px] text-[#8c7a6c]">{ci.selectedOption.name}</p>
+                        <p className="text-[11px] text-[#74747d]">{ci.selectedOption.name}</p>
                       )}
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
@@ -224,7 +224,7 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
             {/* Notes */}
             {orderNotes && (
               <div className="bg-white/60 rounded-xl p-3 border border-[#e6d3c2]">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#8c7a6c] mb-1">Notes</p>
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#74747d] mb-1">Notes</p>
                 <p className="text-sm text-[#000000]">{orderNotes}</p>
               </div>
             )}
@@ -238,13 +238,13 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
                   opacity: 0.85,
                 }}
               />
-              <p className="text-[10px] font-mono tracking-[0.3em] text-[#8c7a6c]">{orderId}</p>
+              <p className="text-[10px] font-mono tracking-[0.3em] text-[#74747d]">{orderId}</p>
             </div>
 
             {/* Footer */}
             <div className="text-center pt-2 space-y-1.5">
-              <p className="text-[11px] text-[#5c4b3f]">Thank you for your order!</p>
-              <p className="text-[11px] text-[#8c7a6c]">Present this ticket at pickup or keep for reference</p>
+              <p className="text-[11px] text-[#4e4e55]">Thank you for your order!</p>
+              <p className="text-[11px] text-[#74747d]">Present this ticket at pickup or keep for reference</p>
             </div>
 
             {/* Ink stamp */}
@@ -281,7 +281,7 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
               {onConfirmSend && (
                 <button
                   onClick={onConfirmSend}
-                  className="w-full bg-[#000000] hover:bg-[#1a1512] text-white text-sm font-bold py-3 rounded-full transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-[#000000] hover:bg-[#1e1e21] text-white text-sm font-bold py-3 rounded-full transition-all flex items-center justify-center gap-2"
                 >
                   <Send className="w-4 h-4 text-[#d97a4c]" />
                   Confirm & Send to WhatsApp
@@ -300,7 +300,7 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
                 <button
                   onClick={handleDownload}
                   disabled={isDownloading}
-                  className="flex-1 bg-[#000000] hover:bg-[#1a1512] text-white text-sm font-bold py-3 rounded-full transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+                  className="flex-1 bg-[#000000] hover:bg-[#1e1e21] text-white text-sm font-bold py-3 rounded-full transition-all flex items-center justify-center gap-2 disabled:opacity-70"
                 >
                   {isDownloading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -311,7 +311,7 @@ export const OrderTicket: React.FC<OrderTicketProps> = ({
                 </button>
                 <button
                   onClick={handlePrint}
-                  className="flex-1 bg-[#000000] hover:bg-[#1a1512] text-white text-sm font-bold py-3 rounded-full transition-all flex items-center justify-center gap-2"
+                  className="flex-1 bg-[#000000] hover:bg-[#1e1e21] text-white text-sm font-bold py-3 rounded-full transition-all flex items-center justify-center gap-2"
                 >
                   <Printer className="w-4 h-4" />
                   Print

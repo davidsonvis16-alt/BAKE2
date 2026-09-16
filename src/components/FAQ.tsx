@@ -40,13 +40,13 @@ export const FAQ: React.FC = () => {
     <div className="min-h-screen bg-[#fdfaf3] pb-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14">
         <div className="mb-8 sm:mb-10">
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#74747d]">
             FAQ
           </span>
           <h1 className="text-charcoal-lg font-black text-3xl sm:text-4xl text-[#000000] mt-4 leading-tight">
             Frequently Asked Questions
           </h1>
-          <p className="text-sm text-[#5c4b3f] mt-3 max-w-xl">
+          <p className="text-sm text-[#4e4e55] mt-3 max-w-xl">
             Everything you need to know about visiting and ordering from BakeMart Coffee House in Nakuru. — <a href="/menu" className="text-charcoal-link">View our menu</a> or <a href="/reservation" className="text-charcoal-link">book a table</a>.
           </p>
         </div>
@@ -61,7 +61,7 @@ export const FAQ: React.FC = () => {
                 <h3 className="text-charcoal font-bold text-base sm:text-lg text-[#000000] mb-2">
                   {faq.question}
                 </h3>
-                <p className="text-sm text-[#5c4b3f] leading-relaxed">
+                <p className="text-sm text-[#4e4e55] leading-relaxed">
                   {faq.answer}
                 </p>
               </div>

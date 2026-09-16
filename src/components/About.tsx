@@ -5,13 +5,13 @@ export const About: React.FC = () => {
     <div className="min-h-screen bg-[#fdfaf3] pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14">
         <div className="max-w-3xl">
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#74747d]">
             ABOUT US
           </span>
           <h1 className="text-charcoal-lg font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-4 leading-tight">
             About BakeMart Coffee House — Open Kitchen Restaurant &amp; Cafe in Nakuru
           </h1>
-          <p className="mt-4 text-sm sm:text-base text-[#5c4b3f] leading-relaxed max-w-2xl">
+          <p className="mt-4 text-sm sm:text-base text-[#4e4e55] leading-relaxed max-w-2xl">
             Bakemart Coffee House is located on Moi Road at Tropical House, behind Gilanis Supermarket and besides Nakuru GPO in Nakuru City, Kenya.
             We&apos;re often named among the best coffee spots and best restaurants in Nakuru, and we&apos;ve built our menu around fresh food at prices
             that keep BakeMart one of the most affordable places to eat well in the city. — <a href="/menu" className="text-charcoal-link">View our full menu</a> or <a href="/gallery" className="text-charcoal-link">see our gallery</a>.
@@ -35,7 +35,7 @@ export const About: React.FC = () => {
               <h2 className="text-charcoal font-bold text-xl text-[#000000]">
                 Our Story
               </h2>
-              <p className="text-sm text-[#5c4b3f] leading-relaxed">
+              <p className="text-sm text-[#4e4e55] leading-relaxed">
                 We offer a trendy, relaxing, serene, and cozy atmosphere where guests can watch food being prepared in our open kitchen —
                 one of the reasons locals keep calling BakeMart one of the best restaurants in Nakuru for fresh, honestly-made food.
               </p>
@@ -46,7 +46,7 @@ export const About: React.FC = () => {
             <h2 className="text-charcoal font-bold text-xl text-[#000000] mb-4">
               What Makes Us Special
             </h2>
-            <p className="text-sm text-[#5c4b3f] leading-relaxed mb-6">
+            <p className="text-sm text-[#4e4e55] leading-relaxed mb-6">
               We&apos;re the only open-kitchen coffee shop in Nakuru City, offering a broad menu that mixes coffeehouse classics with pizzas, burgers, waffles, healthy options, and local Kenyan flavors —
               fresh food at some of the most affordable prices in Nakuru.
             </p>
@@ -54,7 +54,7 @@ export const About: React.FC = () => {
             <h3 className="text-charcoal font-bold text-base text-[#000000] mb-3">
               Our Menu Highlights
             </h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-[#5c4b3f]">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-[#4e4e55]">
               <li>• Specialty coffee (cappuccino, white/black coffee, iced options)</li>
               <li>• Milkshakes, smoothies, and iced coffee</li>
               <li>• Authentic Italian-style pizzas</li>
@@ -77,7 +77,7 @@ export const About: React.FC = () => {
             <h3 className="text-charcoal font-bold text-lg text-[#000000] mb-3">
               Delivery
             </h3>
-            <p className="text-sm text-[#5c4b3f] leading-relaxed">
+            <p className="text-sm text-[#4e4e55] leading-relaxed">
               Delivery is available via Glovo. Search for &quot;Bakemart Coffee House Nakuru&quot; on Glovo to order your favorites.
             </p>
           </div>
@@ -86,7 +86,7 @@ export const About: React.FC = () => {
             <h3 className="text-charcoal font-bold text-lg text-[#000000] mb-3">
               Visit Us
             </h3>
-            <p className="text-sm text-[#5c4b3f] leading-relaxed">
+            <p className="text-sm text-[#4e4e55] leading-relaxed">
               Moi Road, Tropical House, Nakuru (behind Gilanis Supermarket and besides Nakuru GPO). We&apos;re open daily until 8:00 PM.
             </p>
 

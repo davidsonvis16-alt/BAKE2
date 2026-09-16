@@ -4,8 +4,8 @@
   --breakpoint-xs: 25rem;
 
   /* ========= BAKEMART DESIGN SYSTEM COLORS ========= */
-  --color-espresso: #1a120b;
-  --color-warm-black: #0f0a05;
+  --color-espresso: #121214;
+  --color-warm-black: #08080a;
   --color-cream: #f8f1e5;
   --color-ivory: #fdfaf3;
   --color-paper: #ffffff;
@@ -16,22 +16,22 @@
 
   --color-food-orange: #f4a261;
 
-  --color-ink: #2b1b12;
-  --color-stone: #5c4b3f;
-  --color-warm-stone: #8c7a6c;
+  --color-ink: #1b1b1e;
+  --color-stone: #4e4e55;
+  --color-warm-stone: #74747d;
   --color-warm-border: #e6d3c2;
   --color-warm-border-light: #f3e8d8;
   --color-warm-bg: #faf3e7;
   --color-warm-bg-alt: #f5efe7;
 
-  --color-text-primary: #2b1b12;
-  --color-text-secondary: #5c4b3f;
-  --color-text-tertiary: #8c7a6c;
+  --color-text-primary: #1b1b1e;
+  --color-text-secondary: #4e4e55;
+  --color-text-tertiary: #74747d;
 
   /* ========= BRAND (logo black + orange) ========= */
-  --color-bm-ink: #0e0a07;
-  --color-bm-coal: #1a130e;
-  --color-bm-ember: #2a1d14;
+  --color-bm-ink: #0a0a0b;
+  --color-bm-coal: #141416;
+  --color-bm-ember: #1e1e21;
   --color-bm-orange: #f7941d;
   --color-bm-orange-hot: #ff7a00;
   --color-bm-flame: #c2410c;
@@ -39,7 +39,7 @@
   --color-bm-cream: #fff7ea;
   --color-bm-sand: #f3e6d0;
   --color-bm-line: #e7d6bc;
-  --color-bm-muted: #6f5b4b;
+  --color-bm-muted: #6a6a72;
 
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'Fraunces', Georgia, Cambria, 'Times New Roman', serif;
@@ -630,7 +630,7 @@ html {
   border-radius: 1.75rem;
   overflow: hidden;
   border: 1px solid var(--color-warm-border);
-  box-shadow: 0 20px 50px rgba(26, 18, 11, 0.18);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
   aspect-ratio: 4 / 3;
   background-color: var(--color-cream);
 }
@@ -655,7 +655,7 @@ html {
   padding: 0.5rem;
   padding-bottom: 1.5rem;
   border-radius: 0.25rem;
-  box-shadow: 0 10px 25px rgba(26, 18, 11, 0.22);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.22);
   border: 1px solid var(--color-warm-border);
 }
 @media (min-width: 640px) {
@@ -1109,7 +1109,7 @@ html {
   top: 12px;
   left: 12px;
   z-index: 20;
-  background-color: #17130F;
+  background-color: #141416;
   color: #FFFFFF;
   font-size: 0.625rem;
   font-weight: 700;
@@ -1174,7 +1174,7 @@ html {
   font-family: var(--font-serif);
   font-weight: 700;
   font-size: 1rem;
-  color: #17130F;
+  color: #141416;
   line-height: 1.25;
   overflow: hidden;
   display: -webkit-box;
@@ -1230,7 +1230,7 @@ html {
   height: 38px;
   padding: 0 18px;
   border-radius: 999px;
-  background-color: #17130F;
+  background-color: #141416;
   color: #FFFFFF;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1857,7 +1857,7 @@ html {
   width: 100%;
   background-color: white;
   border: 1px solid var(--color-warm-border);
-  box-shadow: 0 8px 30px rgba(26, 18, 11, 0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   border-radius: 9999px;
   padding: 0.75rem 1rem;
 }
@@ -2162,7 +2162,7 @@ html {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: #8c7a6c;
+  color: #74747d;
   display: block;
   margin-bottom: 0.5rem;
 }
@@ -2184,7 +2184,7 @@ html {
 
 .menu-map-description {
   font-size: 0.875rem;
-  color: #5c4b3f;
+  color: #4e4e55;
   margin-bottom: 1rem;
   max-width: 32rem;
 }
@@ -2326,7 +2326,7 @@ html {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: #8c7a6c;
+  color: #74747d;
   display: block;
   margin-bottom: 0.5rem;
 }
@@ -2347,7 +2347,7 @@ html {
 
 .popular-description {
   font-size: 0.875rem;
-  color: #5c4b3f;
+  color: #4e4e55;
   margin-top: 0.5rem;
   max-width: 32rem;
 }
@@ -2365,7 +2365,7 @@ html {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #17130F;
+  background-color: #141416;
   color: #FFFFFF;
   padding: 0.75rem 1.25rem;
   border-radius: 9999px;
@@ -2384,7 +2384,7 @@ html {
 
 .cart-pill-count {
   background-color: #D97745;
-  color: #17130F;
+  color: #141416;
   font-size: 0.75rem;
   font-weight: 700;
   min-width: 1.5rem;

@@ -173,13 +173,13 @@ const StickyNoteHero: React.FC<{ onOpen: (src: string) => void }> = ({ onOpen })
           style={reduceMotion ? undefined : { opacity: headingOpacity, y: headingY }}
           className="relative z-40 pt-8 sm:pt-10 text-center px-6"
         >
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#74747d]">
             GALLERY
           </span>
           <h1 className="text-charcoal-lg font-black text-3xl sm:text-4xl lg:text-5xl text-[#000000] mt-3 leading-tight">
             The Wall Behind the Counter
           </h1>
-          <p className="mt-3 max-w-md mx-auto text-sm sm:text-base text-[#5c4b3f] leading-relaxed">
+          <p className="mt-3 max-w-md mx-auto text-sm sm:text-base text-[#4e4e55] leading-relaxed">
             Every photo we've pinned up — the mornings, the plates, the regulars. Tap one to look closer.
           </p>
         </motion.div>
@@ -420,7 +420,7 @@ export const Gallery: React.FC = () => {
           </div>
 
           {filteredImages.length === 0 && (
-            <p className="mt-10 text-center text-sm text-[#8c7a6c]">
+            <p className="mt-10 text-center text-sm text-[#74747d]">
               Nothing pinned here yet — try another category.
             </p>
           )}
@@ -428,13 +428,13 @@ export const Gallery: React.FC = () => {
           {/* Closing Statement */}
           <div className="mt-16 pt-12 border-t border-[#e6d3c2]">
             <div className="max-w-2xl">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#8c7a6c]">
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#74747d]">
                 SEE YOU AT BAKEMART
               </span>
               <h2 className="mt-4 text-charcoal font-black text-3xl sm:text-4xl text-[#000000] leading-tight">
                 Come hungry. Leave happy.
               </h2>
-              <p className="mt-4 text-sm sm:text-base text-[#5c4b3f] leading-relaxed">
+              <p className="mt-4 text-sm sm:text-base text-[#4e4e55] leading-relaxed">
                 A beautiful coffee house is built from the food, the space, and the moments in between.
               </p>
             </div>
